@@ -1,0 +1,21 @@
+{
+  "name": "also-asked-api-specification",
+  "private": true,
+  "dependencies": {
+    "@stoplight/spectral-cli": "^6.6.0",
+    "openapi-format": "^1.13.1"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3"
+  },
+  "scripts": {
+    "postinstall": "husky install",
+    "lint": "yamllint openapi/ && spectral lint openapi/**/*.{json,yml,yaml}"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint",
+      "pre-push": "lint"
+    }
+  }
+}
