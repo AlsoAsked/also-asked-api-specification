@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@stoplight/spectral-cli': ^6.6.0
   ajv: ^6.12.6
-  husky: ^8.0.3
+  husky: ^8.0.0
   mkdirp: ^2.1.5
   openapi-format: ^1.13.1
   widdershins: ^4.0.1
