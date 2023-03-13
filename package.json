@@ -6,11 +6,15 @@
     "openapi-format": "^1.13.1"
   },
   "devDependencies": {
-    "husky": "^8.0.3"
+    "husky": "^8.0.3",
+    "widdershins": "^4.0.1"
   },
   "scripts": {
     "postinstall": "husky install",
-    "lint": "yamllint openapi/ && spectral lint openapi/**/*.{json,yml,yaml}"
+    "lint": "npm run lint:yaml && npm run lint:openapi",
+    "lint:yaml": "yamllint openapi/",
+    "lint:openapi": "spectral lint openapi/**/*.{json,yml,yaml}",
+    "lint:prose": "./lint-prose.sh"
   },
   "husky": {
     "hooks": {

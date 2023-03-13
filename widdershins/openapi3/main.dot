@@ -1,0 +1,27 @@
+{{=data.api.info && data.api.info.title}} {{=data.version}}
+{{? data.api.info && data.api.info.description}}{{=data.api.info.description}}{{?}}
+
+{{ for (var r in data.resources) { }}
+{{ data.resource = data.resources[r]; }}
+{{? data.resource.description }}{{= data.resource.description}}{{?}}
+{{ } /* of resources */ }}
+
+{{ for (var s in data.components.schemas) { }}
+{{ var origSchema = data.components.schemas[s]; }}
+{{ var schema = data.api.components.schemas[s]; }}
+
+{{ var blocks = data.utils.schemaToArray(origSchema,-1,{trim:true,join:true},data); }}
+
+{{~ blocks :block}}
+{{? block.title }}{{= block.title}}{{= '\n\n'}}{{?}}
+
+{{? block===blocks[0] }}
+{{~ block.rows :p}}
+{{=p.displayName}}
+{{=p.restrictions||'none'}}
+{{=p.description||'none'}}
+{{?}}
+{{~}}
+{{~}}
+
+{{ } /* of schemas */ }}
