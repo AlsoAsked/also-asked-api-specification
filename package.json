@@ -3,11 +3,10 @@
   "private": true,
   "devDependencies": {
     "@stoplight/spectral-cli": "^6.6.0",
-    "husky": "^8.0.0",
-    "widdershins": "^4.0.1",
     "ajv": "^6.12.6",
+    "husky": "^8.0.0",
     "mkdirp": "^2.1.5",
-    "openapi-format": "^1.13.1"
+    "widdershins": "^4.0.1"
   },
   "scripts": {
     "prepare": "husky install",
