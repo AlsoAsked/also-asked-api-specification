@@ -11,7 +11,7 @@
   },
   "scripts": {
     "postinstall": "husky install",
-    "lint": "npm run lint:yaml && npm run lint:openapi",
+    "lint": "npm run lint:yaml && npm run lint:openapi && npm run lint:prose",
     "lint:yaml": "yamllint openapi/",
     "lint:openapi": "spectral lint openapi/**/*.{json,yml,yaml}",
     "lint:prose": "./lint-prose.sh"

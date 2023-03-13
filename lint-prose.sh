@@ -9,3 +9,4 @@ echo "$contents" | nl
 echo ""
 echo "Results:"
 echo "$contents" | vale
+echo ""
