@@ -5,4 +5,4 @@ rules:
   indentation:
     indent-sequences: consistent
   line-length:
-    max: 180
+    max: 120
