@@ -1,13 +1,13 @@
 {
   "name": "also-asked-api-specification",
   "private": true,
-  "dependencies": {
-    "@stoplight/spectral-cli": "^6.6.0",
-    "openapi-format": "^1.13.1"
-  },
   "devDependencies": {
+    "@stoplight/spectral-cli": "^6.6.0",
     "husky": "^8.0.3",
-    "widdershins": "^4.0.1"
+    "widdershins": "^4.0.1",
+    "ajv": "^6.12.6",
+    "mkdirp": "^2.1.5",
+    "openapi-format": "^1.13.1"
   },
   "scripts": {
     "postinstall": "husky install",
