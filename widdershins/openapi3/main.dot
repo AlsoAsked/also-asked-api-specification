@@ -1,27 +1,25 @@
 {{=data.api.info && data.api.info.title}} {{=data.version}}
+
 {{? data.api.info && data.api.info.description}}{{=data.api.info.description}}{{?}}
 
-{{ for (var r in data.resources) { }}
-{{ data.resource = data.resources[r]; }}
-{{? data.resource.description }}{{= data.resource.description}}{{?}}
-{{ } /* of resources */ }}
+# Authentication
 
-{{ for (var s in data.components.schemas) { }}
-{{ var origSchema = data.components.schemas[s]; }}
-{{ var schema = data.api.components.schemas[s]; }}
+{{ for (var s in data.api.components.securitySchemes) { }}
+{{ var sd = data.api.components.securitySchemes[s]; }}
+{{? sd.type == 'apiKey' }}
+## API Key ({{=s}})
 
-{{ var blocks = data.utils.schemaToArray(origSchema,-1,{trim:true,join:true},data); }}
-
-{{~ blocks :block}}
-{{? block.title }}{{= block.title}}{{= '\n\n'}}{{?}}
-
-{{? block===blocks[0] }}
-{{~ block.rows :p}}
-{{=p.displayName}}
-{{=p.restrictions||'none'}}
-{{=p.description||'none'}}
+{{=sd.description || ''}}
 {{?}}
-{{~}}
-{{~}}
+{{? sd.type == 'http'}}
+## HTTP Authentication
 
-{{ } /* of schemas */ }}
+{{=sd.description || ''}}
+{{?}}
+{{? sd.type == 'oauth2'}}
+## OAuth2 authentication
+
+{{=sd.description || ''}}
+{{?}}
+
+{{ } /* of securitySchemes */ }}
