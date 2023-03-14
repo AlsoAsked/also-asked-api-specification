@@ -1,0 +1,8 @@
+ApiKeyAuth:
+  type: apiKey
+  in: header
+  name: X-Api-Key
+  description: |
+    API key required to authenticate requests to the AlsoAsked API. An API key can be obtained by registering for an
+    account and creating a key under the developer settings. The key must be passed in the header of each request
+    with the key name `X-Api-Key`. Without an API key, all requests will be rejected.
