@@ -20,10 +20,11 @@ tags:
   description: Operations related to searches.
 
 servers:
-- url: https://api.alsoasked.com/v1
-  description: Live
-- url: https://sandbox-api.alsoasked.com/v1
-  description: Sandbox
+- $ref: ./servers/live.yaml
+- $ref: ./servers/sandbox.yaml
+
+security:
+- ApiKeyAuth: []
 
 components:
   securitySchemes:
@@ -35,6 +36,3 @@ components:
         API key required to authenticate requests to the AlsoAsked API. An API key can be obtained by registering for an
         account and creating a key under the developer settings. The key must be passed in the header of each request
         with the key name `X-Api-Key`. Without an API key, all requests will be rejected.
-
-security:
-- ApiKeyAuth: []
