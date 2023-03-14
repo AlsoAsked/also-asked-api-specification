@@ -14,10 +14,8 @@ info:
     url: https://help.alsoasked.com
 
 tags:
-- name: account
-  description: Operations related to managing an account.
-- name: search
-  description: Operations related to searches.
+- $ref: ./tags/account.yaml
+- $ref: ./tags/search.yaml
 
 servers:
 - $ref: ./servers/live.yaml
