@@ -12,6 +12,9 @@ content:
   application/json:
     schema:
       $ref: ../../schemas/Error.yaml
+    x-examples:
+      default:
+        $ref: ../../../examples/errors/RateLimitExceededError.yaml
     examples:
       RateLimitExceededError:
         summary: Rate limit exceeded error example

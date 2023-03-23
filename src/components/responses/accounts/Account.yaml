@@ -11,6 +11,9 @@ content:
   application/json:
     schema:
       $ref: ../../../components/schemas/Account.yaml
+    x-examples:
+      default:
+        $ref: ../../../examples/accounts/Account.yaml
     examples:
       Account:
         summary: Account example

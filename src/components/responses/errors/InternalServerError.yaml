@@ -10,6 +10,9 @@ content:
   application/json:
     schema:
       $ref: ../../schemas/Error.yaml
+    x-examples:
+      default:
+        $ref: ../../../examples/errors/InternalServerError.yaml
     examples:
       InternalServerError:
         summary: Internal server error example
