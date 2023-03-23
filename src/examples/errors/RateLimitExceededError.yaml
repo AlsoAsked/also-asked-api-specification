@@ -1,3 +1,2 @@
 status: rate_limit_exceeded
-message: |
-  The maximum number of requests per second have been exceeded
+message: The maximum number of requests per second have been exceeded

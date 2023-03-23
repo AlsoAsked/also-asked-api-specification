@@ -145,8 +145,7 @@ components:
             not suitable for display to an end user.
       example:
         status: internal_server_error
-        message: |
-          An internal server error has occurred
+        message: An internal server error has occurred
   responses:
     Account:
       description: |
@@ -196,8 +195,7 @@ components:
                 API key is provided in the request header.
               value:
                 status: missing_api_key
-                message: |
-                  No API key has been specified
+                message: No API key has been specified
     InvalidApiKeyError:
       description: |
         The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
@@ -219,8 +217,7 @@ components:
                 invalid API key is provided in the request header.
               value:
                 status: invalid_api_key
-                message: |
-                  The API key provided is invalid
+                message: The API key provided is invalid
     RateLimitExceededError:
       description: |
         The error "maximum requests per second exceeded" occurs when the client has made too many requests in a short period
@@ -244,8 +241,7 @@ components:
                 client has made too many requests in a short period of time.
               value:
                 status: rate_limit_exceeded
-                message: |
-                  The maximum number of requests per second have been exceeded
+                message: The maximum number of requests per second have been exceeded
     InternalServerError:
       description: |
         An internal server error occurred. This error is returned when the server encounters an unexpected issue
@@ -267,8 +263,7 @@ components:
                 server encounters an unexpected issue while processing the request.
               value:
                 status: internal_server_error
-                message: |
-                  An internal server error has occurred
+                message: An internal server error has occurred
     UnderMaintenanceError:
       description: |
         The API is currently under maintenance. This error is returned when the API is temporarily unavailable due to
@@ -285,8 +280,7 @@ components:
                 API is temporarily unavailable due to maintenance.
               value:
                 status: under_maintenance
-                message: |
-                  The API is currently under maintenance
+                message: The API is currently under maintenance
   securitySchemes:
     apiKey:
       type: apiKey
