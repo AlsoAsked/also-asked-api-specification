@@ -13,8 +13,8 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "npm run lint:yaml && npm run lint:openapi && npm run lint:prose",
-    "lint:yaml": "yamllint openapi/",
-    "lint:openapi": "spectral lint openapi/openapi.yaml",
+    "lint:yaml": "yamllint src/",
+    "lint:openapi": "spectral lint src/openapi.yaml",
     "lint:prose": "./tools/lint-prose.sh",
     "bundle": "./tools/bundle.sh"
   }
