@@ -161,17 +161,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Account'
-          x-examples:
-            default:
-              id: 6G8QgoK9ar0E1pB7Rl0LN5mxljdAvBWb
-              name: Mantis Toboggan
-              email: mantis.toboggan@gmail.com
-              plan_type: pro
-              credits: 100
-              credit_reset_date: '2023-02-01T00:00:00Z'
-              registration_date: '2023-01-01T00:00:00Z'
           examples:
-            Account:
+            default:
               summary: Account example
               description: |
                 The following example shows the response body of a successful request to get account information.
@@ -196,12 +187,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-          x-examples:
-            default:
-              status: missing_api_key
-              message: No API key has been specified
           examples:
-            MissingApiKeyError:
+            default:
               summary: Missing API key error example
               description: |
                 The following example shows the response body of an unauthorized error. This error is returned when no
@@ -222,12 +209,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-          x-examples:
-            default:
-              status: invalid_api_key
-              message: The API key provided is invalid
           examples:
-            InvalidApiKeyError:
+            default:
               summary: Invalid API key error example
               description: |
                 The following example shows the response body of an invalid API key error. This error is returned when an
@@ -250,12 +233,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-          x-examples:
-            default:
-              status: rate_limit_exceeded
-              message: The maximum number of requests per second have been exceeded
           examples:
-            RateLimitExceededError:
+            default:
               summary: Rate limit exceeded error example
               description: |
                 The following example shows the response body of a rate limit exceeded error. This error is returned when the
@@ -276,12 +255,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-          x-examples:
-            default:
-              status: internal_server_error
-              message: An internal server error has occurred
           examples:
-            InternalServerError:
+            default:
               summary: Internal server error example
               description: |
                 The following example shows the response body of an internal server error. This error is returned when the
@@ -297,12 +272,8 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
-          x-examples:
-            default:
-              status: under_maintenance
-              message: The API is currently under maintenance
           examples:
-            UnderMaintenanceError:
+            default:
               summary: Under maintenance error example
               description: |
                 The following example shows the response body of an under maintenance error. This error is returned when the

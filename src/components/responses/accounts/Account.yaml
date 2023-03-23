@@ -11,11 +11,8 @@ content:
   application/json:
     schema:
       $ref: ../../../components/schemas/Account.yaml
-    x-examples:
-      default:
-        $ref: ../../../examples/accounts/Account.yaml
     examples:
-      Account:
+      default:
         summary: Account example
         description: |
           The following example shows the response body of a successful request to get account information.

@@ -10,11 +10,8 @@ content:
   application/json:
     schema:
       $ref: ../../schemas/Error.yaml
-    x-examples:
-      default:
-        $ref: ../../../examples/errors/InvalidApiKeyError.yaml
     examples:
-      InvalidApiKeyError:
+      default:
         summary: Invalid API key error example
         description: |
           The following example shows the response body of an invalid API key error. This error is returned when an

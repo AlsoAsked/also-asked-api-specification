@@ -5,11 +5,8 @@ content:
   application/json:
     schema:
       $ref: ../../schemas/Error.yaml
-    x-examples:
-      default:
-        $ref: ../../../examples/errors/UnderMaintenanceError.yaml
     examples:
-      UnderMaintenanceError:
+      default:
         summary: Under maintenance error example
         description: |
           The following example shows the response body of an under maintenance error. This error is returned when the
