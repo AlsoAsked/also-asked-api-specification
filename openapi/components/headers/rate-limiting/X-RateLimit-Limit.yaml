@@ -1,0 +1,7 @@
+description: |
+  The maximum number of requests that can be made in the current rate limit window.
+schema:
+  type: integer
+  format: int64
+  minimum: 0
+example: 1000

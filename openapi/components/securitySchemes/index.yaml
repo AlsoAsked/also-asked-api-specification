@@ -1,0 +1,2 @@
+apiKey:
+  $ref: ./apiKey.yaml

@@ -1,0 +1,20 @@
+description: |
+  An internal server error occurred. This error is returned when the server encounters an unexpected issue
+  while processing the request.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/Error.yaml
+    examples:
+      InternalServerError:
+        summary: Internal server error example
+        description: |
+          The following example shows the response body of an internal server error. This error is returned when the
+          server encounters an unexpected issue while processing the request.
+        value:
+          $ref: ../../../examples/errors/InternalServerError.yaml

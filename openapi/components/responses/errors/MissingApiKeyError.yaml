@@ -1,0 +1,20 @@
+description: |
+  The API key provided in the request header is missing. This error is returned when no API key is provided in the
+  request header.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/Error.yaml
+    examples:
+      MissingApiKeyError:
+        summary: Missing API key error example
+        description: |
+          The following example shows the response body of an unauthorized error. This error is returned when no
+          API key is provided in the request header.
+        value:
+          $ref: ../../../examples/errors/MissingApiKeyError.yaml

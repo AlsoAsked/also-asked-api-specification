@@ -1,0 +1,6 @@
+X-RateLimit-Limit:
+  $ref: ./rate-limiting/X-RateLimit-Limit.yaml
+X-RateLimit-Remaining:
+  $ref: ./rate-limiting/X-RateLimit-Remaining.yaml
+X-RateLimit-Reset:
+  $ref: ./rate-limiting/X-RateLimit-Reset.yaml

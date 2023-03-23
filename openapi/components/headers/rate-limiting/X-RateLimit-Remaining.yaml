@@ -1,0 +1,7 @@
+description: |
+  The number of requests remaining in the current rate limit window.
+schema:
+  type: integer
+  format: int64
+  minimum: 0
+example: 984

@@ -1,0 +1,54 @@
+title: Account
+type: object
+description: |
+  The account object is returned in the response body of any request that results in the details of an account being
+  returned.
+properties:
+  id:
+    type: string
+    pattern: ^[a-zA-Z0-9]{32}$
+    description: |
+      The unique identifier for the account.
+    example: 6G8QgoK9ar0E1pB7Rl0LN5mxljdAvBWb
+  name:
+    type: string
+    description: |
+      The human-readable name for the account.
+    example: Mantis Toboggan
+  email:
+    type: string
+    format: email
+    description: |
+      The email address associated with the account.
+    example: mantis.toboggan@gmail.com
+  plan_type:
+    type: string
+    description: |
+      The type of plan that the account, or the account's team owner, is subscribed to.
+    enum:
+      - free
+      - basic
+      - lite
+      - pro
+    example: pro
+  credits:
+    type: integer
+    format: int64
+    minimum: 0
+    description: |
+      The number of credits remaining in the account.
+    example: 100
+  credit_reset_date:
+    type: string
+    format: date-time
+    description: |
+      The account credit reset date is the date and time at which the account credits will be reset to default.
+    example: '2023-02-01T00:00:00Z'
+  registration_date:
+    type: string
+    format: date-time
+    description: |
+      The account registration date is the date and time at which the account was registered.
+    example: '2023-01-01T00:00:00Z'
+examples:
+  - $ref: ../../examples/accounts/Account.yaml

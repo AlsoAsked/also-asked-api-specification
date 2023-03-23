@@ -1,0 +1,12 @@
+Account:
+  $ref: ./accounts/Account.yaml
+InternalServerError:
+  $ref: ./errors/InternalServerError.yaml
+InvalidApiKeyError:
+  $ref: ./errors/InvalidApiKeyError.yaml
+MissingApiKeyError:
+  $ref: ./errors/MissingApiKeyError.yaml
+RateLimitExceededError:
+  $ref: ./errors/RateLimitExceededError.yaml
+UnderMaintenanceError:
+  $ref: ./errors/UnderMaintenanceError.yaml

@@ -14,15 +14,16 @@ info:
     url: https://help.alsoasked.com
 
 tags:
-- $ref: ./tags/account.yaml
-- $ref: ./tags/search.yaml
+- $ref: ./tags/Account.yaml
+- $ref: ./tags/Search.yaml
 
 servers:
 - $ref: ./servers/live.yaml
 - $ref: ./servers/sandbox.yaml
 
-security:
-- ApiKeyAuth: []
-
 components:
   $ref: ./components/index.yaml
+
+paths:
+  /account:
+    $ref: ./paths/account.yaml

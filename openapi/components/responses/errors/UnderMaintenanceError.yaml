@@ -1,0 +1,15 @@
+description: |
+  The API is currently under maintenance. This error is returned when the API is temporarily unavailable due to
+  maintenance.
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/Error.yaml
+    examples:
+      UnderMaintenanceError:
+        summary: Under maintenance error example
+        description: |
+          The following example shows the response body of an under maintenance error. This error is returned when the
+          API is temporarily unavailable due to maintenance.
+        value:
+          $ref: ../../../examples/errors/UnderMaintenanceError.yaml

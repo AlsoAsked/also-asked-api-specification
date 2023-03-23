@@ -1,0 +1,20 @@
+description: |
+  The account object is returned in the response body of a successful request to get account information.
+headers:
+  X-AlsoAsked-Credits:
+    $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../../components/schemas/Account.yaml
+    examples:
+      Account:
+        summary: Account example
+        description: |
+          The following example shows the response body of a successful request to get account information.
+        value:
+          $ref: ../../../examples/accounts/Account.yaml

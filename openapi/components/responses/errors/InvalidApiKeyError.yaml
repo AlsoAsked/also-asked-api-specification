@@ -1,0 +1,20 @@
+description: |
+  The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
+  the request header has either been deleted or doesn't exist.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/Error.yaml
+    examples:
+      InvalidApiKeyError:
+        summary: Invalid API key error example
+        description: |
+          The following example shows the response body of an invalid API key error. This error is returned when an
+          invalid API key is provided in the request header.
+        value:
+          $ref: ../../../examples/errors/InvalidApiKeyError.yaml

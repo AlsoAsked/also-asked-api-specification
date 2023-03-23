@@ -1,0 +1,22 @@
+description: |
+  The error "maximum requests per second exceeded" occurs when the client has made too many requests in a short period
+  of time.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+  X-RateLimit-Reset:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Reset.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/Error.yaml
+    examples:
+      RateLimitExceededError:
+        summary: Rate limit exceeded error example
+        description: |
+          The following example shows the response body of a rate limit exceeded error. This error is returned when the
+          client has made too many requests in a short period of time.
+        value:
+          $ref: ../../../examples/errors/RateLimitExceededError.yaml

@@ -1,0 +1,7 @@
+description: |
+  The time at which the current rate limit window resets in UTC epoch seconds.
+schema:
+  type: integer
+  format: int64
+  minimum: 0
+example: 1672531200
