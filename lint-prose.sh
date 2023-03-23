@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function cleanup {
-  rm -f "$markdown_file" "$markdown_file"
+  rm -f "$markdown_file" "$rendered_file"
 }
 
 set -euo pipefail
