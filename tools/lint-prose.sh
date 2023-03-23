@@ -13,7 +13,7 @@ markdown=$(
     --user_templates widdershins/openapi3/ \
     --omitBody \
     --omitHeader \
-    --summary openapi/openapi.yaml | \
+    --summary src/openapi.yaml | \
   sed -n '/Compiling main.dot to function/,$p' | \
   sed -n '1,/Compiling servers.dot to function/d; p'
 )

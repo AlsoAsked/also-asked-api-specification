@@ -50,5 +50,5 @@ properties:
     description: |
       The account registration date is the date and time at which the account was registered.
     example: '2023-01-01T00:00:00Z'
-examples:
-  - $ref: ../../examples/accounts/Account.yaml
+example:
+  $ref: ../../examples/accounts/Account.yaml

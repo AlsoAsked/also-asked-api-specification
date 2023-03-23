@@ -1,0 +1,29 @@
+openapi: 3.1.0
+info:
+  title: AlsoAsked
+  description: |
+    The AlsoAsked API allows you to manage your account, perform searches, access search history, and more.
+  version: 1.0.0
+  license:
+    name: Proprietary
+    url: https://alsoasked.com/eula
+  termsOfService: https://alsoasked.com/eula
+  contact:
+    name: AlsoAsked Support
+    email: service@alsoasked.com
+    url: https://help.alsoasked.com
+
+tags:
+- $ref: ./tags/Account.yaml
+- $ref: ./tags/Search.yaml
+
+servers:
+- $ref: ./servers/live.yaml
+- $ref: ./servers/sandbox.yaml
+
+components:
+  $ref: ./components/index.yaml
+
+paths:
+  /account:
+    $ref: ./paths/account.yaml

@@ -18,9 +18,5 @@ properties:
     description: |
       A human-readable message describing the error. This message is intended to be read by a developer and is
       not suitable for display to an end user.
-examples:
-  - $ref: ../../examples/errors/InternalServerError.yaml
-  - $ref: ../../examples/errors/InvalidApiKeyError.yaml
-  - $ref: ../../examples/errors/MissingApiKeyError.yaml
-  - $ref: ../../examples/errors/RateLimitExceededError.yaml
-  - $ref: ../../examples/errors/UnderMaintenanceError.yaml
+example:
+  $ref: ../../examples/errors/InternalServerError.yaml
