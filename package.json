@@ -6,6 +6,7 @@
     "ajv": "^6.12.6",
     "husky": "^8.0.0",
     "mkdirp": "^2.1.5",
+    "extra-marked": "^1.0.8",
     "widdershins": "^4.0.1"
   },
   "scripts": {

@@ -1,25 +1,7 @@
-{{=data.api.info && data.api.info.title}} {{=data.version}}
+# {{=data.api.info && data.api.info.title}} {{=data.version}}
 
 {{? data.api.info && data.api.info.description}}{{=data.api.info.description}}{{?}}
 
-# Authentication
-
-{{ for (var s in data.api.components.securitySchemes) { }}
-{{ var sd = data.api.components.securitySchemes[s]; }}
-{{? sd.type == 'apiKey' }}
-## API Key ({{=s}})
-
-{{=sd.description || ''}}
-{{?}}
-{{? sd.type == 'http'}}
-## HTTP Authentication
-
-{{=sd.description || ''}}
-{{?}}
-{{? sd.type == 'oauth2'}}
-## OAuth2 authentication
-
-{{=sd.description || ''}}
-{{?}}
-
-{{ } /* of securitySchemes */ }}
+{{= data.templates.servers(data) }}
+{{= data.templates.authentication(data) }}
+{{= data.templates.resources(data) }}

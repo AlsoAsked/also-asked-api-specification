@@ -1,0 +1,35 @@
+{{ for (var statusCode in data.operation.responses) { }}
+{{ var response = data.operation.responses[statusCode]; }}
+##### {{=statusCode}}
+{{? response.description}}{{= response.description }}{{?}}
+
+{{? response.content && Object.keys(response.content).length }}
+###### Output Fields
+{{~ Object.keys(response.content) :mediaType }}
+{{ var content = response.content[mediaType]; }}
+{{? content.schema.properties }}
+{{~ Object.keys(content.schema.properties) :propName }}
+{{ var prop = content.schema.properties[propName]; }}
+- {{=propName}}: {{=prop.description}}
+{{~}}
+{{?}}
+{{~}}
+{{?}}
+
+{{? response.headers && Object.keys(response.headers).length }}
+###### Headers
+{{~ Object.keys(response.headers) :headerName }}
+{{ var header = response.headers[headerName]; }}
+- {{=headerName}}: {{=header.description}}
+{{~}}
+{{?}}
+
+{{? response.content && Object.keys(response.content).length }}
+###### Schemas
+
+{{ for (var mediaType in response.content) { }}
+{{ var content = response.content[mediaType]; }}
+{{? content.schema && content.schema.description }}{{=content.schema.description}}{{?}}
+{{ } /* of media types */ }}
+{{?}}
+{{ } /* of operation responses */ }}

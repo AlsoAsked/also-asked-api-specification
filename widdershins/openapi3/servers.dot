@@ -1,0 +1,5 @@
+## Servers
+
+{{~ data.api.servers :server}}
+- {{=server.description}} ({{=server.url}})
+{{~}}
