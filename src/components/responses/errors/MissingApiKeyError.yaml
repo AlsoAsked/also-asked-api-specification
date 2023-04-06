@@ -9,10 +9,10 @@ headers:
 content:
   application/json:
     schema:
-      $ref: ../../schemas/Error.yaml
+      $ref: ../../schemas/misc/Error.yaml
     examples:
       default:
-        summary: Missing API key error example
+        summary: Missing API key error response example
         description: |
           The following example shows the response body of an unauthorized error. This error is returned when no
           API key is provided in the request header.

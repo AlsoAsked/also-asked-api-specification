@@ -2,5 +2,8 @@ alsoasked
 AlsoAsked
 apiKey
 plan_type
-credit_reset_date
-registration_date
+credits_reset_at
+registered_at
+created_at
+updated_at
+cached_at

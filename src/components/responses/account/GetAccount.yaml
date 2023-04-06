@@ -10,11 +10,11 @@ headers:
 content:
   application/json:
     schema:
-      $ref: ../../../components/schemas/Account.yaml
+      $ref: ../../schemas/account/Account.yaml
     examples:
       default:
-        summary: Account example
+        summary: Get account response example
         description: |
           The following example shows the response body of a successful request to get account information.
         value:
-          $ref: ../../../examples/accounts/Account.yaml
+          $ref: ../../../examples/account/Account.yaml

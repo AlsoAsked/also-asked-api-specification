@@ -1,0 +1,9 @@
+description: |
+  The empty response is returned after a successful request to delete a search request.
+headers:
+  X-AlsoAsked-Credits:
+    $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml

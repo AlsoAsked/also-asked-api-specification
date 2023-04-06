@@ -8,15 +8,12 @@ properties:
     description: |
       The error status is an identifier for the type of error that occurred.
     enum:
-      - internal_server_error
-      - invalid_api_key
-      - missing_api_key
-      - rate_limit_exceeded
-      - under_maintenance
+      $ref: ../../../enums/ErrorType.yaml
+    example: internal_server
   message:
     type: string
     description: |
       A human-readable message describing the error. This message is intended to be read by a developer and is
       not suitable for display to an end user.
 example:
-  $ref: ../../examples/errors/InternalServerError.yaml
+  $ref: ../../../examples/errors/InternalServerError.yaml

@@ -1,0 +1,27 @@
+operationId: listSearches
+tags:
+  - Search
+summary: List searches
+description: |
+  Get a paginated list of searches performed by the current user, sorted by the date they were created, with the most
+  recent searches appearing first.
+security:
+  - apiKey: []
+parameters:
+  - $ref: ../../components/parameters/misc/count.yaml
+  - $ref: ../../components/parameters/misc/page.yaml
+responses:
+  '200':
+    $ref: ../../components/responses/search/ListSearches.yaml
+  '401':
+    $ref: ../../components/responses/errors/MissingApiKeyError.yaml
+  '403':
+    $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
+  '422':
+    $ref: ../../components/responses/errors/ValidationError.yaml
+  '429':
+    $ref: ../../components/responses/errors/RateLimitExceededError.yaml
+  '500':
+    $ref: ../../components/responses/errors/InternalServerError.yaml
+  '503':
+    $ref: ../../components/responses/errors/UnderMaintenanceError.yaml

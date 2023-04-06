@@ -1,0 +1,15 @@
+description: |
+  The perform search object is sent in the request body of a request to perform synchronous searches, containing details
+  such as The terms to search for and the language and region to search in.
+required: true
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/search/SearchRequestOptions.yaml
+    examples:
+      default:
+        summary: Perform search example
+        description: |
+          The following example shows the request body of a request to perform a search.
+        value:
+          $ref: ../../../examples/search/SearchRequestOptions.yaml

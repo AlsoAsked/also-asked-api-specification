@@ -1,0 +1,21 @@
+description: |
+  The paginated search results object is returned in the response body of a successful request for previous search
+  requests.
+headers:
+  X-AlsoAsked-Credits:
+    $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/search/PaginatedSearchRequests.yaml
+    examples:
+      default:
+        summary: List searches response example
+        description: |
+          The following example shows the response body of a successful request to list previous search requests.
+        value:
+          $ref: ../../../examples/search/PaginatedSearchRequests.yaml

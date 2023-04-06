@@ -1,4 +1,18 @@
 Error:
-  $ref: ./Error.yaml
+  $ref: ./misc/Error.yaml
+ValidationError:
+  $ref: ./misc/ValidationError.yaml
 Account:
-  $ref: ./Account.yaml
+  $ref: ./account/Account.yaml
+PaginatedSearchRequests:
+  $ref: ./search/PaginatedSearchRequests.yaml
+SearchRequest:
+  $ref: ./search/SearchRequest.yaml
+SearchQuery:
+  $ref: ./search/SearchQuery.yaml
+SearchRequestResults:
+  $ref: ./search/SearchRequestResults.yaml
+SearchRequestOptions:
+  $ref: ./search/SearchRequestOptions.yaml
+SearchResult:
+  $ref: ./search/SearchResult.yaml

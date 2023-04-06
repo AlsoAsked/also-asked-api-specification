@@ -1,0 +1,26 @@
+operationId: deleteSearch
+tags:
+  - Search
+summary: Delete search
+description: |
+  Delete a search request. The search results will be deleted from the cache and the search result's term masked in the
+  search history.
+security:
+  - apiKey: []
+parameters:
+  - $ref: ../../components/parameters/search/searchId.yaml
+responses:
+  '204':
+    $ref: ../../components/responses/search/DeleteSearch.yaml
+  '401':
+    $ref: ../../components/responses/errors/MissingApiKeyError.yaml
+  '403':
+    $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
+  '404':
+    $ref: ../../components/responses/errors/NotFoundError.yaml
+  '429':
+    $ref: ../../components/responses/errors/RateLimitExceededError.yaml
+  '500':
+    $ref: ../../components/responses/errors/InternalServerError.yaml
+  '503':
+    $ref: ../../components/responses/errors/UnderMaintenanceError.yaml

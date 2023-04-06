@@ -1,0 +1,22 @@
+description: |
+  The search request results object is returned when getting the details of a search request, containing details such
+  as the terms, language, and region used in the search request, as well as the status. If the search request has
+  completed successfully, the object also contains the search results.
+headers:
+  X-AlsoAsked-Credits:
+    $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/search/SearchRequestResults.yaml
+    examples:
+      default:
+        summary: Get search response example
+        description: |
+          The following example shows the response body of a successful request to get the results of a search request.
+        value:
+          $ref: ../../../examples/search/SearchRequestResults.yaml

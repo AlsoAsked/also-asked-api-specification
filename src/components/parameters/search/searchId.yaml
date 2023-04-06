@@ -1,0 +1,11 @@
+name: searchId
+in: path
+description: |
+  The ID of the search request.
+required: true
+schema:
+  type: string
+  pattern: ^[a-zA-Z0-9]{32}$
+  minLength: 32
+  maxLength: 32
+example: 4S7HdxC3vq9M5zF1Vb8YX2tksUeQwTPn

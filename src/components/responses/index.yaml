@@ -1,5 +1,3 @@
-Account:
-  $ref: ./accounts/Account.yaml
 InternalServerError:
   $ref: ./errors/InternalServerError.yaml
 InvalidApiKeyError:
@@ -10,3 +8,15 @@ RateLimitExceededError:
   $ref: ./errors/RateLimitExceededError.yaml
 UnderMaintenanceError:
   $ref: ./errors/UnderMaintenanceError.yaml
+NotFoundError:
+  $ref: ./errors/NotFoundError.yaml
+GetAccount:
+  $ref: ./account/GetAccount.yaml
+DeleteSearch:
+  $ref: ./search/DeleteSearch.yaml
+ListSearches:
+  $ref: ./search/ListSearches.yaml
+GetSearch:
+  $ref: ./search/GetSearch.yaml
+PerformSearch:
+  $ref: ./search/PerformSearch.yaml

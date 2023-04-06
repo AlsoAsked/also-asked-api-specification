@@ -1,0 +1,8 @@
+status: validation
+message: There were validation errors in your request.
+errors:
+  current_password:
+    - The current password field is required.
+  new_password:
+    - The new password must be at least 8 characters.
+    - The new password must contain at least one uppercase letter.

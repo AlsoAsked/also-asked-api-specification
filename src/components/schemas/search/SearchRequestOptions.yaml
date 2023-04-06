@@ -1,0 +1,65 @@
+title: Search request options
+type: object
+description: |
+  The search request object is used to specify the search criteria for a search request.
+properties:
+  terms:
+    type: array
+    description: |
+      The terms to search for.
+    items:
+      type: string
+    minItems: 1
+    maxItems: 1000
+    uniqueItems: true
+    example:
+      - When to plant out broad beans?
+      - How to grow broad beans?
+      - When to harvest broad beans?
+  language:
+    type: string
+    description: |
+      The language to use when searching for the terms.
+    enum:
+      $ref: ../../../enums/Language.yaml
+    example: en
+    default: en
+  region:
+    type: string
+    description: |
+      The region code used when performing a search. The region code is a two-letter ISO 3166-1 code.
+    enum:
+      $ref: ../../../enums/Region.yaml
+    example: us
+    default: us
+  depth:
+    type: integer
+    format: int32
+    description: |
+      The depth of the search determines the number of hierarchical levels of questions returned in the results.
+      A greater depth value retrieves questions nested within additional layers of subquestions. Be aware that
+      increasing the depth will increase the number of credits consumed. A search depth of 3 will consume 1 credit,
+      whereas a depth of 4 will consume 4 credits.
+    example: 3
+    default: 3
+    minimum: 3
+    maximum: 4
+  fresh:
+    type: boolean
+    description: |
+      The fresh flag determines whether the search results are retrieved from the cache or live from the search engine.
+    example: false
+    default: false
+  async:
+    type: boolean
+    description: |
+      The async flag determines whether to run the search in a blocking (synchronous) or non-blocking (asynchronous)
+      manner. When a search request is performed asynchronously, the webhooks configured for the account will be
+      notified when the status of a search changes. When a search is synchronous, the search results are returned in
+      the response body when the search is complete.
+    example: false
+    default: false
+required:
+  - terms
+example:
+  $ref: ../../../examples/search/SearchRequestOptions.yaml

@@ -1,0 +1,30 @@
+operationId: performSearch
+tags:
+  - Search
+summary: Perform search
+description: |
+  Perform a search request. The search request is performed either synchronously, meaning the request hangs until the
+  search has completed, or asynchronously, meaning the request returns immediately, which is determined by the `async`
+  request parameter. If the search request completes successfully, as determined by the `status` property, the search
+  results are returned in the response body.
+security:
+  - apiKey: []
+requestBody:
+  $ref: ../../components/requestBodies/search/PerformSearch.yaml
+responses:
+  '200':
+    $ref: ../../components/responses/search/PerformSearch.yaml
+  '401':
+    $ref: ../../components/responses/errors/MissingApiKeyError.yaml
+  '402':
+    $ref: ../../components/responses/errors/InsufficientCreditsError.yaml
+  '403':
+    $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
+  '422':
+    $ref: ../../components/responses/errors/ValidationError.yaml
+  '429':
+    $ref: ../../components/responses/errors/RateLimitExceededError.yaml
+  '500':
+    $ref: ../../components/responses/errors/InternalServerError.yaml
+  '503':
+    $ref: ../../components/responses/errors/UnderMaintenanceError.yaml

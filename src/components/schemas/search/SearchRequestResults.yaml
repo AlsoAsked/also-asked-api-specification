@@ -1,0 +1,138 @@
+title: Search Request Results
+type: object
+description: |
+  The search request results object contains the search terms and options for a search request. If the search request
+  has completed with a status of success, the results will be included in the response.
+properties:
+  id:
+    type: string
+    pattern: ^[a-zA-Z0-9]{32}$
+    description: |
+      The unique identifier for the search request.
+    example: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
+  queries:
+    type: array
+    nullable: true
+    description: |
+      The search queries that were performed as part of the request. If the search request was deleted, this value will
+      be null.
+    items:
+      $ref: ./SearchQuery.yaml
+    example:
+    - term: When to plant out broad beans?
+      language_fallback: false
+      region_fallback: false
+      queries:
+      - question: When to plant out broad beans?
+        answer_excerpt: |
+          Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
+          plant them out from mid-March.
+        answer_href: https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
+        answer_page_title: When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine
+        results:
+        - question: When can I transplant broad beans?
+          answer_excerpt: |
+            Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
+            pots during the autumn and transplanted in to the ground in the spring.
+          answer_href: |
+            https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
+          answer_page_title: Grow broad beans with children / RHS Gardening
+          results:
+          - question: Do you get a second crop of broad beans?
+            answer_excerpt: |
+              Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
+              broad beans in the spring and again in the fall.
+            answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
+            answer_page_title: Growing Broad Beans - Gardening Know How
+            results: []
+          - question: What not to plant with broad beans?
+            answer_excerpt: |
+              Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
+              broad beans in the spring and again in the fall.
+            answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
+            answer_page_title: Growing Broad Beans - Gardening Know How
+            results: []
+          - question: How to grow broad beans in a greenhouse?
+            answer_excerpt: |
+              Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
+              broad beans in the spring and again in the fall.
+            answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
+            answer_page_title: Growing Broad Beans - Gardening Know How
+            results: []
+        - question: Do broad beans need to be dried before planting?
+          answer_excerpt: |
+            Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are
+            simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the
+            plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.
+          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
+          answer_page_title: Drying Broad Beans - Gardening Know How
+          results: []
+  language:
+    type: string
+    nullable: true
+    description: |
+      The language code used when performing a search. The language code is a two-letter ISO 639-1 code. If the search
+      request was deleted, this value will be null.
+    enum:
+      $ref: ../../../enums/Language.yaml
+    example: en
+  region:
+    type: string
+    nullable: true
+    description: |
+      The region code used when performing a search. The region code is a two-letter ISO 3166-1 code. If the search
+      request was deleted, this value will be null.
+    enum:
+      $ref: ../../../enums/Region.yaml
+    example: us
+  status:
+    type: string
+    nullable: true
+    description: |
+      The status of the search request. If the search request was deleted, this value will be null.
+    enum:
+      $ref: ../../../enums/SearchRequestStatus.yaml
+    example: success
+  deleted:
+    type: boolean
+    description: |
+      Whether the search request has been deleted.
+    example: false
+  depth:
+    type: integer
+    format: int32
+    nullable: true
+    minimum: 3
+    maximum: 4
+    description: |
+      The depth of the search request. If the search request was deleted, this value will be null.
+    example: 3
+  cached:
+    type: boolean
+    nullable: true
+    description: |
+      Whether the search request was fetched from the cache. This can be overridden using the `fresh` parameter when
+      performing a search. If the search request was deleted, this value will be null.
+    example: true
+  created_at:
+    type: string
+    format: date-time
+    description: |
+      The date and time at which the search request was created.
+    example: '2023-01-01T00:00:00Z'
+  updated_at:
+    type: string
+    format: date-time
+    description: |
+      The date and time at which the search request was last updated.
+    example: '2023-01-01T00:00:10Z'
+  cached_at:
+    type: string
+    nullable: true
+    format: date-time
+    description: |
+      The date and time at which the search request was cached at. If the search request wasn't fetched from the cache,
+      or the request has been deleted, this value will be null.
+    example: '2022-12-31T00:00:00Z'
+example:
+  $ref: ../../../examples/search/SearchRequestResults.yaml

@@ -2,7 +2,11 @@ schemas:
   $ref: ./schemas/index.yaml
 securitySchemes:
   $ref: ./securitySchemes/index.yaml
+requestBodies:
+  $ref: ./requestBodies/index.yaml
 responses:
   $ref: ./responses/index.yaml
 headers:
   $ref: ./headers/index.yaml
+parameters:
+  $ref: ./parameters/index.yaml

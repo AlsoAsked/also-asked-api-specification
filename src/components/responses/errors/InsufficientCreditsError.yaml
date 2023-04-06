@@ -1,0 +1,20 @@
+description: |
+  You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
+  alternatively wait for your credits to be replenished.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/misc/Error.yaml
+    examples:
+      default:
+        summary: Insufficient credits error response example
+        description: |
+          The following example shows the response body of an insufficient credits error. This error is returned when
+          you don't have enough credits to perform this request.
+        value:
+          $ref: ../../../examples/errors/InsufficientCreditsError.yaml

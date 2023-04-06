@@ -2,13 +2,13 @@
   "name": "also-asked-api-specification",
   "private": true,
   "devDependencies": {
+    "@redocly/cli": "1.0.0-beta.124",
     "@stoplight/spectral-cli": "^6.6.0",
-    "ajv": "^6.12.6",
+    "ajv": "^8.12.0",
     "extra-marked": "^1.0.8",
     "husky": "^8.0.0",
-    "mkdirp": "^2.1.5",
-    "widdershins": "^4.0.1",
-    "@redocly/cli": "1.0.0-beta.124"
+    "mkdirp": "^2.1.6",
+    "widdershins": "^4.0.1"
   },
   "scripts": {
     "prepare": "husky install",

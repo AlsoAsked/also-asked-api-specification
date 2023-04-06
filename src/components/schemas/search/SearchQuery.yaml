@@ -1,0 +1,77 @@
+title: Search Query
+type: object
+description: |
+  The search query object contains an individual search term for a search request. If the search request has completed
+  with a status of success, the results will be included.
+properties:
+  term:
+    type: string
+    description: |
+      The search term.
+    example: When to plant out broad beans?
+  language_fallback:
+    type: boolean
+    description: |
+      Whether the search term was searched for in the specified language, or, if no results were returned, the search
+      term was searched for in the default language for the specified region.
+    example: false
+  region_fallback:
+    type: boolean
+    description: |
+      Whether the search term was searched for in the specified region, or, if no results were returned, the search
+      term was searched for in the default region for the specified language.
+    example: false
+  results:
+    type: array
+    description: |
+      The list of question and answers for the search term. The list will be empty if the search request has not
+      completed successfully.
+    items:
+      $ref: ./SearchResult.yaml
+    example:
+    - question: When to plant out broad beans?
+      answer_excerpt: |
+        Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
+        plant them out from mid-March.
+      answer_href: https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
+      answer_page_title: When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine
+      results:
+      - question: When can I transplant broad beans?
+        answer_excerpt: |
+          Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
+          pots during the autumn and transplanted in to the ground in the spring.
+        answer_href: |
+          https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
+        answer_page_title: Grow broad beans with children / RHS Gardening
+        results:
+        - question: Do you get a second crop of broad beans?
+          answer_excerpt: |
+            Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
+            broad beans in the spring and again in the fall.
+          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
+          answer_page_title: Growing Broad Beans - Gardening Know How
+          results: []
+        - question: What not to plant with broad beans?
+          answer_excerpt: |
+            Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
+            broad beans in the spring and again in the fall.
+          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
+          answer_page_title: Growing Broad Beans - Gardening Know How
+          results: []
+        - question: How to grow broad beans in a greenhouse?
+          answer_excerpt: |
+            Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
+            broad beans in the spring and again in the fall.
+          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
+          answer_page_title: Growing Broad Beans - Gardening Know How
+          results: []
+      - question: Do broad beans need to be dried before planting?
+        answer_excerpt: |
+          Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are
+          simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the
+          plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.
+        answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
+        answer_page_title: Drying Broad Beans - Gardening Know How
+        results: []
+example:
+  $ref: ../../../examples/search/SearchQuery.yaml

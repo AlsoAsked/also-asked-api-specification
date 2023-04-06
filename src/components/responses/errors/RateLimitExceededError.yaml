@@ -11,10 +11,10 @@ headers:
 content:
   application/json:
     schema:
-      $ref: ../../schemas/Error.yaml
+      $ref: ../../schemas/misc/Error.yaml
     examples:
       default:
-        summary: Rate limit exceeded error example
+        summary: Rate limit exceeded error response example
         description: |
           The following example shows the response body of a rate limit exceeded error. This error is returned when the
           client has made too many requests in a short period of time.

@@ -26,4 +26,15 @@ components:
 
 paths:
   /account:
-    $ref: ./paths/account.yaml
+    get:
+      $ref: ./paths/accounts/get-account.yaml
+  /search:
+    get:
+      $ref: ./paths/search/get-search.yaml
+    post:
+      $ref: ./paths/search/post-search.yaml
+  /search/{searchId}:
+    get:
+      $ref: ./paths/search/get-search-searchId.yaml
+    delete:
+      $ref: ./paths/search/delete-search-searchId.yaml

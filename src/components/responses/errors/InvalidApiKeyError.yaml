@@ -9,10 +9,10 @@ headers:
 content:
   application/json:
     schema:
-      $ref: ../../schemas/Error.yaml
+      $ref: ../../schemas/misc/Error.yaml
     examples:
       default:
-        summary: Invalid API key error example
+        summary: Invalid API key error response example
         description: |
           The following example shows the response body of an invalid API key error. This error is returned when an
           invalid API key is provided in the request header.

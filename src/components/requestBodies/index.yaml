@@ -1,0 +1,2 @@
+PerformSearch:
+  $ref: ./search/PerformSearch.yaml

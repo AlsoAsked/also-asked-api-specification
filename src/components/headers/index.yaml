@@ -1,3 +1,5 @@
+X-AlsoAsked-Credits:
+  $ref: ./also-asked/X-AlsoAsked-Credits.yaml
 X-RateLimit-Limit:
   $ref: ./rate-limiting/X-RateLimit-Limit.yaml
 X-RateLimit-Remaining:

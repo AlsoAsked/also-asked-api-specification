@@ -4,10 +4,10 @@ description: |
 content:
   application/json:
     schema:
-      $ref: ../../schemas/Error.yaml
+      $ref: ../../schemas/misc/Error.yaml
     examples:
       default:
-        summary: Under maintenance error example
+        summary: Under maintenance error response example
         description: |
           The following example shows the response body of an under maintenance error. This error is returned when the
           API is temporarily unavailable due to maintenance.

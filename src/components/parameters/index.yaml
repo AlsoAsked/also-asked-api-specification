@@ -1,0 +1,6 @@
+page:
+  $ref: ./misc/page.yaml
+count:
+  $ref: ./misc/count.yaml
+searchId:
+  $ref: ./search/searchId.yaml

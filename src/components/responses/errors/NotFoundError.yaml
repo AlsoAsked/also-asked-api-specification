@@ -1,0 +1,19 @@
+description: |
+  The requested resource wasn't found.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/misc/Error.yaml
+    examples:
+      default:
+        summary: Not found error response example
+        description: |
+          The following example shows the response body of a not found error. This error is returned when the requested
+          resource wasn't found.
+        value:
+          $ref: ../../../examples/errors/NotFoundError.yaml

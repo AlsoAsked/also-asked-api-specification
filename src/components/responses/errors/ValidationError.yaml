@@ -1,0 +1,19 @@
+description: |
+  The validation error occurs when the request input data is invalid.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/misc/ValidationError.yaml
+    examples:
+      default:
+        summary: Validation error response example
+        description: |
+          The following example shows the response body of validation error. This error is returned when the request
+          input data is invalid.
+        value:
+          $ref: ../../../examples/errors/ValidationError.yaml
