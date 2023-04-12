@@ -2345,6 +2345,7 @@ components:
         The signature of the webhook request. The signature is generated using the HMAC-SHA256 algorithm and the
         webhook secret as the key. The signature is in the hex format. You should use this signature to verify that the
         webhook request originated from AlsoAsked.
+      required: true
       schema:
         type: string
         pattern: ^[a-fA-F0-9]{64}$
@@ -2357,6 +2358,7 @@ components:
       description: |
         The timestamp of the webhook request in UTC epoch seconds. You should use this timestamp to prevent
         [replay attacks](https://en.wikipedia.org/wiki/Replay_attack) against your webhook endpoint.
+      required: true
       schema:
         type: integer
         format: int64
