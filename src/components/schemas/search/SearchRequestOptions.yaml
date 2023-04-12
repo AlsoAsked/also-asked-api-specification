@@ -59,6 +59,14 @@ properties:
       the response body when the search is complete.
     example: false
     default: false
+  notify_webhooks:
+    type: boolean
+    description: |
+      The notify webhooks flag determines whether to notify webhooks when the status of a search changes. Webhooks are
+      notified regardless of whether the search is performed synchronously or asynchronously. Use this flag to disable
+      webhook notifications for synchronous searches which do not require webhook notifications.
+    example: true
+    default: true
 required:
   - terms
 example:

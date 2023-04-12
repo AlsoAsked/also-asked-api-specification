@@ -1,0 +1,11 @@
+name: X-AlsoAsked-Api-Version
+in: header
+description: |
+  The version of the AlsoAsked API that the webhook originated from. The version is in the major.minor format.
+required: true
+schema:
+  type: string
+  pattern: ^[0-9]+\.[0-9]+$
+  minLength: 3
+  maxLength: 9
+example: '1.0'

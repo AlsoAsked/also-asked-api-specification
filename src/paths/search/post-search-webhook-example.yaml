@@ -1,0 +1,23 @@
+operationId: searchWebhookExample
+tags:
+  - Search
+summary: Search webhook example
+description: |
+  This is an **example** of a web hook endpoint used to receive notifications when a search request's status changes.
+  The `/search/webhook-example` doesn't exist, but is used to demonstrate how to implement a webhook endpoint to
+  receive notifications when a search request's status changes, alongside the headers and request body that will be
+  sent to the webhook endpoint.
+parameters:
+  - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Api-Version.yaml
+  - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Credits.yaml
+  - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Signature.yaml
+  - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Timestamp.yaml
+requestBody:
+  $ref: ../../components/requestBodies/search/StatusChangedWebhook.yaml
+responses:
+  '200':
+    description: |
+      The webhook notification was received successfully.
+  '204':
+    description: |
+      The webhook notification was received successfully.

@@ -1,0 +1,10 @@
+name: X-AlsoAsked-Timestamp
+in: header
+description: |
+  The timestamp of the webhook request in UTC epoch seconds. You should use this timestamp to prevent
+  [replay attacks](https://en.wikipedia.org/wiki/Replay_attack) against your webhook endpoint.
+schema:
+  type: integer
+  format: int64
+  minimum: 0
+example: 1672531200

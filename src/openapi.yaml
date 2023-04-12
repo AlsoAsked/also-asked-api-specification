@@ -33,6 +33,9 @@ paths:
       $ref: ./paths/search/get-search.yaml
     post:
       $ref: ./paths/search/post-search.yaml
+  /search/webhook-example:
+    post:
+      $ref: ./paths/search/post-search-webhook-example.yaml
   /search/{searchId}:
     get:
       $ref: ./paths/search/get-search-searchId.yaml

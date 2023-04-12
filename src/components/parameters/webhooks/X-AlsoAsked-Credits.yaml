@@ -1,0 +1,10 @@
+name: X-AlsoAsked-Credits
+in: header
+description: |
+  The number of credits remaining in the account.
+required: true
+schema:
+  type: integer
+  format: int64
+  minimum: 0
+example: 100

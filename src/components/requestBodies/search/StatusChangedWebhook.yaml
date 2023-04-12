@@ -1,0 +1,16 @@
+description: |
+  The status changed webhook object is sent in the request body of a webhook notification when a search request's status
+  has changed. If the status of the search is `completed`, the object also contains the search results.
+required: true
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/search/SearchRequestResults.yaml
+    examples:
+      default:
+        summary: Status changed webhook request example
+        description: |
+          The following example shows the request body of a webhook notification when a search request's status has
+          changed.
+        value:
+          $ref: ../../../examples/search/SearchRequestResults.yaml

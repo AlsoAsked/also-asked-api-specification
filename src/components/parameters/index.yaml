@@ -4,3 +4,11 @@ count:
   $ref: ./misc/count.yaml
 searchId:
   $ref: ./search/searchId.yaml
+X-AlsoAsked-Api-Version:
+  $ref: ./webhooks/X-AlsoAsked-Api-Version.yaml
+X-AlsoAsked-Credits:
+  $ref: ./webhooks/X-AlsoAsked-Credits.yaml
+X-AlsoAsked-Signature:
+  $ref: ./webhooks/X-AlsoAsked-Signature.yaml
+X-AlsoAsked-Timestamp:
+  $ref: ./webhooks/X-AlsoAsked-Timestamp.yaml
