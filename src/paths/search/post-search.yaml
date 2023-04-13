@@ -14,6 +14,8 @@ requestBody:
 responses:
   '200':
     $ref: ../../components/responses/search/PerformSearch.yaml
+  '400':
+    $ref: ../../components/responses/errors/InvalidBodyError.yaml
   '401':
     $ref: ../../components/responses/errors/MissingApiKeyError.yaml
   '402':

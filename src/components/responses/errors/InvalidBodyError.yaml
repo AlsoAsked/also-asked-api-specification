@@ -1,0 +1,20 @@
+description: |
+  The request body is invalid. This error is returned when the request body isn't valid JSON or when the request body
+  content type isn't `application/json`.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/misc/Error.yaml
+    examples:
+      default:
+        summary: Invalid body error response example
+        description: |
+          The following example shows the response body of an invalid body error. This error is returned when the
+          request body isn't valid JSON or when the request body content type isn't `application/json`.
+        value:
+          $ref: ../../../examples/errors/InvalidBodyError.yaml

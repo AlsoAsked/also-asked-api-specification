@@ -141,6 +141,7 @@ components:
             - not_found
             - validation
             - insufficient_credits
+            - invalid_body
           example: internal_server
         message:
           type: string
@@ -703,6 +704,7 @@ components:
             - not_found
             - validation
             - insufficient_credits
+            - invalid_body
           example: validation
         message:
           type: string
@@ -2155,6 +2157,28 @@ components:
                 created_at: '2023-01-01T00:00:00Z'
                 updated_at: '2023-01-01T00:00:10Z'
                 cached_at: '2022-12-31T00:00:00Z'
+    InvalidBodyError:
+      description: |
+        The request body is invalid. This error is returned when the request body isn't valid JSON or when the request body
+        content type isn't `application/json`.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Invalid body error response example
+              description: |
+                The following example shows the response body of an invalid body error. This error is returned when the
+                request body isn't valid JSON or when the request body content type isn't `application/json`.
+              value:
+                status: invalid_body
+                message: The request body is invalid
     InsufficientCreditsError:
       description: |
         You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
@@ -2556,6 +2580,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PerformSearch'
+        '400':
+          $ref: '#/components/responses/InvalidBodyError'
         '401':
           $ref: '#/components/responses/MissingApiKeyError'
         '402':
