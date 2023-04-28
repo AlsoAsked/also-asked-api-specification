@@ -684,59 +684,6 @@ components:
             created_at: '2023-01-15T18:45:00Z'
             updated_at: '2023-01-15T18:50:00Z'
             cached_at: '2023-01-15T18:50:00Z'
-    ValidationError:
-      title: Validation Error
-      type: object
-      description: |
-        The validation error object is returned in the response body of any request that results in an error related to the
-        request input data.
-      properties:
-        status:
-          type: string
-          description: |
-            The error status is an identifier for the type of error that occurred.
-          enum:
-            - internal_server
-            - invalid_api_key
-            - missing_api_key
-            - rate_limit_exceeded
-            - under_maintenance
-            - not_found
-            - validation
-            - insufficient_credits
-            - invalid_body
-          example: validation
-        message:
-          type: string
-          description: |
-            A human-readable message describing the error. This message is intended to be read by a developer and is
-            not suitable for display to an end user.
-        errors:
-          type: object
-          description: |
-            The errors object contains a list of errors for each field that failed validation. The key of each error
-            object is the name of the field that failed validation. The value of each error object is an array of
-            strings containing the error messages for that field.
-          additionalProperties:
-            type: array
-            items:
-              type: string
-              example: The current password field is required.
-          example:
-            current_password:
-              - The current password field is required.
-            new_password:
-              - The new password must be at least 8 characters.
-              - The new password must contain at least one uppercase letter.
-      example:
-        status: validation
-        message: There were validation errors in your request.
-        errors:
-          current_password:
-            - The current password field is required.
-          new_password:
-            - The new password must be at least 8 characters.
-            - The new password must contain at least one uppercase letter.
     SearchRequestOptions:
       title: Search request options
       type: object
@@ -2060,7 +2007,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/Error'
           examples:
             default:
               summary: Validation error response example
@@ -2069,13 +2016,7 @@ components:
                 input data is invalid.
               value:
                 status: validation
-                message: There were validation errors in your request.
-                errors:
-                  current_password:
-                    - The current password field is required.
-                  new_password:
-                    - The new password must be at least 8 characters.
-                    - The new password must contain at least one uppercase letter.
+                message: Value "101" for argument "count" is invalid for Request [get /search].
     PerformSearch:
       description: |
         The search request results object is returned after performing a search request, containing details such as the terms,

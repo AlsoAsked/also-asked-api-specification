@@ -1,7 +1,5 @@
 Error:
   $ref: ./misc/Error.yaml
-ValidationError:
-  $ref: ./misc/ValidationError.yaml
 Account:
   $ref: ./account/Account.yaml
 PaginatedSearchRequests:
