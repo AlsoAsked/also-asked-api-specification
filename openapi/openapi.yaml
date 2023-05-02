@@ -1325,7 +1325,7 @@ components:
             - term: When to plant out broad beans?
               language_fallback: false
               region_fallback: false
-              queries:
+              results:
                 - question: When to plant out broad beans?
                   answer_excerpt: |
                     Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
@@ -1732,7 +1732,7 @@ components:
           - term: When to plant out broad beans?
             language_fallback: false
             region_fallback: false
-            queries:
+            results:
               - question: When to plant out broad beans?
                 answer_excerpt: |
                   Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
@@ -2044,7 +2044,7 @@ components:
                   - term: When to plant out broad beans?
                     language_fallback: false
                     region_fallback: false
-                    queries:
+                    results:
                       - question: When to plant out broad beans?
                         answer_excerpt: |
                           Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
@@ -2169,7 +2169,7 @@ components:
                   - term: When to plant out broad beans?
                     language_fallback: false
                     region_fallback: false
-                    queries:
+                    results:
                       - question: When to plant out broad beans?
                         answer_excerpt: |
                           Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
@@ -2388,7 +2388,7 @@ components:
                   - term: When to plant out broad beans?
                     language_fallback: false
                     region_fallback: false
-                    queries:
+                    results:
                       - question: When to plant out broad beans?
                         answer_excerpt: |
                           Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
