@@ -696,6 +696,10 @@ components:
             The terms to search for.
           items:
             type: string
+            description: |
+              The term to search for.
+            minLength: 1
+            maxLength: 4127
           minItems: 1
           maxItems: 1000
           uniqueItems: true
