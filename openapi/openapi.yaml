@@ -52,6 +52,14 @@ components:
         format: int64
         minimum: 0
       example: 1000
+    Retry-After:
+      description: |
+        The date and time (in UTC) at which a new request will be permitted, in the format "Date: <day-name>, <day> <month>
+        <year> <hour>:<minute>:<second> GMT" (RFC 1123 format).
+      schema:
+        type: string
+        format: rfc1123-date-time
+      example: Thu, 11 May 2023 07:28:00 GMT
     X-RateLimit-Reset:
       description: |
         The time at which the current rate limit window resets in UTC epoch seconds.
@@ -1864,9 +1872,10 @@ components:
                 message: The API key provided is invalid
     RateLimitExceededError:
       description: |
-        The error "maximum requests per second exceeded" occurs when the client has made too many requests in a short period
-        of time.
+        The "rate limit exceeded" error occurs when the client has made too many requests in a short period of time.
       headers:
+        Retry-After:
+          $ref: '#/components/headers/Retry-After'
         X-RateLimit-Remaining:
           $ref: '#/components/headers/X-RateLimit-Remaining'
         X-RateLimit-Limit:
@@ -2284,6 +2293,17 @@ components:
         default: 1
         minimum: 1
       example: 1
+    X-AlsoAsked-Credits:
+      name: X-AlsoAsked-Credits
+      in: header
+      description: |
+        The number of credits remaining in the account.
+      required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 0
+      example: 100
     X-AlsoAsked-Api-Version:
       name: X-AlsoAsked-Api-Version
       in: header
@@ -2296,17 +2316,6 @@ components:
         minLength: 3
         maxLength: 9
       example: '1.0'
-    X-AlsoAsked-Credits:
-      name: X-AlsoAsked-Credits
-      in: header
-      description: |
-        The number of credits remaining in the account.
-      required: true
-      schema:
-        type: integer
-        format: int64
-        minimum: 0
-      example: 100
     X-AlsoAsked-Signature:
       name: X-AlsoAsked-Signature
       in: header
@@ -2553,8 +2562,8 @@ paths:
         receive notifications when a search request's status changes, alongside the headers and request body that will be
         sent to the webhook endpoint.
       parameters:
-        - $ref: '#/components/parameters/X-AlsoAsked-Api-Version'
         - $ref: '#/components/parameters/X-AlsoAsked-Credits'
+        - $ref: '#/components/parameters/X-AlsoAsked-Api-Version'
         - $ref: '#/components/parameters/X-AlsoAsked-Signature'
         - $ref: '#/components/parameters/X-AlsoAsked-Timestamp'
       requestBody:

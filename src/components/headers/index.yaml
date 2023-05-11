@@ -1,5 +1,7 @@
 X-AlsoAsked-Credits:
   $ref: ./also-asked/X-AlsoAsked-Credits.yaml
+Retry-After:
+  $ref: ./rate-limiting/Retry-After.yaml
 X-RateLimit-Limit:
   $ref: ./rate-limiting/X-RateLimit-Limit.yaml
 X-RateLimit-Remaining:

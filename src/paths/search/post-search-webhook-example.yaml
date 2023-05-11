@@ -8,8 +8,8 @@ description: |
   receive notifications when a search request's status changes, alongside the headers and request body that will be
   sent to the webhook endpoint.
 parameters:
-  - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Api-Version.yaml
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Credits.yaml
+  - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Api-Version.yaml
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Signature.yaml
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Timestamp.yaml
 requestBody:

@@ -1,7 +1,8 @@
 description: |
-  The error "maximum requests per second exceeded" occurs when the client has made too many requests in a short period
-  of time.
+  The "rate limit exceeded" error occurs when the client has made too many requests in a short period of time.
 headers:
+  Retry-After:
+    $ref: ../../headers/rate-limiting/Retry-After.yaml
   X-RateLimit-Remaining:
     $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
   X-RateLimit-Limit:
