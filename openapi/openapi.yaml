@@ -150,6 +150,7 @@ components:
             - validation
             - insufficient_credits
             - invalid_body
+            - insufficient_plan
           example: internal_server
         message:
           type: string
@@ -1798,6 +1799,49 @@ components:
         created_at: '2023-01-01T00:00:00Z'
         updated_at: '2023-01-01T00:00:10Z'
         cached_at: '2022-12-31T00:00:00Z'
+    InsufficientPlanError:
+      description: |
+        Your account's plan doesn't allow you to perform this request. You can upgrade your account to the Pro plan to access
+        the live API.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Insufficient plan error response example
+              description: |
+                The following example shows the response body of an insufficient plan error. This error is returned when
+                your account's plan doesn't allow you to perform this request.
+              value:
+                status: insufficient_plan
+                message: You must upgrade your account to a Pro plan to access the live API
+    InsufficientCreditsError:
+      description: |
+        You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
+        alternatively wait for your credits to be replenished.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+        X-RateLimit-Limit:
+          $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+      content:
+        application/json:
+          schema:
+            $ref: ../../schemas/misc/Error.yaml
+          examples:
+            default:
+              summary: Insufficient credits error response example
+              description: |
+                The following example shows the response body of an insufficient credits error. This error is returned when
+                you don't have enough credits to perform this request.
+              value:
+                $ref: ../../../examples/errors/InsufficientCreditsError.yaml
   responses:
     GetAccount:
       description: |
@@ -1848,6 +1892,28 @@ components:
               value:
                 status: missing_api_key
                 message: No API key has been specified
+    InsufficientPlanError:
+      description: |
+        Your account's plan doesn't allow you to perform this request. You can upgrade your account to the Pro plan to access
+        the live API.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Insufficient plan error response example
+              description: |
+                The following example shows the response body of an insufficient plan error. This error is returned when
+                your account's plan doesn't allow you to perform this request.
+              value:
+                status: insufficient_plan
+                message: You must upgrade your account to a Pro plan to access the live API
     InvalidApiKeyError:
       description: |
         The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
@@ -2133,28 +2199,6 @@ components:
               value:
                 status: invalid_body
                 message: The request body is invalid
-    InsufficientCreditsError:
-      description: |
-        You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
-        alternatively wait for your credits to be replenished.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Insufficient credits error response example
-              description: |
-                The following example shows the response body of an insufficient credits error. This error is returned when
-                you don't have enough credits to perform this request.
-              value:
-                status: insufficient_credits
-                message: You don't have enough credits to perform this request
     GetSearch:
       description: |
         The search request results object is returned when getting the details of a search request, containing details such
@@ -2480,6 +2524,8 @@ paths:
           $ref: '#/components/responses/GetAccount'
         '401':
           $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
         '403':
           $ref: '#/components/responses/InvalidApiKeyError'
         '429':
@@ -2507,6 +2553,8 @@ paths:
           $ref: '#/components/responses/ListSearches'
         '401':
           $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
         '403':
           $ref: '#/components/responses/InvalidApiKeyError'
         '422':
@@ -2539,7 +2587,15 @@ paths:
         '401':
           $ref: '#/components/responses/MissingApiKeyError'
         '402':
-          $ref: '#/components/responses/InsufficientCreditsError'
+          description: Payment required
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/InsufficientPlanError'
+                  - $ref: '#/components/schemas/InsufficientCreditsError'
+                discriminator:
+                  propertyName: status
         '403':
           $ref: '#/components/responses/InvalidApiKeyError'
         '422':
@@ -2592,6 +2648,8 @@ paths:
           $ref: '#/components/responses/GetSearch'
         '401':
           $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
         '403':
           $ref: '#/components/responses/InvalidApiKeyError'
         '404':
@@ -2619,6 +2677,8 @@ paths:
           $ref: '#/components/responses/DeleteSearch'
         '401':
           $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
         '403':
           $ref: '#/components/responses/InvalidApiKeyError'
         '404':

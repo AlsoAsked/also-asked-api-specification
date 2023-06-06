@@ -14,6 +14,8 @@ responses:
     $ref: ../../components/responses/search/DeleteSearch.yaml
   '401':
     $ref: ../../components/responses/errors/MissingApiKeyError.yaml
+  '402':
+    $ref: ../../components/responses/errors/InsufficientPlanError.yaml
   '403':
     $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
   '404':

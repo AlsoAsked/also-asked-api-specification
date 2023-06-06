@@ -19,7 +19,15 @@ responses:
   '401':
     $ref: ../../components/responses/errors/MissingApiKeyError.yaml
   '402':
-    $ref: ../../components/responses/errors/InsufficientCreditsError.yaml
+    description: Payment required
+    content:
+      application/json:
+        schema:
+          oneOf:
+            - $ref: ../../components/responses/errors/InsufficientPlanError.yaml
+            - $ref: ../../components/responses/errors/InsufficientCreditsError.yaml
+          discriminator:
+            propertyName: status
   '403':
     $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
   '422':
