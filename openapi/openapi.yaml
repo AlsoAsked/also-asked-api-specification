@@ -2574,7 +2574,8 @@ paths:
         Perform a search request. The search request is performed either synchronously, meaning the request hangs until the
         search has completed, or asynchronously, meaning the request returns immediately, which is determined by the `async`
         request parameter. If the search request completes successfully, as determined by the `status` property, the search
-        results are returned in the response body.
+        results are returned in the response body. Synchronous requests wait for a maximum of 300 seconds for the search to
+        complete, until which point the response is returned as if it was an asynchronous request.
       security:
         - apiKey: []
       requestBody:
