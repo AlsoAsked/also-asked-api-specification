@@ -2364,16 +2364,16 @@ components:
       name: X-AlsoAsked-Signature
       in: header
       description: |
-        The signature of the webhook request. The signature is generated using the HMAC-SHA256 algorithm and the
+        The signature of the webhook request. The signature is generated using the HMAC-SHA384 algorithm and the
         webhook secret as the key. The signature is in the hex format. You should use this signature to verify that the
         webhook request originated from AlsoAsked.
       required: true
       schema:
         type: string
-        pattern: ^[a-fA-F0-9]{64}$
-        minLength: 64
-        maxLength: 64
-      example: a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f05a7c
+        pattern: ^[a-fA-F0-9]{96}$
+        minLength: 96
+        maxLength: 96
+      example: edd3bf9297835c7b02a41e0f4f188a17e9f50c235cc322eddda3780dbd817c932e9c913d2600415a56679a9c4f0cb550
     X-AlsoAsked-Timestamp:
       name: X-AlsoAsked-Timestamp
       in: header
