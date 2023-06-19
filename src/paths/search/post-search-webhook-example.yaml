@@ -12,6 +12,7 @@ parameters:
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Api-Version.yaml
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Signature.yaml
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Timestamp.yaml
+  - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Webhook-Event.yaml
 requestBody:
   $ref: ../../components/requestBodies/search/StatusChangedWebhook.yaml
 responses:

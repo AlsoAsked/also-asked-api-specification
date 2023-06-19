@@ -1,0 +1,10 @@
+name: X-AlsoAsked-Webhook-Event
+in: header
+description: |
+  The type of webhook event that is being sent.
+required: true
+schema:
+  type: string
+  enum:
+    $ref: ../../../enums/WebhookEventType.yaml
+example: search_succeeded

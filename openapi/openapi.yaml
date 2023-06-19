@@ -2386,6 +2386,20 @@ components:
         format: int64
         minimum: 0
       example: 1672531200
+    X-AlsoAsked-Webhook-Event:
+      name: X-AlsoAsked-Webhook-Event
+      in: header
+      description: |
+        The type of webhook event that is being sent.
+      required: true
+      schema:
+        type: string
+        enum:
+          - search_created
+          - search_started
+          - search_succeeded
+          - search_failed
+      example: search_succeeded
     searchId:
       name: searchId
       in: path
@@ -2623,6 +2637,7 @@ paths:
         - $ref: '#/components/parameters/X-AlsoAsked-Api-Version'
         - $ref: '#/components/parameters/X-AlsoAsked-Signature'
         - $ref: '#/components/parameters/X-AlsoAsked-Timestamp'
+        - $ref: '#/components/parameters/X-AlsoAsked-Webhook-Event'
       requestBody:
         $ref: '#/components/requestBodies/StatusChangedWebhook'
       responses:
