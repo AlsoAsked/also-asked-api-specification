@@ -1,0 +1,10 @@
+name: X-AlsoAsked-Environment
+in: header
+description: |
+  The environment which the webhook event originates from.
+required: true
+schema:
+  type: string
+  enum:
+    $ref: ../../../enums/Environment.yaml
+example: live

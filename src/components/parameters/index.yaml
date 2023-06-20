@@ -8,6 +8,8 @@ X-AlsoAsked-Api-Version:
   $ref: ./webhooks/X-AlsoAsked-Api-Version.yaml
 X-AlsoAsked-Credits:
   $ref: ./webhooks/X-AlsoAsked-Credits.yaml
+X-AlsoAsked-Environment:
+  $ref: ./webhooks/X-AlsoAsked-Environment.yaml
 X-AlsoAsked-Signature:
   $ref: ./webhooks/X-AlsoAsked-Signature.yaml
 X-AlsoAsked-Timestamp:

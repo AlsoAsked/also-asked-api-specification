@@ -2400,6 +2400,18 @@ components:
           - search_succeeded
           - search_failed
       example: search_succeeded
+    X-AlsoAsked-Environment:
+      name: X-AlsoAsked-Environment
+      in: header
+      description: |
+        The environment which the webhook event originates from.
+      required: true
+      schema:
+        type: string
+        enum:
+          - live
+          - sandbox
+      example: live
     searchId:
       name: searchId
       in: path
@@ -2638,6 +2650,7 @@ paths:
         - $ref: '#/components/parameters/X-AlsoAsked-Signature'
         - $ref: '#/components/parameters/X-AlsoAsked-Timestamp'
         - $ref: '#/components/parameters/X-AlsoAsked-Webhook-Event'
+        - $ref: '#/components/parameters/X-AlsoAsked-Environment'
       requestBody:
         $ref: '#/components/requestBodies/StatusChangedWebhook'
       responses:
