@@ -511,12 +511,12 @@ components:
           anyOf:
             - type: integer
               format: int32
-              minimum: 3
-              maximum: 4
+              minimum: 2
+              maximum: 3
             - type: 'null'
           description: |
             The depth of the search request. If the search request was deleted, this value will be null.
-          example: 3
+          example: 2
         cached:
           type:
             - boolean
@@ -556,7 +556,7 @@ components:
         region: us
         status: success
         deleted: false
-        depth: 3
+        depth: 2
         cached: true
         created_at: '2023-01-01T00:00:00Z'
         updated_at: '2023-01-01T00:00:10Z'
@@ -596,7 +596,7 @@ components:
               region: us
               status: success
               deleted: false
-              depth: 3
+              depth: 2
               cached: false
               created_at: '2023-01-01T00:00:00Z'
               updated_at: '2023-01-01T00:00:10Z'
@@ -608,7 +608,7 @@ components:
               region: gb
               status: success
               deleted: false
-              depth: 3
+              depth: 2
               cached: true
               created_at: '2023-01-05T10:30:00Z'
               updated_at: '2023-01-05T10:32:00Z'
@@ -633,7 +633,7 @@ components:
               region: de
               status: success
               deleted: false
-              depth: 4
+              depth: 3
               cached: false
               created_at: '2023-01-15T18:45:00Z'
               updated_at: '2023-01-15T18:50:00Z'
@@ -651,7 +651,7 @@ components:
             region: us
             status: success
             deleted: false
-            depth: 3
+            depth: 2
             cached: false
             created_at: '2023-01-01T00:00:00Z'
             updated_at: '2023-01-01T00:00:10Z'
@@ -663,7 +663,7 @@ components:
             region: gb
             status: success
             deleted: false
-            depth: 3
+            depth: 2
             cached: true
             created_at: '2023-01-05T10:30:00Z'
             updated_at: '2023-01-05T10:32:00Z'
@@ -688,7 +688,7 @@ components:
             region: de
             status: success
             deleted: false
-            depth: 4
+            depth: 3
             cached: false
             created_at: '2023-01-15T18:45:00Z'
             updated_at: '2023-01-15T18:50:00Z'
@@ -1021,12 +1021,12 @@ components:
           description: |
             The depth of the search determines the number of hierarchical levels of questions returned in the results.
             A greater depth value retrieves questions nested within additional layers of subquestions. Be aware that
-            increasing the depth will increase the number of credits consumed. A search depth of 3 will consume 1 credit,
-            whereas a depth of 4 will consume 4 credits.
-          example: 3
-          default: 3
-          minimum: 3
-          maximum: 4
+            increasing the depth will increase the number of credits consumed. A search depth of 2 will consume 1 credit,
+            whereas a depth of 3 will consume 4 credits.
+          example: 2
+          default: 2
+          minimum: 2
+          maximum: 3
         fresh:
           type: boolean
           description: |
@@ -1059,7 +1059,7 @@ components:
           - When to harvest broad beans?
         language: en
         region: us
-        depth: 3
+        depth: 2
         fresh: false
         async: false
         notify_webhooks: false
@@ -1794,7 +1794,7 @@ components:
         region: us
         status: success
         deleted: false
-        depth: 3
+        depth: 2
         cached: true
         created_at: '2023-01-01T00:00:00Z'
         updated_at: '2023-01-01T00:00:10Z'
@@ -2033,7 +2033,7 @@ components:
                     region: us
                     status: success
                     deleted: false
-                    depth: 3
+                    depth: 2
                     cached: false
                     created_at: '2023-01-01T00:00:00Z'
                     updated_at: '2023-01-01T00:00:10Z'
@@ -2045,7 +2045,7 @@ components:
                     region: gb
                     status: success
                     deleted: false
-                    depth: 3
+                    depth: 2
                     cached: true
                     created_at: '2023-01-05T10:30:00Z'
                     updated_at: '2023-01-05T10:32:00Z'
@@ -2070,7 +2070,7 @@ components:
                     region: de
                     status: success
                     deleted: false
-                    depth: 4
+                    depth: 3
                     cached: false
                     created_at: '2023-01-15T18:45:00Z'
                     updated_at: '2023-01-15T18:50:00Z'
@@ -2172,7 +2172,7 @@ components:
                 region: us
                 status: success
                 deleted: false
-                depth: 3
+                depth: 2
                 cached: true
                 created_at: '2023-01-01T00:00:00Z'
                 updated_at: '2023-01-01T00:00:10Z'
@@ -2275,7 +2275,7 @@ components:
                 region: us
                 status: success
                 deleted: false
-                depth: 3
+                depth: 2
                 cached: true
                 created_at: '2023-01-01T00:00:00Z'
                 updated_at: '2023-01-01T00:00:10Z'
@@ -2446,7 +2446,7 @@ components:
                   - When to harvest broad beans?
                 language: en
                 region: us
-                depth: 3
+                depth: 2
                 fresh: false
                 async: false
                 notify_webhooks: false
@@ -2520,7 +2520,7 @@ components:
                 region: us
                 status: success
                 deleted: false
-                depth: 3
+                depth: 2
                 cached: true
                 created_at: '2023-01-01T00:00:00Z'
                 updated_at: '2023-01-01T00:00:10Z'

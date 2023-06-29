@@ -59,12 +59,12 @@ properties:
     anyOf:
       - type: integer
         format: int32
-        minimum: 3
-        maximum: 4
+        minimum: 2
+        maximum: 3
       - type: 'null'
     description: |
       The depth of the search request. If the search request was deleted, this value will be null.
-    example: 3
+    example: 2
   cached:
     type:
       - boolean

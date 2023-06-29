@@ -42,12 +42,12 @@ properties:
     description: |
       The depth of the search determines the number of hierarchical levels of questions returned in the results.
       A greater depth value retrieves questions nested within additional layers of subquestions. Be aware that
-      increasing the depth will increase the number of credits consumed. A search depth of 3 will consume 1 credit,
-      whereas a depth of 4 will consume 4 credits.
-    example: 3
-    default: 3
-    minimum: 3
-    maximum: 4
+      increasing the depth will increase the number of credits consumed. A search depth of 2 will consume 1 credit,
+      whereas a depth of 3 will consume 4 credits.
+    example: 2
+    default: 2
+    minimum: 2
+    maximum: 3
   fresh:
     type: boolean
     description: |

@@ -4,7 +4,7 @@ terms:
   - When to harvest broad beans?
 language: en
 region: us
-depth: 3
+depth: 2
 fresh: false
 async: false
 notify_webhooks: false
