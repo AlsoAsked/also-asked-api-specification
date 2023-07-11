@@ -22,9 +22,9 @@ tags:
     description: |
       Operations related to searches.
 servers:
-  - url: https://api.alsoasked.com/v1
+  - url: https://alsoaskedapi.com/v1
     description: Live
-  - url: https://sandbox-api.alsoasked.com/v1
+  - url: https://sandbox.alsoaskedapi.com/v1
     description: Sandbox
 components:
   headers:
