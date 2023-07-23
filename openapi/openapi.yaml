@@ -722,13 +722,13 @@ components:
         more information.
       headers:
         X-RateLimit-Remaining:
-          $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+          $ref: '#/components/headers/X-RateLimit-Remaining'
         X-RateLimit-Limit:
-          $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+          $ref: '#/components/headers/X-RateLimit-Limit'
       content:
         application/json:
           schema:
-            $ref: ../../schemas/misc/Error.yaml
+            $ref: '#/components/schemas/Error'
           examples:
             default:
               summary: Api access disabled error response example
@@ -736,7 +736,10 @@ components:
                 The following example shows the response body of an api access disabled error. This error is returned when
                 your account's API access has been revoked.
               value:
-                $ref: ../../../examples/errors/ApiAccessDisabled.yaml
+                status: api_access_disabled
+                message: |
+                  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+                  more information.
     SearchRequestOptions:
       title: Search request options
       type: object
@@ -1871,13 +1874,13 @@ components:
         alternatively wait for your credits to be replenished.
       headers:
         X-RateLimit-Remaining:
-          $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+          $ref: '#/components/headers/X-RateLimit-Remaining'
         X-RateLimit-Limit:
-          $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+          $ref: '#/components/headers/X-RateLimit-Limit'
       content:
         application/json:
           schema:
-            $ref: ../../schemas/misc/Error.yaml
+            $ref: '#/components/schemas/Error'
           examples:
             default:
               summary: Insufficient credits error response example
@@ -1885,7 +1888,8 @@ components:
                 The following example shows the response body of an insufficient credits error. This error is returned when
                 you don't have enough credits to perform this request.
               value:
-                $ref: ../../../examples/errors/InsufficientCreditsError.yaml
+                status: insufficient_credits
+                message: You don't have enough credits to perform this request
   responses:
     GetAccount:
       description: |
@@ -2355,6 +2359,52 @@ components:
           $ref: '#/components/headers/X-RateLimit-Remaining'
         X-RateLimit-Limit:
           $ref: '#/components/headers/X-RateLimit-Limit'
+    ApiAccessDisabledError:
+      description: |
+        Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+        more information.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Api access disabled error response example
+              description: |
+                The following example shows the response body of an api access disabled error. This error is returned when
+                your account's API access has been revoked.
+              value:
+                status: api_access_disabled
+                message: |
+                  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+                  more information.
+    InsufficientCreditsError:
+      description: |
+        You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
+        alternatively wait for your credits to be replenished.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Insufficient credits error response example
+              description: |
+                The following example shows the response body of an insufficient credits error. This error is returned when
+                you don't have enough credits to perform this request.
+              value:
+                status: insufficient_credits
+                message: You don't have enough credits to perform this request
   parameters:
     count:
       name: count
