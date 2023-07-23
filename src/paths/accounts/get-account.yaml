@@ -14,6 +14,15 @@ responses:
   '402':
     $ref: ../../components/responses/errors/InsufficientPlanError.yaml
   '403':
+    description: Forbidden
+    content:
+      application/json:
+        schema:
+          oneOf:
+            - $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
+            - $ref: ../../components/responses/errors/ApiAccessDisabledError.yaml
+          discriminator:
+            propertyName: status
     $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
   '429':
     $ref: ../../components/responses/errors/RateLimitExceededError.yaml

@@ -30,7 +30,15 @@ responses:
           discriminator:
             propertyName: status
   '403':
-    $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
+    description: Forbidden
+    content:
+      application/json:
+        schema:
+          oneOf:
+            - $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
+            - $ref: ../../components/responses/errors/ApiAccessDisabledError.yaml
+          discriminator:
+            propertyName: status
   '422':
     $ref: ../../components/responses/errors/ValidationError.yaml
   '429':
