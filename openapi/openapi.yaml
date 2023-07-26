@@ -161,6 +161,52 @@ components:
       example:
         status: internal_server
         message: An internal server error has occurred
+    InvalidApiKeyError:
+      description: |
+        The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
+        the request header has either been deleted or doesn't exist.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Invalid API key error response example
+              description: |
+                The following example shows the response body of an invalid API key error. This error is returned when an
+                invalid API key is provided in the request header.
+              value:
+                status: invalid_api_key
+                message: The API key provided is invalid
+    ApiAccessDisabledError:
+      description: |
+        Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+        more information.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Api access disabled error response example
+              description: |
+                The following example shows the response body of an api access disabled error. This error is returned when
+                your account's API access has been revoked.
+              value:
+                status: api_access_disabled
+                message: |
+                  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+                  more information.
     SearchRequest:
       title: Search Request
       type: object
@@ -694,52 +740,6 @@ components:
             created_at: '2023-01-15T18:45:00Z'
             updated_at: '2023-01-15T18:50:00Z'
             cached_at: '2023-01-15T18:50:00Z'
-    InvalidApiKeyError:
-      description: |
-        The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
-        the request header has either been deleted or doesn't exist.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Invalid API key error response example
-              description: |
-                The following example shows the response body of an invalid API key error. This error is returned when an
-                invalid API key is provided in the request header.
-              value:
-                status: invalid_api_key
-                message: The API key provided is invalid
-    ApiAccessDisabledError:
-      description: |
-        Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
-        more information.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Api access disabled error response example
-              description: |
-                The following example shows the response body of an api access disabled error. This error is returned when
-                your account's API access has been revoked.
-              value:
-                status: api_access_disabled
-                message: |
-                  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
-                  more information.
     SearchRequestOptions:
       title: Search request options
       type: object
@@ -1962,28 +1962,16 @@ components:
               value:
                 status: insufficient_plan
                 message: You must upgrade your account to a Pro plan to access the live API
-    InvalidApiKeyError:
-      description: |
-        The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
-        the request header has either been deleted or doesn't exist.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
+    ForbiddenError:
+      description: Forbidden
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Invalid API key error response example
-              description: |
-                The following example shows the response body of an invalid API key error. This error is returned when an
-                invalid API key is provided in the request header.
-              value:
-                status: invalid_api_key
-                message: The API key provided is invalid
+            oneOf:
+              - $ref: '#/components/schemas/InvalidApiKeyError'
+              - $ref: '#/components/schemas/ApiAccessDisabledError'
+            discriminator:
+              propertyName: status
     RateLimitExceededError:
       description: |
         The "rate limit exceeded" error occurs when the client has made too many requests in a short period of time.
@@ -2247,6 +2235,16 @@ components:
               value:
                 status: invalid_body
                 message: The request body is invalid
+    PaymentRequiredError:
+      description: Payment required
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: '#/components/schemas/InsufficientPlanError'
+              - $ref: '#/components/schemas/InsufficientCreditsError'
+            discriminator:
+              propertyName: status
     GetSearch:
       description: |
         The search request results object is returned when getting the details of a search request, containing details such
@@ -2405,6 +2403,28 @@ components:
               value:
                 status: insufficient_credits
                 message: You don't have enough credits to perform this request
+    InvalidApiKeyError:
+      description: |
+        The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
+        the request header has either been deleted or doesn't exist.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          examples:
+            default:
+              summary: Invalid API key error response example
+              description: |
+                The following example shows the response body of an invalid API key error. This error is returned when an
+                invalid API key is provided in the request header.
+              value:
+                status: invalid_api_key
+                message: The API key provided is invalid
   parameters:
     count:
       name: count
@@ -2647,16 +2667,7 @@ paths:
         '402':
           $ref: '#/components/responses/InsufficientPlanError'
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
-                  - $ref: ../../components/responses/errors/ApiAccessDisabledError.yaml
-                discriminator:
-                  propertyName: status
-          $ref: '#/components/responses/InvalidApiKeyError'
+          $ref: '#/components/responses/ForbiddenError'
         '429':
           $ref: '#/components/responses/RateLimitExceededError'
         '500':
@@ -2685,15 +2696,7 @@ paths:
         '402':
           $ref: '#/components/responses/InsufficientPlanError'
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/InvalidApiKeyError'
-                  - $ref: '#/components/schemas/ApiAccessDisabledError'
-                discriminator:
-                  propertyName: status
+          $ref: '#/components/responses/ForbiddenError'
         '422':
           $ref: '#/components/responses/ValidationError'
         '429':
@@ -2725,25 +2728,9 @@ paths:
         '401':
           $ref: '#/components/responses/MissingApiKeyError'
         '402':
-          description: Payment required
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/InsufficientPlanError'
-                  - $ref: '#/components/schemas/InsufficientCreditsError'
-                discriminator:
-                  propertyName: status
+          $ref: '#/components/responses/PaymentRequiredError'
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/InvalidApiKeyError'
-                  - $ref: '#/components/schemas/ApiAccessDisabledError'
-                discriminator:
-                  propertyName: status
+          $ref: '#/components/responses/ForbiddenError'
         '422':
           $ref: '#/components/responses/ValidationError'
         '429':
@@ -2799,15 +2786,7 @@ paths:
         '402':
           $ref: '#/components/responses/InsufficientPlanError'
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/InvalidApiKeyError'
-                  - $ref: '#/components/schemas/ApiAccessDisabledError'
-                discriminator:
-                  propertyName: status
+          $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
         '429':
@@ -2836,15 +2815,7 @@ paths:
         '402':
           $ref: '#/components/responses/InsufficientPlanError'
         '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                oneOf:
-                  - $ref: '#/components/schemas/InvalidApiKeyError'
-                  - $ref: '#/components/schemas/ApiAccessDisabledError'
-                discriminator:
-                  propertyName: status
+          $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
         '429':

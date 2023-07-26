@@ -20,25 +20,9 @@ responses:
   '401':
     $ref: ../../components/responses/errors/MissingApiKeyError.yaml
   '402':
-    description: Payment required
-    content:
-      application/json:
-        schema:
-          oneOf:
-            - $ref: ../../components/responses/errors/InsufficientPlanError.yaml
-            - $ref: ../../components/responses/errors/InsufficientCreditsError.yaml
-          discriminator:
-            propertyName: status
+    $ref: ../../components/responses/errors/PaymentRequiredError.yaml
   '403':
-    description: Forbidden
-    content:
-      application/json:
-        schema:
-          oneOf:
-            - $ref: ../../components/responses/errors/InvalidApiKeyError.yaml
-            - $ref: ../../components/responses/errors/ApiAccessDisabledError.yaml
-          discriminator:
-            propertyName: status
+    $ref: ../../components/responses/errors/ForbiddenError.yaml
   '422':
     $ref: ../../components/responses/errors/ValidationError.yaml
   '429':

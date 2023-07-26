@@ -1,0 +1,9 @@
+description: Forbidden
+content:
+  application/json:
+    schema:
+      oneOf:
+        - $ref: ./InvalidApiKeyError.yaml
+        - $ref: ./ApiAccessDisabledError.yaml
+      discriminator:
+        propertyName: status

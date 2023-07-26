@@ -1,0 +1,9 @@
+description: Payment required
+content:
+  application/json:
+    schema:
+      oneOf:
+        - $ref: ./InsufficientPlanError.yaml
+        - $ref: ./InsufficientCreditsError.yaml
+      discriminator:
+        propertyName: status
