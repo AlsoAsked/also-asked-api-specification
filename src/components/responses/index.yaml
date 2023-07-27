@@ -1,19 +1,17 @@
-ApiAccessDisabledError:
-  $ref: ./errors/ApiAccessDisabledError.yaml
-InsufficientCreditsError:
-  $ref: ./errors/InsufficientCreditsError.yaml
+ForbiddenError:
+  $ref: ./errors/ForbiddenError.yaml
 InsufficientPlanError:
   $ref: ./errors/InsufficientPlanError.yaml
 InternalServerError:
   $ref: ./errors/InternalServerError.yaml
-InvalidApiKeyError:
-  $ref: ./errors/InvalidApiKeyError.yaml
 InvalidBodyError:
   $ref: ./errors/InvalidBodyError.yaml
 MissingApiKeyError:
   $ref: ./errors/MissingApiKeyError.yaml
 NotFoundError:
   $ref: ./errors/NotFoundError.yaml
+PaymentRequiredError:
+  $ref: ./errors/PaymentRequiredError.yaml
 RateLimitExceededError:
   $ref: ./errors/RateLimitExceededError.yaml
 UnderMaintenanceError:

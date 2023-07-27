@@ -1,0 +1,12 @@
+title: Forbidden Error
+type: object
+description: |
+  The forbidden error object is returned in the response body of any request that results a `403 Forbidden` error.
+oneOf:
+  - $ref: ./InvalidApiKeyError.yaml
+  - $ref: ./ApiAccessDisabledError.yaml
+discriminator:
+  propertyName: status
+  mapping:
+    invalid_api_key: ./InvalidApiKeyError.yaml
+    api_access_disabled: ./ApiAccessDisabledError.yaml

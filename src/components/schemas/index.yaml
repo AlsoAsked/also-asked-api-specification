@@ -1,7 +1,19 @@
-Error:
-  $ref: ./misc/Error.yaml
 Account:
   $ref: ./account/Account.yaml
+ApiAccessDisabledError:
+  $ref: ./errors/ApiAccessDisabledError.yaml
+Error:
+  $ref: ./errors/Error.yaml
+ForbiddenError:
+  $ref: ./errors/ForbiddenError.yaml
+InsufficientCreditsError:
+  $ref: ./errors/InsufficientCreditsError.yaml
+InsufficientPlanError:
+  $ref: ./errors/InsufficientPlanError.yaml
+InvalidApiKeyError:
+  $ref: ./errors/InvalidApiKeyError.yaml
+PaymentRequiredError:
+  $ref: ./errors/PaymentRequiredError.yaml
 PaginatedSearchRequests:
   $ref: ./search/PaginatedSearchRequests.yaml
 SearchRequest:

@@ -14,6 +14,11 @@ info:
     name: AlsoAsked Support
     email: service@alsoasked.com
     url: https://help.alsoasked.com
+servers:
+  - url: https://alsoaskedapi.com/v1
+    description: Live
+  - url: https://sandbox.alsoaskedapi.com/v1
+    description: Sandbox
 tags:
   - name: Account
     description: |
@@ -21,11 +26,182 @@ tags:
   - name: Search
     description: |
       Operations related to searches.
-servers:
-  - url: https://alsoaskedapi.com/v1
-    description: Live
-  - url: https://sandbox.alsoaskedapi.com/v1
-    description: Sandbox
+paths:
+  /account:
+    get:
+      operationId: getAccount
+      tags:
+        - Account
+      summary: Get account information
+      description: |
+        Get information about the current user's account.
+      security:
+        - apiKey: []
+      responses:
+        '200':
+          $ref: '#/components/responses/GetAccount'
+        '401':
+          $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '429':
+          $ref: '#/components/responses/RateLimitExceededError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/UnderMaintenanceError'
+  /search:
+    get:
+      operationId: listSearches
+      tags:
+        - Search
+      summary: List searches
+      description: |
+        Get a paginated list of searches performed by the current user, sorted by the date they were created, with the most
+        recent searches appearing first.
+      security:
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/count'
+        - $ref: '#/components/parameters/page'
+      responses:
+        '200':
+          $ref: '#/components/responses/ListSearches'
+        '401':
+          $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimitExceededError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/UnderMaintenanceError'
+    post:
+      operationId: performSearch
+      tags:
+        - Search
+      summary: Perform search
+      description: |
+        Perform a search request. The search request is performed either synchronously, meaning the request hangs until the
+        search has completed, or asynchronously, meaning the request returns immediately, which is determined by the `async`
+        request parameter. If the search request completes successfully, as determined by the `status` property, the search
+        results are returned in the response body. Synchronous requests wait for a maximum of 300 seconds for the search to
+        complete, until which point the response is returned as if it was an asynchronous request.
+      security:
+        - apiKey: []
+      requestBody:
+        $ref: '#/components/requestBodies/PerformSearch'
+      responses:
+        '200':
+          $ref: '#/components/responses/PerformSearch'
+        '400':
+          $ref: '#/components/responses/InvalidBodyError'
+        '401':
+          $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/PaymentRequiredError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
+        '429':
+          $ref: '#/components/responses/RateLimitExceededError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/UnderMaintenanceError'
+  /search/webhook-example:
+    post:
+      operationId: searchWebhookExample
+      tags:
+        - Search
+      summary: Search webhook example
+      description: |
+        This is an **example** of a web hook endpoint used to receive notifications when a search request's status changes.
+        The `/search/webhook-example` doesn't exist, but is used to demonstrate how to implement a webhook endpoint to
+        receive notifications when a search request's status changes, alongside the headers and request body that will be
+        sent to the webhook endpoint.
+      parameters:
+        - $ref: '#/components/parameters/X-AlsoAsked-Credits'
+        - $ref: '#/components/parameters/X-AlsoAsked-Api-Version'
+        - $ref: '#/components/parameters/X-AlsoAsked-Signature'
+        - $ref: '#/components/parameters/X-AlsoAsked-Timestamp'
+        - $ref: '#/components/parameters/X-AlsoAsked-Webhook-Event'
+        - $ref: '#/components/parameters/X-AlsoAsked-Environment'
+      requestBody:
+        $ref: '#/components/requestBodies/StatusChangedWebhook'
+      responses:
+        '200':
+          description: |
+            The webhook notification was received successfully.
+        '204':
+          description: |
+            The webhook notification was received successfully.
+  /search/{searchId}:
+    get:
+      operationId: getSearch
+      tags:
+        - Search
+      summary: Get search
+      description: |
+        Get the details of a search request, and if the search request has completed successfully, obtain the search results.
+      security:
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/searchId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GetSearch'
+        '401':
+          $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitExceededError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/UnderMaintenanceError'
+    delete:
+      operationId: deleteSearch
+      tags:
+        - Search
+      summary: Delete search
+      description: |
+        Delete a search request. The search results will be deleted from the cache and the search result's term masked in the
+        search history.
+      security:
+        - apiKey: []
+      parameters:
+        - $ref: '#/components/parameters/searchId'
+      responses:
+        '204':
+          $ref: '#/components/responses/DeleteSearch'
+        '401':
+          $ref: '#/components/responses/MissingApiKeyError'
+        '402':
+          $ref: '#/components/responses/InsufficientPlanError'
+        '403':
+          $ref: '#/components/responses/ForbiddenError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+        '429':
+          $ref: '#/components/responses/RateLimitExceededError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+        '503':
+          $ref: '#/components/responses/UnderMaintenanceError'
 components:
   headers:
     X-AlsoAsked-Credits:
@@ -162,51 +338,90 @@ components:
         status: internal_server
         message: An internal server error has occurred
     InvalidApiKeyError:
+      title: Invalid Api Key Error
+      type: object
       description: |
         The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
         the request header has either been deleted or doesn't exist.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Invalid API key error response example
-              description: |
-                The following example shows the response body of an invalid API key error. This error is returned when an
-                invalid API key is provided in the request header.
-              value:
-                status: invalid_api_key
-                message: The API key provided is invalid
+      properties:
+        status:
+          type: string
+          description: |
+            The error status is an identifier for the type of error that occurred.
+          enum:
+            - internal_server
+            - invalid_api_key
+            - missing_api_key
+            - rate_limit_exceeded
+            - under_maintenance
+            - not_found
+            - validation
+            - insufficient_credits
+            - invalid_body
+            - insufficient_plan
+            - api_access_disabled
+          example: invalid_api_key
+          pattern: ^invalid_api_key$
+        message:
+          type: string
+          description: |
+            A human-readable message describing the error. This message is intended to be read by a developer and is
+            not suitable for display to an end user.
+          example: The API key provided is invalid.
+      example:
+        status: invalid_api_key
+        message: The API key provided is invalid
     ApiAccessDisabledError:
+      title: Api Access Disabled Error
+      type: object
       description: |
         Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
         more information.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Api access disabled error response example
-              description: |
-                The following example shows the response body of an api access disabled error. This error is returned when
-                your account's API access has been revoked.
-              value:
-                status: api_access_disabled
-                message: |
-                  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
-                  more information.
+      properties:
+        status:
+          type: string
+          description: |
+            The error status is an identifier for the type of error that occurred.
+          enum:
+            - internal_server
+            - invalid_api_key
+            - missing_api_key
+            - rate_limit_exceeded
+            - under_maintenance
+            - not_found
+            - validation
+            - insufficient_credits
+            - invalid_body
+            - insufficient_plan
+            - api_access_disabled
+          example: api_access_disabled
+          pattern: ^api_access_disabled$
+        message:
+          type: string
+          description: |
+            A human-readable message describing the error. This message is intended to be read by a developer and is
+            not suitable for display to an end user.
+          example: |
+            Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+            more information.
+      example:
+        status: api_access_disabled
+        message: |
+          Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+          more information.
+    ForbiddenError:
+      title: Forbidden Error
+      type: object
+      description: |
+        The forbidden error object is returned in the response body of any request that results a `403 Forbidden` error.
+      oneOf:
+        - $ref: '#/components/schemas/InvalidApiKeyError'
+        - $ref: '#/components/schemas/ApiAccessDisabledError'
+      discriminator:
+        propertyName: status
+        mapping:
+          invalid_api_key: '#/components/schemas/InvalidApiKeyError'
+          api_access_disabled: '#/components/schemas/ApiAccessDisabledError'
     SearchRequest:
       title: Search Request
       type: object
@@ -1847,49 +2062,87 @@ components:
         updated_at: '2023-01-01T00:00:10Z'
         cached_at: '2022-12-31T00:00:00Z'
     InsufficientPlanError:
+      title: Insufficient Plan Error
+      type: object
       description: |
         Your account's plan doesn't allow you to perform this request. You can upgrade your account to the Pro plan to access
         the live API.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Insufficient plan error response example
-              description: |
-                The following example shows the response body of an insufficient plan error. This error is returned when
-                your account's plan doesn't allow you to perform this request.
-              value:
-                status: insufficient_plan
-                message: You must upgrade your account to a Pro plan to access the live API
+      properties:
+        status:
+          type: string
+          description: |
+            The error status is an identifier for the type of error that occurred.
+          enum:
+            - internal_server
+            - invalid_api_key
+            - missing_api_key
+            - rate_limit_exceeded
+            - under_maintenance
+            - not_found
+            - validation
+            - insufficient_credits
+            - invalid_body
+            - insufficient_plan
+            - api_access_disabled
+          example: insufficient_plan
+          pattern: ^insufficient_plan$
+        message:
+          type: string
+          description: |
+            A human-readable message describing the error. This message is intended to be read by a developer and is
+            not suitable for display to an end user.
+          example: You must upgrade your account to a Pro plan to access the live API.
+      example:
+        status: insufficient_plan
+        message: You must upgrade your account to a Pro plan to access the live API
     InsufficientCreditsError:
+      title: Insufficient Credits Error
+      type: object
       description: |
         You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
         alternatively wait for your credits to be replenished.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Insufficient credits error response example
-              description: |
-                The following example shows the response body of an insufficient credits error. This error is returned when
-                you don't have enough credits to perform this request.
-              value:
-                status: insufficient_credits
-                message: You don't have enough credits to perform this request
+      properties:
+        status:
+          type: string
+          description: |
+            The error status is an identifier for the type of error that occurred.
+          enum:
+            - internal_server
+            - invalid_api_key
+            - missing_api_key
+            - rate_limit_exceeded
+            - under_maintenance
+            - not_found
+            - validation
+            - insufficient_credits
+            - invalid_body
+            - insufficient_plan
+            - api_access_disabled
+          example: insufficient_credits
+          pattern: ^insufficient_credits$
+        message:
+          type: string
+          description: |
+            A human-readable message describing the error. This message is intended to be read by a developer and is
+            not suitable for display to an end user.
+          example: You don't have enough credits to perform this request.
+      example:
+        status: insufficient_credits
+        message: You don't have enough credits to perform this request
+    PaymentRequiredError:
+      title: Payment Required Error
+      type: object
+      description: |
+        The payment required error object is returned in the response body of any request that results a
+        `402 Payment Required` error.
+      oneOf:
+        - $ref: '#/components/schemas/InsufficientPlanError'
+        - $ref: '#/components/schemas/InsufficientCreditsError'
+      discriminator:
+        propertyName: status
+        mapping:
+          insufficient_plan: '#/components/schemas/InsufficientPlanError'
+          insufficient_credits: '#/components/schemas/InsufficientCreditsError'
   responses:
     GetAccount:
       description: |
@@ -1963,15 +2216,36 @@ components:
                 status: insufficient_plan
                 message: You must upgrade your account to a Pro plan to access the live API
     ForbiddenError:
-      description: Forbidden
+      description: |
+        The forbidden error object is returned in the response body of any request that results a `403 Forbidden` error.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/InvalidApiKeyError'
-              - $ref: '#/components/schemas/ApiAccessDisabledError'
-            discriminator:
-              propertyName: status
+            $ref: '#/components/schemas/ForbiddenError'
+          examples:
+            InvalidApiKeyError:
+              summary: Invalid API key error response example
+              description: |
+                The following example shows the response body of an invalid API key error. This error is returned when an
+                invalid API key is provided in the request header.
+              value:
+                status: invalid_api_key
+                message: The API key provided is invalid
+            ApiAccessDisabledError:
+              summary: API access disabled error response example
+              description: |
+                The following example shows the response body of an api access disabled error. This error is returned when
+                your account's API access has been revoked.
+              value:
+                status: api_access_disabled
+                message: |
+                  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+                  more information.
     RateLimitExceededError:
       description: |
         The "rate limit exceeded" error occurs when the client has made too many requests in a short period of time.
@@ -2236,15 +2510,35 @@ components:
                 status: invalid_body
                 message: The request body is invalid
     PaymentRequiredError:
-      description: Payment required
+      description: |
+        The payment required error object is returned in the response body of any request that results a
+        `402 Payment Required` error.
+      headers:
+        X-RateLimit-Remaining:
+          $ref: '#/components/headers/X-RateLimit-Remaining'
+        X-RateLimit-Limit:
+          $ref: '#/components/headers/X-RateLimit-Limit'
       content:
         application/json:
           schema:
-            oneOf:
-              - $ref: '#/components/schemas/InsufficientPlanError'
-              - $ref: '#/components/schemas/InsufficientCreditsError'
-            discriminator:
-              propertyName: status
+            $ref: '#/components/schemas/PaymentRequiredError'
+          examples:
+            InsufficientPlanError:
+              summary: Insufficient plan error response example
+              description: |
+                The following example shows the response body of an insufficient plan error. This error is returned when
+                your account's plan doesn't allow you to perform this request.
+              value:
+                status: insufficient_plan
+                message: You must upgrade your account to a Pro plan to access the live API
+            InsufficientCreditsError:
+              summary: Insufficient credits error response example
+              description: |
+                The following example shows the response body of an insufficient credits error. This error is returned when
+                you don't have enough credits to perform this request.
+              value:
+                status: insufficient_credits
+                message: You don't have enough credits to perform this request
     GetSearch:
       description: |
         The search request results object is returned when getting the details of a search request, containing details such
@@ -2357,74 +2651,6 @@ components:
           $ref: '#/components/headers/X-RateLimit-Remaining'
         X-RateLimit-Limit:
           $ref: '#/components/headers/X-RateLimit-Limit'
-    ApiAccessDisabledError:
-      description: |
-        Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
-        more information.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Api access disabled error response example
-              description: |
-                The following example shows the response body of an api access disabled error. This error is returned when
-                your account's API access has been revoked.
-              value:
-                status: api_access_disabled
-                message: |
-                  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
-                  more information.
-    InsufficientCreditsError:
-      description: |
-        You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
-        alternatively wait for your credits to be replenished.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Insufficient credits error response example
-              description: |
-                The following example shows the response body of an insufficient credits error. This error is returned when
-                you don't have enough credits to perform this request.
-              value:
-                status: insufficient_credits
-                message: You don't have enough credits to perform this request
-    InvalidApiKeyError:
-      description: |
-        The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
-        the request header has either been deleted or doesn't exist.
-      headers:
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Error'
-          examples:
-            default:
-              summary: Invalid API key error response example
-              description: |
-                The following example shows the response body of an invalid API key error. This error is returned when an
-                invalid API key is provided in the request header.
-              value:
-                status: invalid_api_key
-                message: The API key provided is invalid
   parameters:
     count:
       name: count
@@ -2648,179 +2874,3 @@ components:
         API key required to authenticate requests to the AlsoAsked API. An API key can be obtained by registering for an
         account and creating a key under the developer settings. The key must be passed in the header of each request
         with the key name `X-Api-Key`. Without an API key, all requests will be rejected.
-paths:
-  /account:
-    get:
-      operationId: getAccount
-      tags:
-        - Account
-      summary: Get account information
-      description: |
-        Get information about the current user's account.
-      security:
-        - apiKey: []
-      responses:
-        '200':
-          $ref: '#/components/responses/GetAccount'
-        '401':
-          $ref: '#/components/responses/MissingApiKeyError'
-        '402':
-          $ref: '#/components/responses/InsufficientPlanError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '429':
-          $ref: '#/components/responses/RateLimitExceededError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/UnderMaintenanceError'
-  /search:
-    get:
-      operationId: listSearches
-      tags:
-        - Search
-      summary: List searches
-      description: |
-        Get a paginated list of searches performed by the current user, sorted by the date they were created, with the most
-        recent searches appearing first.
-      security:
-        - apiKey: []
-      parameters:
-        - $ref: '#/components/parameters/count'
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/ListSearches'
-        '401':
-          $ref: '#/components/responses/MissingApiKeyError'
-        '402':
-          $ref: '#/components/responses/InsufficientPlanError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '422':
-          $ref: '#/components/responses/ValidationError'
-        '429':
-          $ref: '#/components/responses/RateLimitExceededError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/UnderMaintenanceError'
-    post:
-      operationId: performSearch
-      tags:
-        - Search
-      summary: Perform search
-      description: |
-        Perform a search request. The search request is performed either synchronously, meaning the request hangs until the
-        search has completed, or asynchronously, meaning the request returns immediately, which is determined by the `async`
-        request parameter. If the search request completes successfully, as determined by the `status` property, the search
-        results are returned in the response body. Synchronous requests wait for a maximum of 300 seconds for the search to
-        complete, until which point the response is returned as if it was an asynchronous request.
-      security:
-        - apiKey: []
-      requestBody:
-        $ref: '#/components/requestBodies/PerformSearch'
-      responses:
-        '200':
-          $ref: '#/components/responses/PerformSearch'
-        '400':
-          $ref: '#/components/responses/InvalidBodyError'
-        '401':
-          $ref: '#/components/responses/MissingApiKeyError'
-        '402':
-          $ref: '#/components/responses/PaymentRequiredError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '422':
-          $ref: '#/components/responses/ValidationError'
-        '429':
-          $ref: '#/components/responses/RateLimitExceededError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/UnderMaintenanceError'
-  /search/webhook-example:
-    post:
-      operationId: searchWebhookExample
-      tags:
-        - Search
-      summary: Search webhook example
-      description: |
-        This is an **example** of a web hook endpoint used to receive notifications when a search request's status changes.
-        The `/search/webhook-example` doesn't exist, but is used to demonstrate how to implement a webhook endpoint to
-        receive notifications when a search request's status changes, alongside the headers and request body that will be
-        sent to the webhook endpoint.
-      parameters:
-        - $ref: '#/components/parameters/X-AlsoAsked-Credits'
-        - $ref: '#/components/parameters/X-AlsoAsked-Api-Version'
-        - $ref: '#/components/parameters/X-AlsoAsked-Signature'
-        - $ref: '#/components/parameters/X-AlsoAsked-Timestamp'
-        - $ref: '#/components/parameters/X-AlsoAsked-Webhook-Event'
-        - $ref: '#/components/parameters/X-AlsoAsked-Environment'
-      requestBody:
-        $ref: '#/components/requestBodies/StatusChangedWebhook'
-      responses:
-        '200':
-          description: |
-            The webhook notification was received successfully.
-        '204':
-          description: |
-            The webhook notification was received successfully.
-  /search/{searchId}:
-    get:
-      operationId: getSearch
-      tags:
-        - Search
-      summary: Get search
-      description: |
-        Get the details of a search request, and if the search request has completed successfully, obtain the search results.
-      security:
-        - apiKey: []
-      parameters:
-        - $ref: '#/components/parameters/searchId'
-      responses:
-        '200':
-          $ref: '#/components/responses/GetSearch'
-        '401':
-          $ref: '#/components/responses/MissingApiKeyError'
-        '402':
-          $ref: '#/components/responses/InsufficientPlanError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '404':
-          $ref: '#/components/responses/NotFoundError'
-        '429':
-          $ref: '#/components/responses/RateLimitExceededError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/UnderMaintenanceError'
-    delete:
-      operationId: deleteSearch
-      tags:
-        - Search
-      summary: Delete search
-      description: |
-        Delete a search request. The search results will be deleted from the cache and the search result's term masked in the
-        search history.
-      security:
-        - apiKey: []
-      parameters:
-        - $ref: '#/components/parameters/searchId'
-      responses:
-        '204':
-          $ref: '#/components/responses/DeleteSearch'
-        '401':
-          $ref: '#/components/responses/MissingApiKeyError'
-        '402':
-          $ref: '#/components/responses/InsufficientPlanError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '404':
-          $ref: '#/components/responses/NotFoundError'
-        '429':
-          $ref: '#/components/responses/RateLimitExceededError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/UnderMaintenanceError'

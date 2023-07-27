@@ -1,9 +1,26 @@
-description: Forbidden
+description: |
+  The forbidden error object is returned in the response body of any request that results a `403 Forbidden` error.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
 content:
   application/json:
     schema:
-      oneOf:
-        - $ref: ./InvalidApiKeyError.yaml
-        - $ref: ./ApiAccessDisabledError.yaml
-      discriminator:
-        propertyName: status
+      $ref: ../../schemas/errors/ForbiddenError.yaml
+    examples:
+      InvalidApiKeyError:
+        summary: Invalid API key error response example
+        description: |
+          The following example shows the response body of an invalid API key error. This error is returned when an
+          invalid API key is provided in the request header.
+        value:
+          $ref: ../../../examples/errors/InvalidApiKeyError.yaml
+      ApiAccessDisabledError:
+        summary: API access disabled error response example
+        description: |
+          The following example shows the response body of an api access disabled error. This error is returned when
+          your account's API access has been revoked.
+        value:
+          $ref: ../../../examples/errors/ApiAccessDisabledError.yaml

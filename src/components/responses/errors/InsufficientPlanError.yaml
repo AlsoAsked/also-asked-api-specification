@@ -9,7 +9,7 @@ headers:
 content:
   application/json:
     schema:
-      $ref: ../../schemas/misc/Error.yaml
+      $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
         summary: Insufficient plan error response example

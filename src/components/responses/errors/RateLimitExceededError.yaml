@@ -12,7 +12,7 @@ headers:
 content:
   application/json:
     schema:
-      $ref: ../../schemas/misc/Error.yaml
+      $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
         summary: Rate limit exceeded error response example

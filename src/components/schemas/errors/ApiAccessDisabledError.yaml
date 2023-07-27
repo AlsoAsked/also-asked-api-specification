@@ -1,0 +1,24 @@
+title: Api Access Disabled Error
+type: object
+description: |
+  Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+  more information.
+properties:
+  status:
+    type: string
+    description: |
+      The error status is an identifier for the type of error that occurred.
+    enum:
+      $ref: ../../../enums/ErrorType.yaml
+    example: api_access_disabled
+    pattern: ^api_access_disabled$
+  message:
+    type: string
+    description: |
+      A human-readable message describing the error. This message is intended to be read by a developer and is
+      not suitable for display to an end user.
+    example: |
+      Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
+      more information.
+example:
+  $ref: ../../../examples/errors/ApiAccessDisabledError.yaml

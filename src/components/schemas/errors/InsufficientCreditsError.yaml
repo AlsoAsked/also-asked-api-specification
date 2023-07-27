@@ -1,0 +1,22 @@
+title: Insufficient Credits Error
+type: object
+description: |
+  You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
+  alternatively wait for your credits to be replenished.
+properties:
+  status:
+    type: string
+    description: |
+      The error status is an identifier for the type of error that occurred.
+    enum:
+      $ref: ../../../enums/ErrorType.yaml
+    example: insufficient_credits
+    pattern: ^insufficient_credits$
+  message:
+    type: string
+    description: |
+      A human-readable message describing the error. This message is intended to be read by a developer and is
+      not suitable for display to an end user.
+    example: You don't have enough credits to perform this request.
+example:
+  $ref: ../../../examples/errors/InsufficientCreditsError.yaml

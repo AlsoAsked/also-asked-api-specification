@@ -1,9 +1,27 @@
-description: Payment required
+description: |
+  The payment required error object is returned in the response body of any request that results a
+  `402 Payment Required` error.
+headers:
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
 content:
   application/json:
     schema:
-      oneOf:
-        - $ref: ./InsufficientPlanError.yaml
-        - $ref: ./InsufficientCreditsError.yaml
-      discriminator:
-        propertyName: status
+      $ref: ../../schemas/errors/PaymentRequiredError.yaml
+    examples:
+      InsufficientPlanError:
+        summary: Insufficient plan error response example
+        description: |
+          The following example shows the response body of an insufficient plan error. This error is returned when
+          your account's plan doesn't allow you to perform this request.
+        value:
+          $ref: ../../../examples/errors/InsufficientPlanError.yaml
+      InsufficientCreditsError:
+        summary: Insufficient credits error response example
+        description: |
+          The following example shows the response body of an insufficient credits error. This error is returned when
+          you don't have enough credits to perform this request.
+        value:
+          $ref: ../../../examples/errors/InsufficientCreditsError.yaml

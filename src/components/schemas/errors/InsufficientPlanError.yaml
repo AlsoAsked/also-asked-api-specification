@@ -1,0 +1,22 @@
+title: Insufficient Plan Error
+type: object
+description: |
+  Your account's plan doesn't allow you to perform this request. You can upgrade your account to the Pro plan to access
+  the live API.
+properties:
+  status:
+    type: string
+    description: |
+      The error status is an identifier for the type of error that occurred.
+    enum:
+      $ref: ../../../enums/ErrorType.yaml
+    example: insufficient_plan
+    pattern: ^insufficient_plan$
+  message:
+    type: string
+    description: |
+      A human-readable message describing the error. This message is intended to be read by a developer and is
+      not suitable for display to an end user.
+    example: You must upgrade your account to a Pro plan to access the live API.
+example:
+  $ref: ../../../examples/errors/InsufficientPlanError.yaml
