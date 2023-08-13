@@ -336,7 +336,7 @@ components:
             not suitable for display to an end user.
       example:
         status: internal_server
-        message: An internal server error has occurred
+        message: An internal server error has occurred.
     InvalidApiKeyError:
       title: Invalid Api Key Error
       type: object
@@ -370,7 +370,7 @@ components:
           example: The API key provided is invalid.
       example:
         status: invalid_api_key
-        message: The API key provided is invalid
+        message: The API key provided is invalid.
     ApiAccessDisabledError:
       title: Api Access Disabled Error
       type: object
@@ -2094,7 +2094,7 @@ components:
           example: You must upgrade your account to a Pro plan to access the live API.
       example:
         status: insufficient_plan
-        message: You must upgrade your account to a Pro plan to access the live API
+        message: You must upgrade your account to a Pro plan to access the live API.
     InsufficientCreditsError:
       title: Insufficient Credits Error
       type: object
@@ -2128,7 +2128,7 @@ components:
           example: You don't have enough credits to perform this request.
       example:
         status: insufficient_credits
-        message: You don't have enough credits to perform this request
+        message: You don't have enough credits to perform this request.
     PaymentRequiredError:
       title: Payment Required Error
       type: object
@@ -2192,7 +2192,7 @@ components:
                 API key is provided in the request header.
               value:
                 status: missing_api_key
-                message: No API key has been specified
+                message: No API key has been specified.
     InsufficientPlanError:
       description: |
         Your account's plan doesn't allow you to perform this request. You can upgrade your account to the Pro plan to access
@@ -2214,7 +2214,7 @@ components:
                 your account's plan doesn't allow you to perform this request.
               value:
                 status: insufficient_plan
-                message: You must upgrade your account to a Pro plan to access the live API
+                message: You must upgrade your account to a Pro plan to access the live API.
     ForbiddenError:
       description: |
         The forbidden error object is returned in the response body of any request that results a `403 Forbidden` error.
@@ -2235,7 +2235,7 @@ components:
                 invalid API key is provided in the request header.
               value:
                 status: invalid_api_key
-                message: The API key provided is invalid
+                message: The API key provided is invalid.
             ApiAccessDisabledError:
               summary: API access disabled error response example
               description: |
@@ -2270,7 +2270,7 @@ components:
                 client has made too many requests in a short period of time.
               value:
                 status: rate_limit_exceeded
-                message: The maximum number of requests per second have been exceeded
+                message: The maximum number of requests per second have been exceeded.
     InternalServerError:
       description: |
         An internal server error occurred. This error is returned when the server encounters an unexpected issue
@@ -2292,7 +2292,7 @@ components:
                 server encounters an unexpected issue while processing the request.
               value:
                 status: internal_server
-                message: An internal server error has occurred
+                message: An internal server error has occurred.
     UnderMaintenanceError:
       description: |
         The API is currently under maintenance. This error is returned when the API is temporarily unavailable due to
@@ -2309,7 +2309,7 @@ components:
                 API is temporarily unavailable due to maintenance.
               value:
                 status: under_maintenance
-                message: The API is currently under maintenance
+                message: The API is currently under maintenance.
     ListSearches:
       description: |
         The paginated search results object is returned in the response body of a successful request for previous search
@@ -2508,7 +2508,7 @@ components:
                 request body isn't valid JSON or when the request body content type isn't `application/json`.
               value:
                 status: invalid_body
-                message: The request body is invalid
+                message: The request body is invalid.
     PaymentRequiredError:
       description: |
         The payment required error object is returned in the response body of any request that results a
@@ -2530,7 +2530,7 @@ components:
                 your account's plan doesn't allow you to perform this request.
               value:
                 status: insufficient_plan
-                message: You must upgrade your account to a Pro plan to access the live API
+                message: You must upgrade your account to a Pro plan to access the live API.
             InsufficientCreditsError:
               summary: Insufficient credits error response example
               description: |
@@ -2538,7 +2538,7 @@ components:
                 you don't have enough credits to perform this request.
               value:
                 status: insufficient_credits
-                message: You don't have enough credits to perform this request
+                message: You don't have enough credits to perform this request.
     GetSearch:
       description: |
         The search request results object is returned when getting the details of a search request, containing details such
