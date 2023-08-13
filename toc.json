@@ -1,0 +1,14 @@
+{
+  "collapseTableOfContents": false,
+  "items": [
+    {
+      "type": "divider",
+      "title": "APIS"
+    },
+    {
+      "type": "item",
+      "title": "AlsoAsked",
+      "uri": "/openapi/openapi.yaml"
+    }
+  ]
+}
