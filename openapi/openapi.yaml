@@ -16,7 +16,8 @@ info:
 
     With the **AlsoAsked API**, you can:
 
-    - Execute searches in real-time or in a delayed manner.
+    - Conduct synchronous (waiting for completion) or asynchronous (immediate return with ID; updates via webhooks)
+      searches.
     - Retrieve search results.
     - View your past search history.
     - Use webhooks to receive updates on search status, from start to completion or any failures.
