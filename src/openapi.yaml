@@ -19,7 +19,7 @@ info:
     - Retrieve intricate search outcomes.
     - Access a historical log of your search endeavors.
     - Seamlessly integrate with webhooks to stay informed on various search stages, from initiation to success or
-    potential failures.
+      potential failures.
     - Delve into your account specifics, tracking vital metrics like remaining credits.
 
     ## Prerequisites for Usage
