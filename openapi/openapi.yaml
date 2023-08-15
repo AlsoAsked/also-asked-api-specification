@@ -9,36 +9,30 @@ info:
 
     ## Overview
 
-    **AlsoAsked API** stands as a robust tool enabling seamless extraction of 'People Also Ask' results. Designed for
-    developers, it acts as a window to unveil a wealth of insights on questions frequently inquired in relation to
-    specific search terms.
+    The **AlsoAsked API** offers developers access to 'People Also Ask' search results. This API provides insights into
+    frequently asked questions related to specific search queries.
 
-    ## Distinctive Features
+    ## Features
 
-    With the **AlsoAsked API**, you're empowered to:
+    With the **AlsoAsked API**, you can:
 
-    - Conduct search operations both in real-time and in deferred modes.
-    - Retrieve intricate search outcomes.
-    - Access a historical log of your search endeavors.
-    - Seamlessly integrate with webhooks to stay informed on various search stages, from initiation to success or
-      potential failures.
-    - Delve into your account specifics, tracking vital metrics like remaining credits.
+    - Execute searches in real-time or in a delayed manner.
+    - Retrieve search results.
+    - View your past search history.
+    - Use webhooks to receive updates on search status, from start to completion or any failures.
+    - Access account details, including the count of remaining credits.
 
-    ## Prerequisites for Usage
+    ## Requirements
 
-    To harness the full potential of our live API, a **Pro subscription** is indispensable. However, for those in the
-    development phase, our sandbox API offers a glimpse into functionalities, albeit without actual 'People Also Ask'
-    results. This ensures you have a frictionless development experience and can transition seamlessly once you opt for
-    the **Pro subscription**.
+    A **Pro subscription** is necessary to use the live API. For developers in the initial stages, our sandbox API
+    provides a testing environment without returning actual 'People Also Ask' results. This allows for development and
+    testing before committing to a **Pro subscription**.
 
-    Elevate your access by upgrading to a **Pro subscription**. All details can be found on our
-    [pricing page](https://alsoasked.com/pricing).
+    For more on the **Pro subscription**, visit our [pricing page](https://alsoasked.com/pricing).
 
-    ## We're Here to Assist!
+    ## Support
 
-    Encounter a challenge? Have a query or simply wish to share feedback? We value our community and are here to
-    support. Connect with us at [help@alsoasked.com](mailto:help@alsoasked.com).
-  version: 1.0.0
+    If you have questions, issues, or feedback, please contact us at [help@alsoasked.com](mailto:help@alsoasked.com).
   license:
     name: Proprietary
     url: https://alsoasked.com/eula
@@ -47,6 +41,7 @@ info:
     name: AlsoAsked Support
     email: service@alsoasked.com
     url: https://help.alsoasked.com
+  version: 1.0.0
 servers:
   - url: https://alsoaskedapi.com/v1
     description: Live
