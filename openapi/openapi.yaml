@@ -3,8 +3,41 @@
 openapi: 3.1.0
 info:
   title: AlsoAsked
-  description: |
-    The AlsoAsked API allows you to manage your account, perform searches, access search history, and more.
+  description: |-
+    <!-- focus: false -->
+    ![AlsoAsked Logo](../assets/images/logo-blue.png)
+
+    ## Overview
+
+    **AlsoAsked API** stands as a robust tool enabling seamless extraction of 'People Also Ask' results. Designed for
+    developers, it acts as a window to unveil a wealth of insights on questions frequently inquired in relation to
+    specific search terms.
+
+    ## Distinctive Features
+
+    With the **AlsoAsked API**, you're empowered to:
+
+    - Conduct search operations both in real-time and in deferred modes.
+    - Retrieve intricate search outcomes.
+    - Access a historical log of your search endeavors.
+    - Seamlessly integrate with webhooks to stay informed on various search stages, from initiation to success or
+    potential failures.
+    - Delve into your account specifics, tracking vital metrics like remaining credits.
+
+    ## Prerequisites for Usage
+
+    To harness the full potential of our live API, a **Pro subscription** is indispensable. However, for those in the
+    development phase, our sandbox API offers a glimpse into functionalities, albeit without actual 'People Also Ask'
+    results. This ensures you have a frictionless development experience and can transition seamlessly once you opt for
+    the **Pro subscription**.
+
+    Elevate your access by upgrading to a **Pro subscription**. All details can be found on our
+    [pricing page](https://alsoasked.com/pricing).
+
+    ## We're Here to Assist!
+
+    Encounter a challenge? Have a query or simply wish to share feedback? We value our community and are here to
+    support. Connect with us at [help@alsoasked.com](mailto:help@alsoasked.com).
   version: 1.0.0
   license:
     name: Proprietary
