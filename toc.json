@@ -2,6 +2,11 @@
   "collapseTableOfContents": false,
   "items": [
     {
+      "type": "item",
+      "title": "Webhooks",
+      "uri": "docs/webhooks.md"
+    },
+    {
       "type": "divider",
       "title": "APIS"
     },
