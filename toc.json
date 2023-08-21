@@ -18,6 +18,11 @@
     },
     {
       "type": "item",
+      "title": "Account details",
+      "uri": "docs/account-details.md"
+    },
+    {
+      "type": "item",
       "title": "Rate limiting",
       "uri": "docs/rate-limiting.md"
     },
