@@ -10,7 +10,7 @@ This prevents you from having to continuously poll the search API endpoints to s
 
 ## Webhook endpoints
 
-You can register webhook endpoints under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and clicking the "Add webhook endpoint" button. You'll be asked to generate a webhook signing key if you haven't done so already, this is important for security and we'll cover this further down.
+You can register webhook endpoints under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and clicking the **Add webhook endpoint** button. You'll be asked to generate a webhook signing key if you haven't done so already, this is important for security and we'll cover this further down.
 
 <!-- focus: false -->
 ![Add webhook endpoint](../assets/images/add-webhook-endpoint-modal.png)
@@ -137,7 +137,7 @@ You can see an example of a webhook request in our [API documentation](https://d
 
 ## Inspecting webhook events
 
-When a webhook event occurs, you can inspect the event under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) by scrolling down to the "Webhook events" section.
+When a webhook event occurs, you can inspect the event under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) by scrolling down to the **Webhook events** section.
 
 <!-- focus: false -->
 ![Webhook events table](../assets/images/webhook-events-table.png)
@@ -157,7 +157,7 @@ To prevent a failed event from being retried, you can remove either the webhook 
 
 By default, searches made through the [AlsoAsked website](https://alsoasked.com) will not trigger webhook events. This is to prevent you from receiving notifications for searches you didn't make through the API.
 
-If you wish to receive webhook events for searches made through the website, you can enable this under [Developers -> API settings](https://alsoasked.com/developer/settings) by ticking the "Website searches should notify webhooks" option and saving the settings.
+If you wish to receive webhook events for searches made through the website, you can enable this under [Developers -> API settings](https://alsoasked.com/developer/settings) by ticking the **Website searches should notify webhooks** option and saving the settings.
 
 <!-- focus: false -->
 ![Enable "Website searches should notify webhooks"](../assets/images/website-searches-api-settings.png)
@@ -174,7 +174,7 @@ It's very important you save this key somewhere secure and private when it's gen
 <!-- focus: false -->
 ![Generated webhook signing key](../assets/images/generate-webhook-signing-key-modal.png)
 
-To generate a replacement signing key, go to [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and click the "Regenerate signing key" button in the "Webhook signing key" section.
+To generate a replacement signing key, go to [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and click the **Regenerate signing key** button in the **Webhook signing key** section.
 
 <!-- focus: false -->
 ![Generate a replacement webhook signing key](../assets/images/regenerate-webhook-signing-key.png)
