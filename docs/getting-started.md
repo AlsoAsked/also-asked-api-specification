@@ -2,10 +2,10 @@
 stoplight-id: mb7qgcm4twoet
 ---
 
+# Getting started
+
 <!-- focus: false -->
 ![AlsoAsked Logo](../assets/images/logo-blue.png)
-
-# Getting started
 
 ## Overview
 
