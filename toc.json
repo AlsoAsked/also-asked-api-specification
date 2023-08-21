@@ -17,12 +17,17 @@
       "uri": "docs/webhooks.md"
     },
     {
+      "type": "item",
+      "title": "Rate limiting",
+      "uri": "docs/rate-limiting.md"
+    },
+    {
       "type": "divider",
-      "title": "APIS"
+      "title": "API"
     },
     {
       "type": "item",
-      "title": "AlsoAsked",
+      "title": "API reference",
       "uri": "/openapi/openapi.yaml"
     }
   ]
