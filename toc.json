@@ -3,6 +3,11 @@
   "items": [
     {
       "type": "item",
+      "title": "Getting started",
+      "uri": "docs/getting-started.md"
+    },
+    {
+      "type": "item",
       "title": "Authentication",
       "uri": "docs/authentication.md"
     },
