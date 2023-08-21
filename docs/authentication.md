@@ -12,14 +12,20 @@ AlsoAsked uses API keys to authenticate requests. You can view and manage your A
 
 To create an API key, click the **Create API key** button. You will be prompted to give your key a name, and specify which environment the key is for. The name is for your reference only and is not used to identify the key anywhere else.
 
-<!-- focus: false -->
+<!--
+focus: center
+bg: primary
+-->
 ![Add API key](../assets/images/create-api-key-modal.png)
 
 Your API key will be displayed in the modal. You can copy it to your clipboard by clicking the **Copy** button. Save this key somewhere safe, as it will not be displayed again.
 
 Depending on whether your API key is for the **Live** or **Sandbox** environment, it will be prefixed with `aa-live-` or `aa-sandbox-` respectively.
 
-<!-- focus: false -->
+<!--
+focus: center
+bg: primary
+-->
 ![Generated API key](../assets/images/generated-api-key-modal.png)
 
 <!-- theme: info -->
