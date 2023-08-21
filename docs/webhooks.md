@@ -12,12 +12,12 @@ This prevents you from having to continuously poll the search API endpoints to s
 
 You can register webhook endpoints under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and clicking the "Add webhook endpoint" button. You'll be asked to generate a webhook signing key if you haven't done so already, this is important for security and we'll cover this further down.
 
+<!-- focus: false -->
 ![Add webhook endpoint](../assets/images/add-webhook-endpoint-modal.png)
 
 You'll be asked to enter a URL, which we'll make HTTP requests to when the webhook event occurs, the environment which the webhook is for, and the events you'd like to receive notifications for.
 
 <!-- theme: info -->
-
 > #### Maximum webhook endpoint count
 >
 > You can create a maximum of 5 webhook endpoints, but can delete and create new ones as needed.
@@ -139,10 +139,12 @@ You can see an example of a webhook request in our [API documentation](https://d
 
 When a webhook event occurs, you can inspect the event under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) by scrolling down to the "Webhook events" section.
 
+<!-- focus: false -->
 ![Webhook events table](../assets/images/webhook-events-table.png)
 
 This will display a table of webhook events sorted by most recently sent. You can click the inspect icon ![Inspect webhook event icon](../assets/images/inspect-webhook-event.png) to see more information about the event, including the headers, and the request and response bodies.
 
+<!-- focus: false -->
 ![Inspect a webhook event](../assets/images/inspect-webhook-event-modal.png)
 
 ## Retry mechanism
@@ -157,20 +159,24 @@ By default, searches made through the [AlsoAsked website](https://alsoasked.com)
 
 If you wish to receive webhook events for searches made through the website, you can enable this under [Developers -> API settings](https://alsoasked.com/developer/settings) by ticking the "Website searches should notify webhooks" option and saving the settings.
 
+<!-- focus: false -->
 ![Enable "Website searches should notify webhooks"](../assets/images/website-searches-api-settings.png)
 
 ## Webhook signing key
 
 When you create a webhook endpoint, you'll be asked to generate a webhook signing key if you haven't done so already. This is used to sign the webhook requests we send you, and is used to prevent replay attacks.
 
+<!-- focus: false -->
 ![Generate a webhook signing key](../assets/images/generate-webhook-signing-key-message.png)
 
 It's very important you save this key somewhere secure and private when it's generated, as it will not be shown again. If you lose the key, you'll need to generate a new one, and update all of your webhook endpoints with the new key.
 
+<!-- focus: false -->
 ![Generated webhook signing key](../assets/images/generate-webhook-signing-key-modal.png)
 
 To generate a replacement signing key, go to [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and click the "Regenerate signing key" button in the "Webhook signing key" section.
 
+<!-- focus: false -->
 ![Generate a replacement webhook signing key](../assets/images/regenerate-webhook-signing-key.png)
 
 ## Webhook security
