@@ -26,7 +26,7 @@ The response will include the following JSON body:
 }
 ```
 
-For more details, see the [API reference](../openapi/openapi.yaml/paths/~1account) for the `GET /v1/account` endpoint.
+For more details, see the [API reference](/docs/also-asked/b3b98451f0ae2-get-account-information) for the `GET /v1/account` endpoint.
 
 ## Try it out
 
