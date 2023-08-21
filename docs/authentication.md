@@ -14,7 +14,7 @@ To create an API key, click the **Create API key** button. You will be prompted 
 
 <!--
 focus: center
-bg: primary
+bg: "#2469fa"
 -->
 ![Add API key](../assets/images/create-api-key-modal.png)
 
@@ -24,7 +24,7 @@ Depending on whether your API key is for the **Live** or **Sandbox** environment
 
 <!--
 focus: center
-bg: primary
+bg: "#2469fa"
 -->
 ![Generated API key](../assets/images/generated-api-key-modal.png)
 
