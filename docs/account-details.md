@@ -2,9 +2,7 @@
 stoplight-id: 203mwmqb8ei4k
 ---
 
-# Account details
-
-## Overview
+# Getting account details
 
 The **Account details** endpoint allows you to view your account details, including the number of credits remaining.
 

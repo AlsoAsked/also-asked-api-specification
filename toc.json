@@ -13,18 +13,27 @@
     },
     {
       "type": "item",
+      "title": "Sandbox",
+      "uri": "docs/sandbox.md"
+    },
+    {
+      "type": "item",
       "title": "Webhooks",
       "uri": "docs/webhooks.md"
     },
     {
       "type": "item",
-      "title": "Account details",
-      "uri": "docs/account-details.md"
+      "title": "Rate limiting",
+      "uri": "docs/rate-limiting.md"
+    },
+    {
+      "type": "divider",
+      "title": "How-to"
     },
     {
       "type": "item",
-      "title": "Rate limiting",
-      "uri": "docs/rate-limiting.md"
+      "title": "Get account details",
+      "uri": "docs/account-details.md"
     },
     {
       "type": "divider",
