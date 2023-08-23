@@ -40,12 +40,12 @@ If you need to make requests to a local development environment, you can use a t
 
 The following webhook events are available:
 
-| **Name**         | **Identifier**   | **Description**                                                             |
-|------------------|------------------|-----------------------------------------------------------------------------|
-| Search created   | search_created   | A search request has been created and queued to be processed                |
-| Search started   | search_started   | A search request has began to be processed, and will either succeed or fail |
-| Search succeeded | search_succeeded | A search request has succeeded, and results are available                   |
-| Search failed    | search_failed    | After retrying a certain number of times, a search request has failed       |
+| **Name** | **Identifier** | **Description** |
+|---|---|---|
+| Search created | `search_created` | A search request has been created and queued to be processed. |
+| Search started | `search_started` | A search request has began to be processed, and will either succeed or fail. |
+| Search succeeded | `search_succeeded` | A search request has succeeded, and results are available. |
+| Search failed | `search_failed` | After retrying a certain number of times, a search request has failed. |
 
 When we send you a webhook notification, you can use either the `X-AlsoAsked-Webhook-Event` header or the `status` property in the JSON request body to determine which event has occurred.
 
@@ -55,15 +55,14 @@ When we send you a webhook notification, we'll send you a JSON payload in the re
 
 The following headers are sent with each webhook request:
 
-| **Header**                | **Description**                                                                                                                                                                                      | **Example**                                                                                                               |
-|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| X-AlsoAsked-Api-Version   | The version of the AlsoAsked API the webhook event originated from.                                                                                                                                  | `X-AlsoAsked-Api-Version: 1.0`                                                                                            |
-| X-AlsoAsked-Credits       | The number of credits remaining for your account.                                                                                                                                                    | `X-AlsoAsked-Credits: 984`                                                                                                |
-| X-AlsoAsked-Timestamp     | The time which the webhook event was sent in UTC epoch seconds. You can use this alongside the `X-AlsoAsked-Signature` below to prevent replay attacks.                                              | `X-AlsoAsked-Timestamp: 1672531200`                                                                                       |
-| X-AlsoAsked-Signature     | A cryptographic hash of the timestamp specified in the `X-AlsoAsked-Timestamp` concatenated with a `.` and the request body. The hash algorithm used is `HMAC-SHA384` with your webhook signing key. | `X-AlsoAsked-Signature: edd3bf9297835c7b...[truncated]` |
-| X-AlsoAsked-Webhook-Event | The type of webhook event which triggered the notification.                                                                                                                                          | `X-AlsoAsked-Webhook-Event: search_succeeded`                                                                             |
-| X-AlsoAsked-Environment   | The API environment the webhook event originates from.                                                                                                                                               | `X-AlsoAsked-Environment: live`                                                                                           |
-
+| **Header** | **Description** | **Example** |
+|---|---|---|
+| X-AlsoAsked-Api-Version | The version of the AlsoAsked API the webhook event originated from. | `1.0` |
+| X-AlsoAsked-Credits | The number of credits remaining for your account. | `984` |
+| X-AlsoAsked-Timestamp | The time which the webhook event was sent in UTC epoch seconds.<br>You can use this alongside the `X-AlsoAsked-Signature` below to prevent replay attacks. | ` 1672531200` |
+| X-AlsoAsked-Signature | A cryptographic hash of the timestamp specified in the `X-AlsoAsked-Timestamp` concatenated with a `.` and the request body.<br>The hash algorithm used is `HMAC-SHA384` with your webhook signing key. | `edd3bf9297835c7b...[truncated]` |
+| X-AlsoAsked-Webhook-Event | The type of webhook event which triggered the notification. | `search_succeeded` |
+| X-AlsoAsked-Environment | The API environment the webhook event originates from.<br>Either `sandbox` or `live`. | `live` |
 The user-agent will be `AlsoAsked/1.0`, although the version suffix may change in the future, and the content type will be `application/json`.
 
 The request body will be a JSON object following the [**Search Request Results**](https://developers.alsoasked.com/docs/also-asked/f019600cf755a-search-request-results) schema, for example:

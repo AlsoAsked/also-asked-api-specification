@@ -1,4 +1,4 @@
-title: Search request options
+title: Search Request Options
 type: object
 description: |
   The search request object is used to specify the search criteria for a search request.

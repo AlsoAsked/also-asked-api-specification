@@ -992,7 +992,7 @@ components:
             updated_at: '2023-01-15T18:50:00Z'
             cached_at: '2023-01-15T18:50:00Z'
     SearchRequestOptions:
-      title: Search request options
+      title: Search Request Options
       type: object
       description: |
         The search request object is used to specify the search criteria for a search request.

@@ -2,13 +2,13 @@
 stoplight-id: 203mwmqb8ei4k
 ---
 
-# Getting account details
+# Account details
 
-The **Account details** endpoint allows you to view your account details, including the number of credits remaining.
+The [**`GET /v1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint allows you to view your account details, including the number of credits remaining.
 
 ## Endpoint
 
-To get your account details, call the `GET /v1/account` endpoint, with your API key included in the `X-Api-Key` header.
+To get your account details, call the [**`GET /v1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint, with your API key included in the `X-Api-Key` header.
 
 The response will include the following JSON body:
 
@@ -24,7 +24,7 @@ The response will include the following JSON body:
 }
 ```
 
-For more details, see the [**API reference**](/docs/also-asked/b3b98451f0ae2-get-account-information) for the `GET /v1/account` endpoint.
+For more details, see the [**API reference**](/docs/also-asked/b3b98451f0ae2-get-account-information) for the [**`GET /v1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint.
 
 ## Try it out
 
