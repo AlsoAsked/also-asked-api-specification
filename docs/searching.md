@@ -27,7 +27,7 @@ It's best to use the synchronous search method for simpler use cases, where you 
 <!-- theme: info -->
 > #### Synchronous search timeout
 >
-> The AlsoAsked API will timeout a synchronous search request if it takes more than 90 seconds to complete. If this happens, the API still return a **Search Request Results** containing the search ID and status, but the results will be empty. You can then use the search ID to retrieve the results later using the [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
+> The AlsoAsked API will timeout a synchronous search request if it takes more than 90 seconds to complete. If this happens, the API still return a [**Search Request Results**](/docs/also-asked/f019600cf755a-search-request-results) schema response containing the search ID and status, but the results will be empty. You can then use the search ID to retrieve the results later using the [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
 
 #### Asynchronous uses, benefits, and drawbacks
 

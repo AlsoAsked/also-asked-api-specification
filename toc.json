@@ -37,6 +37,11 @@
       "uri": "docs/searching.md"
     },
     {
+      "type": "item",
+      "title": "Search history",
+      "uri": "docs/search-history.md"
+    },
+    {
       "type": "divider",
       "title": "API"
     },
