@@ -56,4 +56,4 @@ When this happens, use the `Retry-After` header to determine how long to wait be
 > You won't be able to make any requests until the rate limit resets, even if you use a different API key or IP address.
 >
 > If you continue to receive this response, or believe you need a higher request
->  limit, please [contact us](mailto:help@alsoasked.com).
+>  limit, please [**contact us**](mailto:help@alsoasked.com).

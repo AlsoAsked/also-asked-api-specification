@@ -10,7 +10,7 @@ This prevents you from having to continuously poll the search API endpoints to s
 
 ## Webhook endpoints
 
-You can register webhook endpoints under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and clicking the **Add webhook endpoint** button. You'll be asked to generate a webhook signing key if you haven't done so already, this is important for security and we'll cover this further down.
+You can register webhook endpoints under [**Developers -> Webhooks**](https://alsoasked.com/developer/webhooks) and clicking the **Add webhook endpoint** button. You'll be asked to generate a webhook signing key if you haven't done so already, this is important for security and we'll cover this further down.
 
 <!--
 focus: center
@@ -25,7 +25,7 @@ You'll be asked to enter a URL, which we'll make HTTP requests to when the webho
 >
 > You can create a maximum of 5 webhook endpoints, but can delete and create new ones as needed.
 >
-> If you believe you need more than 5 webhook endpoints, please [contact us](mailto:help@alsoasked.com), but remember that a single webhook endpoint can be used for multiple events.
+> If you believe you need more than 5 webhook endpoints, please [**contact us**](mailto:help@alsoasked.com), but remember that a single webhook endpoint can be used for multiple events.
 
 There are limitations when it comes to the URL you can enter:
 
@@ -34,7 +34,7 @@ There are limitations when it comes to the URL you can enter:
 - We currently only support IPv4 addresses, but will support IPv6 in the future
 - We don't allow requests to redirect to another URL, so if your domain has redirect rules setup for HTTP to HTTPS, ensure you enter the HTTPS URL
 
-If you need to make requests to a local development environment, you can use a tool like [ngrok](https://ngrok.com/) or [localhost.run](https://localhost.run/) to create a tunnel to your local environment.
+If you need to make requests to a local development environment, you can use a tool like [**ngrok**](https://ngrok.com/) or [**localhost.run**](https://localhost.run/) to create a tunnel to your local environment.
 
 ## Webhook events
 
@@ -66,7 +66,7 @@ The following headers are sent with each webhook request:
 
 The user-agent will be `AlsoAsked/1.0`, although the version suffix may change in the future, and the content type will be `application/json`.
 
-The request body will be a JSON object following the [Search Request Results](https://developers.alsoasked.com/docs/also-asked/f019600cf755a-search-request-results) schema, for example:
+The request body will be a JSON object following the [**Search Request Results**](https://developers.alsoasked.com/docs/also-asked/f019600cf755a-search-request-results) schema, for example:
 
 ```json
 {
@@ -136,11 +136,11 @@ The request body will be a JSON object following the [Search Request Results](ht
 }
 ```
 
-You can see an example of a webhook request in our [API documentation](https://developers.alsoasked.com/docs/also-asked/c5d1f380b6f63-search-webhook-example).
+You can see an example of a webhook request in our [**API documentation**](https://developers.alsoasked.com/docs/also-asked/c5d1f380b6f63-search-webhook-example).
 
 ## Inspecting webhook events
 
-When a webhook event occurs, you can inspect the event under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) by scrolling down to the **Webhook events** section.
+When a webhook event occurs, you can inspect the event under [**Developers -> Webhooks**](https://alsoasked.com/developer/webhooks) by scrolling down to the **Webhook events** section.
 
 <!--
 focus: center
@@ -160,13 +160,13 @@ bg: "#2469fa"
 
 If your webhook endpoint returns a status other than `200` or `202`, or the connection times out, we'll retry the request forever every 1 minute until it succeeds.
 
-To prevent a failed event from being retried, you can remove either the webhook endpoint, or the webhook event itself, under [Developers -> Webhooks](https://alsoasked.com/developer/webhooks).
+To prevent a failed event from being retried, you can remove either the webhook endpoint, or the webhook event itself, under [**Developers -> Webhooks**](https://alsoasked.com/developer/webhooks).
 
 ## Website searches
 
-By default, searches made through the [AlsoAsked website](https://alsoasked.com) will not trigger webhook events. This is to prevent you from receiving notifications for searches you didn't make through the API.
+By default, searches made through the [**AlsoAsked website**](https://alsoasked.com) will not trigger webhook events. This is to prevent you from receiving notifications for searches you didn't make through the API.
 
-If you wish to receive webhook events for searches made through the website, you can enable this under [Developers -> API settings](https://alsoasked.com/developer/settings) by ticking the **Website searches should notify webhooks** option and saving the settings.
+If you wish to receive webhook events for searches made through the website, you can enable this under [**Developers -> API settings**](https://alsoasked.com/developer/settings) by ticking the **Website searches should notify webhooks** option and saving the settings.
 
 <!--
 focus: center
@@ -192,7 +192,7 @@ bg: "#2469fa"
 -->
 ![Generated webhook signing key](../assets/images/generate-webhook-signing-key-modal.png)
 
-To generate a replacement signing key, go to [Developers -> Webhooks](https://alsoasked.com/developer/webhooks) and click the **Regenerate signing key** button in the **Webhook signing key** section.
+To generate a replacement signing key, go to [**Developers -> Webhooks**](https://alsoasked.com/developer/webhooks) and click the **Regenerate signing key** button in the **Webhook signing key** section.
 
 <!--
 focus: center

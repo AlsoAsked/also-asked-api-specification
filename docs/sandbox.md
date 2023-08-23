@@ -42,11 +42,11 @@ The **Sandbox** environment provides all users with 1000 free credits per day. T
 <!-- theme: info -->
 > #### Increasing sandbox credits
 >
-> If you need a higher number of daily sandbox credits to test the API, or need them reset sooner than 24 hours, please [contact us](mailto:help@alsoasked.com).
+> If you need a higher number of daily sandbox credits to test the API, or need them reset sooner than 24 hours, please [**contact us**](mailto:help@alsoasked.com).
 
 ## Search results
 
-The **Sandbox** environment returns the same results schema as the **Live** environment, but with the following differences:
+The **Sandbox** environment returns the same [**Search Request Results**](https://developers.alsoasked.com/docs/also-asked/f019600cf755a-search-request-results) schema as the **Live** environment, but with the following differences:
 
 - The results are not real search results, and are generated randomly.
 - The results are not cached, and will be different each time you make a request.

@@ -27,7 +27,7 @@ A **Pro subscription** is necessary to use the live API. For developers in the i
 provides a testing environment without returning actual 'People Also Ask' results. This allows for development and
 testing before committing to a **Pro subscription**.
 
-For more on the **Pro subscription**, visit our [pricing page](https://alsoasked.com/pricing).
+For more on the **Pro subscription**, visit our [**pricing page**](https://alsoasked.com/pricing).
 
 ## Documentation
 
@@ -37,4 +37,4 @@ The documentation is split into two sections, articles and reference. The articl
 
 ## Support
 
-If you have questions, issues, or feedback, please contact us at [help@alsoasked.com](mailto:help@alsoasked.com).
+If you have questions, issues, or feedback, please contact us at [**help@alsoasked.com**](mailto:help@alsoasked.com).

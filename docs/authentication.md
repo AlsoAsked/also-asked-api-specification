@@ -4,7 +4,7 @@ stoplight-id: j389o9lgezike
 
 # Authentication
 
-AlsoAsked uses API keys to authenticate requests. You can view and manage your API keys under [Developers -> API keys](https://alsoasked.com/developer/keys).
+AlsoAsked uses API keys to authenticate requests. You can view and manage your API keys under [**Developers -> API keys**](https://alsoasked.com/developer/keys).
 
 ## API keys
 
@@ -33,7 +33,7 @@ bg: "#2469fa"
 >
 > You can create a maximum of 10 API keys, but can delete and create new ones as needed.
 >
-> If you believe you need more than 10 API keys, please [contact us](mailto:help@alsoasked.com).
+> If you believe you need more than 10 API keys, please [**contact us**](mailto:help@alsoasked.com).
 
 ### Authenticating requests
 
