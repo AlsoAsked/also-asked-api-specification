@@ -14,7 +14,7 @@ The endpoint accepts a `page` query parameter, which allows you to paginate thro
 
 The response includes the page requested (the `page` property), the total number of searches (the `total` property), and the search requests themselves (the `results` property).
 
-The search requests in the `results` property include the properties outlined in the [**`Paginated Search Results`**](/docs/also-asked/6934661b082ae-paginated-search-results) schema. These are the same properties that are returned when making a search request, minus the `results` property. Details of these properties can be found in the [**Performing searches -> Search request results**](/docs/also-asked/fdmxb8iq84kmn-performing-searches#search-request-results) documentation.
+The search requests in the `results` property include the properties outlined in the [**`Paginated Search Results`**](/docs/also-asked/6934661b082ae-paginated-search-results) schema. These are the same properties that are returned when making a search request, minus the `results` property. Details of these properties can be found in the [**Searching -> Search request results**](/docs/also-asked/fdmxb8iq84kmn-performing-searches#search-request-results) documentation.
 
 ### Try it out
 
@@ -68,7 +68,7 @@ The [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search)
 
 You can use this endpoint to retrieve a search request that you have previously made, along with the results of that search request.
 
-The response includes the properties outlined in the [**`Search Request Results`**](/docs/also-asked/f019600cf755a-search-request-results) schema. Details of these properties can be found in the [**Performing searches -> Search request results**](/docs/also-asked/fdmxb8iq84kmn-performing-searches#search-request-results) documentation.
+The response includes the properties outlined in the [**`Search Request Results`**](/docs/also-asked/f019600cf755a-search-request-results) schema. Details of these properties can be found in the [**Searching -> Search request results**](/docs/also-asked/fdmxb8iq84kmn-performing-searches#search-request-results) documentation.
 
 ### Try it out
 

@@ -2,7 +2,7 @@
 stoplight-id: fdmxb8iq84kmn
 ---
 
-# Performing searches
+# Searching
 
 Searching is the core feature of AlsoAsked, and the most important part of the AlsoAsked API. We allow searches to be performed in different ways, to suit different use cases.
 
