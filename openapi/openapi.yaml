@@ -340,8 +340,8 @@ components:
         email: mantis.toboggan@gmail.com
         plan_type: pro
         credits: 100
-        credit_reset_date: '2023-02-01T00:00:00Z'
-        registration_date: '2023-01-01T00:00:00Z'
+        credits_reset_at: '2023-02-01T00:00:00Z'
+        registered_at: '2023-01-01T00:00:00Z'
     Error:
       title: Error
       type: object
@@ -2205,8 +2205,8 @@ components:
                 email: mantis.toboggan@gmail.com
                 plan_type: pro
                 credits: 100
-                credit_reset_date: '2023-02-01T00:00:00Z'
-                registration_date: '2023-01-01T00:00:00Z'
+                credits_reset_at: '2023-02-01T00:00:00Z'
+                registered_at: '2023-01-01T00:00:00Z'
     MissingApiKeyError:
       description: |
         The API key provided in the request header is missing. This error is returned when no API key is provided in the
