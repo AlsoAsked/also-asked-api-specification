@@ -20,11 +20,11 @@ composer require alsoasked/also-asked-php
 
 #### Example
 
-The below example will fetch your account details from the Live API, check you have enough credits, and then search for the term cars in US English.
+The below example will fetch your account details from the **Live** API, check you have enough credits, and then search for the term cars in US English.
 
-You'll need to change your-api-key to the API key you've created, if you don't have an API key, follow the authentication guide.
+You'll need to change `your-api-key` to the API key you've created, if you don't have an API key, follow the [**authentication guide**](/docs/also-asked/j389o9lgezike-authentication).
 
-If you wish to run this against the Sandbox API, then change https://alsoaskedapi.com/v1 in the BaseUriPlugin to https://sandbox.alsoaskedapi.com/v1.
+If you wish to run this against the **Sandbox** API, then change `https://alsoaskedapi.com/v1` in the `BaseUriPlugin` to `https://sandbox.alsoaskedapi.com/v1`.
 
 ```php
 <?php
