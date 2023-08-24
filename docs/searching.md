@@ -216,3 +216,59 @@ For example, if you searched for the term `car` in English in the USA, the `answ
 The `results` property is an array of objects for each of the results returned for the search term. This will be an empty array if no results were returned for the search term, or the `depth` specified in the search request has been reached.
 
 Each object in the array will contain the same properties as the top-level `results` array, allowing you to traverse the results tree.
+
+## Try it out
+
+Select the environment you want to try this out in, enter your API key in the `X-Api-Key` header, and select your search options.
+
+<!--
+type: tab
+title: Live
+-->
+
+```json http
+{
+  "method": "POST",
+  "url": "https://alsoaskedapi.com/v1/search",
+  "headers": {
+    "Content-Type": "application/json",
+    "X-Api-Key": "aa-live-"
+  },
+  "body": {
+    "terms": ["cars"],
+    "language": "en",
+    "region": "us",
+    "depth": 2,
+    "fresh": false,
+    "async": false,
+    "notify_webhooks": true
+  }
+}
+```
+
+<!--
+type: tab
+title: Sandbox
+-->
+
+```json http
+{
+  "method": "POST",
+  "url": "https://sandbox.alsoaskedapi.com/v1/search",
+  "headers": {
+    "Content-Type": "application/json",
+    "X-Api-Key": "aa-sandbox-"
+  },
+  "body": {
+    "terms": ["cars"],
+    "language": "en",
+    "region": "us",
+    "depth": 2,
+    "fresh": false,
+    "async": false,
+    "notify_webhooks": true
+  }
+}
+```
+
+<!-- type: tab-end -->
