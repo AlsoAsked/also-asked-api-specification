@@ -8,11 +8,6 @@
     },
     {
       "type": "item",
-      "title": "Installation",
-      "uri": "docs/installation.md"
-    },
-    {
-      "type": "item",
       "title": "Authentication",
       "uri": "docs/authentication.md"
     },
@@ -45,6 +40,15 @@
       "type": "item",
       "title": "Search history",
       "uri": "docs/search-history.md"
+    },
+    {
+      "type": "divider",
+      "title": "Clients"
+    },
+    {
+      "type": "item",
+      "title": "PHP",
+      "uri": "docs/php.md"
     },
     {
       "type": "divider",
