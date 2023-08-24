@@ -8,6 +8,11 @@
     },
     {
       "type": "item",
+      "title": "Installation",
+      "uri": "docs/installation.md"
+    },
+    {
+      "type": "item",
       "title": "Authentication",
       "uri": "docs/authentication.md"
     },
