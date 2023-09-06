@@ -7,3 +7,5 @@ registered_at
 created_at
 updated_at
 cached_at
+web_credits
+api_credits

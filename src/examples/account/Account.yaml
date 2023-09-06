@@ -2,6 +2,8 @@ id: 6G8QgoK9ar0E1pB7Rl0LN5mxljdAvBWb
 name: Mantis Toboggan
 email: mantis.toboggan@gmail.com
 plan_type: pro
-credits: 100
+credits: 110
+web_credits: 100
+api_credits: 10
 credits_reset_at: '2023-02-01T00:00:00Z'
 registered_at: '2023-01-01T00:00:00Z'
