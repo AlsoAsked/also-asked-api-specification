@@ -1,5 +1,4 @@
-alsoasked
-AlsoAsked
+[Aa]lso[Aa]sked
 apiKey
 plan_type
 credits_reset_at
