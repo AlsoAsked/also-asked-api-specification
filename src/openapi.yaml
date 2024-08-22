@@ -69,3 +69,6 @@ paths:
       $ref: ./paths/search/get-search-searchId.yaml
     delete:
       $ref: ./paths/search/delete-search-searchId.yaml
+  /search/{searchId}/timeline:
+    get:
+      $ref: ./paths/search/get-search-timeline-searchId.yaml

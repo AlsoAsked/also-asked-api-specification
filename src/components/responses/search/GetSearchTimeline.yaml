@@ -1,0 +1,22 @@
+description: |
+  The search timeline object is returned when getting the timeline of a search request, containing a list of questions
+  that have been added or removed since the last time the search was performed.
+headers:
+  X-AlsoAsked-Credits:
+    $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/search/PaginatedSearchTimelineEntries.yaml
+    examples:
+      default:
+        summary: Get search timeline response example
+        description: |
+          The following example shows the response body of a successful request to get the timeline of a search
+          request.
+        value:
+          $ref: ../../../examples/search/PaginatedSearchTimelineEntries.yaml
