@@ -2241,7 +2241,7 @@ components:
           type: string
           pattern: ^[a-zA-Z0-9]{32}$
           description: |
-            The unique identifier for the search request the timeline entry was generated from.
+            The unique identifier for the search timeline entry.
           example: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
         tier_1_additions:
           type: array
