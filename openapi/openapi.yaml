@@ -2298,6 +2298,12 @@ components:
             replaced 4 first level questions and 16 second level questions, the volatility score would be 1.
             If no changes were made to the search timeline, the volatility score would be 0.
           example: 0.25
+        search_performed_at:
+          type: string
+          format: date-time
+          description: |
+            The date and time when the search was performed.
+          example: '2023-11-10T15:00:00Z'
       example:
         id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
         tier_1_additions: []
