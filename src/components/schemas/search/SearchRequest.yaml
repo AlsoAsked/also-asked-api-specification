@@ -41,6 +41,20 @@ properties:
       The region code used when performing a search. The region code is a two-letter ISO 3166-1 code. If the search
       request was deleted, this value will be null.
     example: us
+  latitude:
+    type: number
+    format: double
+    nullable: true
+    description: |
+      The latitude used when performing a search. If the search request was deleted, this value will be null.
+    example: 51.5072
+  longitude:
+    type: number
+    format: double
+    nullable: true
+    description: |
+      The longitude used when performing a search. If the search request was deleted, this value will be null.
+    example: 0.1276
   status:
     anyOf:
       - type: string

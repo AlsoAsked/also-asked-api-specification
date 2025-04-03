@@ -8,6 +8,8 @@ results:
   - When to harvest broad beans?
   language: en
   region: us
+  latitude: 51.5072
+  longitude: 0.1276
   status: success
   deleted: false
   depth: 2
@@ -20,6 +22,8 @@ results:
   - What are the best pasta recipes?
   language: en
   region: gb
+  latitude: null
+  longitude: null
   status: success
   deleted: false
   depth: 2
@@ -31,6 +35,8 @@ results:
   terms: null
   language: null
   region: null
+  latitude: null
+  longitude: null
   status: null
   deleted: true
   depth: null
@@ -45,6 +51,8 @@ results:
   - Wie senke ich meinen Energieverbrauch?
   language: de
   region: de
+  latitude: 51.5072
+  longitude: 0.1276
   status: success
   deleted: false
   depth: 3

@@ -5,6 +5,8 @@ terms:
 - When to harvest broad beans?
 language: en
 region: us
+latitude: 51.5072
+longitude: 0.1276
 status: success
 deleted: false
 depth: 2
