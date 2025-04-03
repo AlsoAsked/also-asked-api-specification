@@ -8,3 +8,5 @@ depth: 2
 fresh: false
 async: false
 notify_webhooks: false
+latitude: 51.5072
+longitude: 0.1276

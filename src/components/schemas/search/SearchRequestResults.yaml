@@ -107,6 +107,20 @@ properties:
     description: |
       The depth of the search request. If the search request was deleted, this value will be null.
     example: 3
+  latitude:
+    type: number
+    format: double
+    nullable: true
+    description: |
+      The latitude used when performing a search. If the search request was deleted, this value will be null.
+    example: 51.5072
+  longitude:
+    type: number
+    format: double
+    nullable: true
+    description: |
+      The longitude used when performing a search. If the search request was deleted, this value will be null.
+    example: 0.1276
   cached:
     type: boolean
     nullable: true

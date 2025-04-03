@@ -2,11 +2,11 @@
   "name": "also-asked-api-specification",
   "private": true,
   "devDependencies": {
-    "@redocly/cli": "1.20.1",
-    "@stoplight/spectral-cli": "^6.11.1",
+    "@redocly/cli": "1.34.1",
+    "@stoplight/spectral-cli": "^6.14.3",
     "ajv": "^8.17.1",
     "extra-marked": "^1.0.8",
-    "husky": "^9.1.5",
+    "husky": "^9.1.7",
     "mkdirp": "^3.0.1",
     "widdershins": "^4.0.1"
   },

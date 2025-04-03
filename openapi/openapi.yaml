@@ -238,39 +238,6 @@ paths:
           $ref: '#/components/responses/InternalServerError'
         '503':
           $ref: '#/components/responses/UnderMaintenanceError'
-  /search/{searchId}/timeline:
-    get:
-      operationId: getSearchTimeline
-      tags:
-        - Search
-      summary: Get search timeline
-      description: |
-        Get a timeline of the changes to the search results for a search term. The timeline includes the questions that have
-        been added or removed since the last time the search was performed.
-      security:
-        - apiKey: []
-      parameters:
-        - $ref: '#/components/parameters/searchId'
-        - $ref: '#/components/parameters/scope'
-        - $ref: '#/components/parameters/timeline-count'
-        - $ref: '#/components/parameters/page'
-      responses:
-        '200':
-          $ref: '#/components/responses/GetSearchTimeline'
-        '401':
-          $ref: '#/components/responses/MissingApiKeyError'
-        '402':
-          $ref: '#/components/responses/InsufficientPlanError'
-        '403':
-          $ref: '#/components/responses/ForbiddenError'
-        '404':
-          $ref: '#/components/responses/NotFoundError'
-        '429':
-          $ref: '#/components/responses/RateLimitExceededError'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-        '503':
-          $ref: '#/components/responses/UnderMaintenanceError'
 components:
   headers:
     X-AlsoAsked-Credits:
@@ -1399,6 +1366,18 @@ components:
             webhook notifications for synchronous searches which do not require webhook notifications.
           example: true
           default: true
+        latitude:
+          type: number
+          format: double
+          description: |
+            The latitude of the location to perform the search in.
+          example: 51.5072
+        longitude:
+          type: number
+          format: double
+          description: |
+            The longitude of the location to perform the search in.
+          example: 0.1276
       required:
         - terms
       example:
@@ -1412,6 +1391,8 @@ components:
         fresh: false
         async: false
         notify_webhooks: false
+        latitude: 51.5072
+        longitude: 0.1276
     SearchResult:
       title: Search Result
       type: object
@@ -2061,6 +2042,20 @@ components:
           description: |
             The depth of the search request. If the search request was deleted, this value will be null.
           example: 3
+        latitude:
+          type: number
+          format: double
+          nullable: true
+          description: |
+            The latitude used when performing a search. If the search request was deleted, this value will be null.
+          example: 51.5072
+        longitude:
+          type: number
+          format: double
+          nullable: true
+          description: |
+            The longitude used when performing a search. If the search request was deleted, this value will be null.
+          example: 0.1276
         cached:
           type: boolean
           nullable: true
@@ -2230,503 +2225,6 @@ components:
         mapping:
           insufficient_plan: '#/components/schemas/InsufficientPlanError'
           insufficient_credits: '#/components/schemas/InsufficientCreditsError'
-    SearchTimeline:
-      title: Search Timeline
-      type: object
-      description: |
-        The search timeline object contains a list of questions that have been added or removed since the last time the
-        search was performed.
-      properties:
-        id:
-          type: string
-          pattern: ^[a-zA-Z0-9]{32}$
-          description: |
-            The unique identifier for the search timeline entry.
-          example: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-        tier_1_additions:
-          type: array
-          items:
-            type: string
-          description: |
-            The list of questions that have been added to the search timeline since the previous search, at the first
-            level of the hierarchy.
-          example:
-            - How to grow broad beans?
-            - When to harvest broad beans?
-        tier_1_removals:
-          type: array
-          items:
-            type: string
-          description: |
-            The list of questions that have been removed from the search timeline since the previous search, at the first
-            level of the hierarchy.
-          example:
-            - Are broad beans frost hardy?
-            - How to cook broad beans?
-        tier_2_additions:
-          type: array
-          items:
-            type: string
-          description: |
-            The list of questions that have been added to the search timeline since the previous search, at the second
-            level of the hierarchy.
-          example:
-            - How to grow broad beans in pots?
-        tier_2_removals:
-          type: array
-          items:
-            type: string
-          description: |
-            The list of questions that have been removed from the search timeline since the previous search, at the second
-            level of the hierarchy.
-          example:
-            - How to grow broad beans in containers?
-        volatility:
-          type: number
-          format: float
-          minimum: 0
-          maximum: 1
-          description: |
-            The volatility score of the search timeline entry. The volatility is a number between 0 and 1, where 0 indicates
-            no change and 1 indicates a complete change.
-            The volatility score is divided in 2, where 0.5 represents the volatility of the first level of the hierarchy and
-            0.5 represents the volatility of the second level of the hierarchy.
-            For example, if the previous search returned 4 first level questions and 16 second level questions, and the
-            current search replaced 2 first level questions and 8 second level questions, the volatility score would be
-            0.5.
-            If the previous search returned 4 first level questions and 16 second level questions, and the current search
-            replaced 4 first level questions and 16 second level questions, the volatility score would be 1.
-            If no changes were made to the search timeline, the volatility score would be 0.
-          example: 0.25
-        search_performed_at:
-          type: string
-          format: date-time
-          description: |
-            The date and time when the search was performed.
-          example: '2023-11-10T15:00:00Z'
-      example:
-        id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
-        tier_1_additions: []
-        tier_1_removals: []
-        tier_2_additions:
-          - How to grow broad beans in raised beds?
-          - How to grow broad beans in a greenhouse?
-        tier_2_removals:
-          - How to grow broad beans in pots?
-          - How to grow broad beans in containers?
-        volatility: 0.25
-        search_performed_at: '2023-11-10T15:00:00Z'
-    PaginatedSearchTimelineEntries:
-      title: Paginated Search Timeline Entries
-      type: object
-      description: |
-        The paginated search timeline entries object is returned in the response body of a successful request for timeline
-        entries related to a search.
-      properties:
-        term:
-          type: string
-          description: |
-            The search term related to the search timeline entries.
-          example: broad beans
-        region:
-          type: string
-          enum:
-            - af
-            - al
-            - dz
-            - as
-            - ad
-            - ao
-            - ai
-            - aq
-            - ag
-            - ar
-            - am
-            - aw
-            - au
-            - at
-            - az
-            - bs
-            - bh
-            - bd
-            - bb
-            - by
-            - be
-            - bz
-            - bj
-            - bm
-            - bt
-            - bo
-            - ba
-            - bw
-            - bv
-            - br
-            - io
-            - bn
-            - bg
-            - bf
-            - bi
-            - kh
-            - cm
-            - ca
-            - cv
-            - ky
-            - cf
-            - td
-            - cl
-            - cn
-            - cx
-            - cc
-            - co
-            - km
-            - cg
-            - cd
-            - ck
-            - cr
-            - ci
-            - hr
-            - cu
-            - cy
-            - cz
-            - dk
-            - dj
-            - dm
-            - do
-            - ec
-            - eg
-            - sv
-            - gq
-            - er
-            - ee
-            - et
-            - fk
-            - fo
-            - fj
-            - fi
-            - fr
-            - gf
-            - pf
-            - tf
-            - ga
-            - gm
-            - ge
-            - de
-            - gh
-            - gi
-            - gr
-            - gl
-            - gd
-            - gp
-            - gu
-            - gt
-            - gn
-            - gw
-            - gy
-            - ht
-            - hm
-            - va
-            - hn
-            - hk
-            - hu
-            - is
-            - in
-            - id
-            - ir
-            - iq
-            - ie
-            - il
-            - it
-            - jm
-            - jp
-            - jo
-            - kz
-            - ke
-            - ki
-            - kp
-            - kr
-            - kw
-            - kg
-            - la
-            - lv
-            - lb
-            - ls
-            - lr
-            - ly
-            - li
-            - lt
-            - lu
-            - mo
-            - mk
-            - mg
-            - mw
-            - my
-            - mv
-            - ml
-            - mt
-            - mh
-            - mq
-            - mr
-            - mu
-            - yt
-            - mx
-            - fm
-            - md
-            - mc
-            - mn
-            - ms
-            - ma
-            - mz
-            - mm
-            - na
-            - nr
-            - np
-            - nl
-            - an
-            - nc
-            - nz
-            - ni
-            - ne
-            - ng
-            - nu
-            - nf
-            - mp
-            - 'no'
-            - om
-            - pk
-            - pw
-            - ps
-            - pa
-            - pg
-            - py
-            - pe
-            - ph
-            - pn
-            - pl
-            - pt
-            - pr
-            - qa
-            - re
-            - ro
-            - ru
-            - rw
-            - sh
-            - kn
-            - lc
-            - pm
-            - vc
-            - ws
-            - sm
-            - st
-            - sa
-            - sn
-            - rs
-            - sc
-            - sl
-            - sg
-            - sk
-            - si
-            - sb
-            - so
-            - za
-            - gs
-            - es
-            - lk
-            - sd
-            - sr
-            - sj
-            - sz
-            - se
-            - ch
-            - sy
-            - tw
-            - tj
-            - tz
-            - th
-            - tl
-            - tg
-            - tk
-            - to
-            - tt
-            - tn
-            - tr
-            - tm
-            - tc
-            - tv
-            - ug
-            - ua
-            - ae
-            - gb
-            - us
-            - um
-            - uy
-            - uz
-            - vu
-            - ve
-            - vn
-            - vg
-            - vi
-            - wf
-            - eh
-            - ye
-            - zm
-            - zw
-          description: |
-            The region code that was used when performing the search. The region code is a two-letter ISO 3166-1 code.
-          example: us
-        language:
-          type: string
-          enum:
-            - af
-            - ar
-            - hy
-            - be
-            - bg
-            - ca
-            - zh-CN
-            - zh-TW
-            - hr
-            - cs
-            - da
-            - nl
-            - en
-            - eo
-            - et
-            - tl
-            - fi
-            - fr
-            - de
-            - el
-            - iw
-            - hi
-            - hu
-            - is
-            - id
-            - it
-            - ja
-            - ko
-            - lv
-            - lt
-            - 'no'
-            - fa
-            - pl
-            - pt
-            - ro
-            - ru
-            - sr
-            - sk
-            - sl
-            - es
-            - sw
-            - sv
-            - th
-            - tr
-            - uk
-            - vi
-          description: |
-            The language code that was used when performing the search. The language code is a two-letter ISO 639-1 code.
-          example: en
-        scope:
-          type: string
-          enum:
-            - public
-            - user
-            - team
-          description: |
-            The scope of the search timeline entries.
-          example: public
-        total:
-          type: integer
-          format: int64
-          description: |
-            The total number of search timeline entries.
-          example: 32
-        page:
-          type: integer
-          format: int64
-          description: |
-            The page of search timeline entries which was returned.
-          example: 1
-        entries:
-          type: array
-          description: |
-            The list of search timeline entries.
-          items:
-            $ref: '#/components/schemas/SearchTimeline'
-          example:
-            - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-              tier_1_additions:
-                - How to grow broad beans?
-                - When to harvest broad beans?
-              tier_1_removals:
-                - Are broad beans frost hardy?
-                - How to cook broad beans?
-              tier_2_additions:
-                - How to grow broad beans in pots?
-                - How to grow broad beans in containers?
-              tier_2_removals:
-                - How to grow broad beans in raised beds?
-                - How to grow broad beans in a greenhouse?
-              volatility: 0.5
-              search_performed_at: '2024-01-01T00:00:00Z'
-            - id: 7T1aKjx9Vb8YX2tksUeQwTPn6N0ku2E6
-              tier_1_additions: []
-              tier_1_removals: []
-              tier_2_additions: []
-              tier_2_removals: []
-              volatility: 0
-              search_performed_at: '2023-12-05T10:30:00Z'
-            - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
-              tier_1_additions: []
-              tier_1_removals: []
-              tier_2_additions:
-                - How to grow broad beans in raised beds?
-                - How to grow broad beans in a greenhouse?
-              tier_2_removals:
-                - How to grow broad beans in pots?
-                - How to grow broad beans in containers?
-              volatility: 0.25
-              search_performed_at: '2023-11-10T15:00:00Z'
-      example:
-        term: broad beans
-        region: us
-        language: en
-        scope: public
-        total: 3
-        page: 1
-        entries:
-          - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-            tier_1_additions:
-              - How to grow broad beans?
-              - When to harvest broad beans?
-            tier_1_removals:
-              - Are broad beans frost hardy?
-              - How to cook broad beans?
-            tier_2_additions:
-              - How to grow broad beans in pots?
-              - How to grow broad beans in containers?
-            tier_2_removals:
-              - How to grow broad beans in raised beds?
-              - How to grow broad beans in a greenhouse?
-            volatility: 0.5
-            search_performed_at: '2024-01-01T00:00:00Z'
-          - id: 7T1aKjx9Vb8YX2tksUeQwTPn6N0ku2E6
-            tier_1_additions: []
-            tier_1_removals: []
-            tier_2_additions: []
-            tier_2_removals: []
-            volatility: 0
-            search_performed_at: '2023-12-05T10:30:00Z'
-          - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
-            tier_1_additions: []
-            tier_1_removals: []
-            tier_2_additions:
-              - How to grow broad beans in raised beds?
-              - How to grow broad beans in a greenhouse?
-            tier_2_removals:
-              - How to grow broad beans in pots?
-              - How to grow broad beans in containers?
-            volatility: 0.25
-            search_performed_at: '2023-11-10T15:00:00Z'
   responses:
     GetAccount:
       description: |
@@ -3237,68 +2735,6 @@ components:
           $ref: '#/components/headers/X-RateLimit-Remaining'
         X-RateLimit-Limit:
           $ref: '#/components/headers/X-RateLimit-Limit'
-    GetSearchTimeline:
-      description: |
-        The search timeline object is returned when getting the timeline of a search request, containing a list of questions
-        that have been added or removed since the last time the search was performed.
-      headers:
-        X-AlsoAsked-Credits:
-          $ref: '#/components/headers/X-AlsoAsked-Credits'
-        X-RateLimit-Remaining:
-          $ref: '#/components/headers/X-RateLimit-Remaining'
-        X-RateLimit-Limit:
-          $ref: '#/components/headers/X-RateLimit-Limit'
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/PaginatedSearchTimelineEntries'
-          examples:
-            default:
-              summary: Get search timeline response example
-              description: |
-                The following example shows the response body of a successful request to get the timeline of a search
-                request.
-              value:
-                term: broad beans
-                region: us
-                language: en
-                scope: public
-                total: 3
-                page: 1
-                entries:
-                  - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-                    tier_1_additions:
-                      - How to grow broad beans?
-                      - When to harvest broad beans?
-                    tier_1_removals:
-                      - Are broad beans frost hardy?
-                      - How to cook broad beans?
-                    tier_2_additions:
-                      - How to grow broad beans in pots?
-                      - How to grow broad beans in containers?
-                    tier_2_removals:
-                      - How to grow broad beans in raised beds?
-                      - How to grow broad beans in a greenhouse?
-                    volatility: 0.5
-                    search_performed_at: '2024-01-01T00:00:00Z'
-                  - id: 7T1aKjx9Vb8YX2tksUeQwTPn6N0ku2E6
-                    tier_1_additions: []
-                    tier_1_removals: []
-                    tier_2_additions: []
-                    tier_2_removals: []
-                    volatility: 0
-                    search_performed_at: '2023-12-05T10:30:00Z'
-                  - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
-                    tier_1_additions: []
-                    tier_1_removals: []
-                    tier_2_additions:
-                      - How to grow broad beans in raised beds?
-                      - How to grow broad beans in a greenhouse?
-                    tier_2_removals:
-                      - How to grow broad beans in pots?
-                      - How to grow broad beans in containers?
-                    volatility: 0.25
-                    search_performed_at: '2023-11-10T15:00:00Z'
   parameters:
     count:
       name: count
@@ -3415,37 +2851,6 @@ components:
         minLength: 32
         maxLength: 32
       example: 4S7HdxC3vq9M5zF1Vb8YX2tksUeQwTPn
-    scope:
-      name: scope
-      in: query
-      description: |
-        The scope to generate search timeline from. For example, a scope of `user` will only compare search requests
-        made by the user who is requesting the timeline, a scope of `public` will compare all search requests made by all
-        users, and a scope of `team` will compare all search requests made by all users in the same team as the user who is
-        requesting the timeline.
-      required: false
-      allowEmptyValue: false
-      schema:
-        type: string
-        default: public
-        enum:
-          - public
-          - user
-          - team
-      example: public
-    timeline-count:
-      name: timeline-count
-      in: query
-      description: |
-        The number of timeline results to return.
-      required: false
-      allowEmptyValue: false
-      schema:
-        type: integer
-        default: 50
-        minimum: 50
-        maximum: 200
-      example: 50
   requestBodies:
     PerformSearch:
       description: |
@@ -3472,6 +2877,8 @@ components:
                 fresh: false
                 async: false
                 notify_webhooks: false
+                latitude: 51.5072
+                longitude: 0.1276
     StatusChangedWebhook:
       description: |
         The status changed webhook object is sent in the request body of a webhook notification when a search request's status
