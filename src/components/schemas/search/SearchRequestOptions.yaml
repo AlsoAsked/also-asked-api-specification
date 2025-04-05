@@ -74,12 +74,16 @@ properties:
   latitude:
     type: number
     format: double
+    minimum: -90
+    maximum: 90
     description: |
       The latitude of the location to perform the search in.
     example: 51.5072
   longitude:
     type: number
     format: double
+    minimum: -180
+    maximum: 180
     description: |
       The longitude of the location to perform the search in.
     example: 0.1276
