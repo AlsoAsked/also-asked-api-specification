@@ -8,6 +8,11 @@
     },
     {
       "type": "item",
+      "title": "Changelog",
+      "uri": "docs/changelog.md"
+    },
+    {
+      "type": "item",
       "title": "Authentication",
       "uri": "docs/authentication.md"
     },

@@ -60,6 +60,12 @@ The **`region`** property allows you to specify the region you want to perform t
 
 This is an **optional** `string` property. You can specify any region supported by AlsoAsked (see the [**Search Request Options**](/docs/also-asked/28445a301eb8a-search-request-options) schema), with the default being the USA (`us`).
 
+### Latitude/Longitude
+
+The **`latitude`** and **`longitude`** properties allow you to specify a more granular location to perform searches in.
+
+These are **optional** `number/float` properties.
+
 ### Depth
 
 The **`depth`** property allows you to specify the depth of the results returned by the search.
@@ -116,6 +122,10 @@ The `language` property is the language that the search was performed in. This w
 ### Region
 
 The `region` property is the region that the search was performed in. This will always be included in the response, and will be a `string`.
+
+### Latitude/Longitude
+
+The `latitude` and `longitude` properties are the granular location that the search was performed in.
 
 ### Status
 
