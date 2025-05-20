@@ -221,6 +221,14 @@ The `answer_page_title` property is the title of the page that the answer was re
 
 For example, if you searched for the term `car` in English in the USA, the `answer_page_title` property might be `Most popular car in the USA`.
 
+##### AI Overview
+
+The `ai_overview` property determines whether the results are AI-generated from multiple sources. This will be a `boolean`.
+
+If `ai_overview` is `true`, then the properties `ai_overview_hrefs` and `ai_overview_page_titles` will be included as arrays of strings, containing the URLs and titles of the pages that the AI-generated overview was created from.
+
+Otherwise, the `ai_overview_hrefs` and `ai_overview_page_titles` properties will be `null`.
+
 ##### Results
 
 The `results` property is an array of objects for each of the results returned for the search term. This will be an empty array if no results were returned for the search term, or the `depth` specified in the search request has been reached.
