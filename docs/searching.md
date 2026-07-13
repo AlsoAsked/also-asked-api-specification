@@ -70,12 +70,13 @@ These are **optional** `number/float` properties.
 
 The **`depth`** property allows you to specify the depth of the results returned by the search.
 
-This is an **optional** `integer` property. You can specify any depth of either `2` or `3`, with the default being `2`.
+This is an **optional** `integer` property. You can specify any depth of `1`, `2` or `3`, with the default being `2`.
 
-A search depth of `3` is equivalent of performing a deep search through the AlsoAsked website. The number of credits you'll be charged will depend on the depth of the search, and the number of terms you've specified.
+A search depth of `1` returns only the top-level questions, without fetching any subquestions. A search depth of `3` is equivalent of performing a deep search through the AlsoAsked website. The number of credits you'll be charged will depend on the depth of the search, and the number of terms you've specified.
 
 | **Depth** | **Credit cost** |
 |---|---|
+| 1 | 1 |
 | 2 | 1 |
 | 3 | 4 |
 
