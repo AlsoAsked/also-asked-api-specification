@@ -7,6 +7,7 @@ stoplight-id: u8gsgcbodk4lx
 ## 2026-07-13
 
 * Added support for a search `depth` of `1`, returning only the top-level questions at a cost of 1 credit per term
+* Fixed child results being duplicated at the top level of the `results` tree - the top level now contains only the root questions, with subquestions nested within their parents
 
 ## 2025-05-20
 
