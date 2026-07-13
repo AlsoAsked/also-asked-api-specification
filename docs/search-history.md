@@ -8,7 +8,7 @@ The AlsoAsked API provides a search history endpoint that allows you to see the 
 
 ## Get search history
 
-The [**`GET /v1/search`**](/docs/also-asked/dbb7cfb7f037d-list-searches) endpoint returns a paginated list of the most recent searches made by your account, with the most recent search first.
+The [**`GET /v1.1/search`**](/docs/also-asked/dbb7cfb7f037d-list-searches) endpoint returns a paginated list of the most recent searches made by your account, with the most recent search first.
 
 The endpoint accepts a `page` query parameter, which allows you to paginate through the results. The default number of results per page is 10, but you can change this by passing a `count` query parameter.
 
@@ -18,7 +18,7 @@ The search requests in the `results` property include the properties outlined in
 
 ### Try it out
 
-You can try out the `GET /v1/search` endpoint using the form below.
+You can try out the `GET /v1.1/search` endpoint using the form below.
 
 <!--
 type: tab
@@ -28,7 +28,7 @@ title: Live
 ```json http
 {
   "method": "GET",
-  "url": "https://alsoaskedapi.com/v1/search",
+  "url": "https://alsoaskedapi.com/v1.1/search",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-live-"
@@ -48,7 +48,7 @@ title: Sandbox
 ```json http
 {
   "method": "GET",
-  "url": "https://sandbox.alsoaskedapi.com/v1/search",
+  "url": "https://sandbox.alsoaskedapi.com/v1.1/search",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-sandbox-"
@@ -64,7 +64,7 @@ title: Sandbox
 
 ## Get a search request
 
-The [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint returns a single search request by its ID.
+The [**`GET /v1.1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint returns a single search request by its ID.
 
 You can use this endpoint to retrieve a search request that you have previously made, along with the results of that search request.
 
@@ -72,7 +72,7 @@ The response includes the properties outlined in the [**`Search Request Results`
 
 ### Try it out
 
-You can try out the `GET /v1/search/{searchId}` endpoint using the form below.
+You can try out the `GET /v1.1/search/{searchId}` endpoint using the form below.
 
 <!--
 type: tab
@@ -82,7 +82,7 @@ title: Live
 ```json http
 {
   "method": "GET",
-  "url": "https://alsoaskedapi.com/v1/search/{searchId}",
+  "url": "https://alsoaskedapi.com/v1.1/search/{searchId}",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-live-"
@@ -98,7 +98,7 @@ title: Sandbox
 ```json http
 {
   "method": "GET",
-  "url": "https://sandbox.alsoaskedapi.com/v1/search/{searchId}",
+  "url": "https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-sandbox-"
@@ -110,13 +110,13 @@ title: Sandbox
 
 ## Delete a search request
 
-The [**`DELETE /v1/search/{searchId}`**](/docs/also-asked/d9ca28e424d9a-delete-search) endpoint deletes a single search request by its ID.
+The [**`DELETE /v1.1/search/{searchId}`**](/docs/also-asked/d9ca28e424d9a-delete-search) endpoint deletes a single search request by its ID.
 
 You can use this endpoint to delete a search request that you no longer want to see in your search history. The request will remain in the search history, but it's search request options and search results will be removed.
 
 ### Try it out
 
-You can try out the `DELETE /v1/search/{searchId}` endpoint using the form below.
+You can try out the `DELETE /v1.1/search/{searchId}` endpoint using the form below.
 
 
 <!--
@@ -127,7 +127,7 @@ title: Live
 ```json http
 {
   "method": "DELETE",
-  "url": "https://alsoaskedapi.com/v1/search/{searchId}",
+  "url": "https://alsoaskedapi.com/v1.1/search/{searchId}",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-live-"
@@ -143,7 +143,7 @@ title: Sandbox
 ```json http
 {
   "method": "DELETE",
-  "url": "https://sandbox.alsoaskedapi.com/v1/search/{searchId}",
+  "url": "https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-sandbox-"

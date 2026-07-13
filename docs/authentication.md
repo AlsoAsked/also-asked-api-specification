@@ -47,7 +47,7 @@ title: Live
 ```json http
 {
   "method": "GET",
-  "url": "https://alsoaskedapi.com/v1/account",
+  "url": "https://alsoaskedapi.com/v1.1/account",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-live-"
@@ -63,7 +63,7 @@ title: Sandbox
 ```json http
 {
   "method": "GET",
-  "url": "https://sandbox.alsoaskedapi.com/v1/account",
+  "url": "https://sandbox.alsoaskedapi.com/v1.1/account",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-sandbox-"

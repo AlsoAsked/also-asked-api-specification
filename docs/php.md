@@ -36,7 +36,7 @@ The `\Http\Discovery\Psr18ClientDiscovery` class will automatically discover an 
 
 A common HTTP client which does is [Guzzle](https://docs.guzzlephp.org/en/stable/), we can install this by running `composer require guzzlehttp/guzzle:^7.0`.
 
-The example below creates a client for the **Live** API by setting a base URI using the `\Http\Client\Common\Plugin\BaseUriPlugin` plugin. If you wish to use the **Sandbox** API, you can change the base URI from `https://alsoaskedapi.com/v1` to `https://sandbox.alsoaskedapi.com/v1`.
+The example below creates a client for the **Live** API by setting a base URI using the `\Http\Client\Common\Plugin\BaseUriPlugin` plugin. If you wish to use the **Sandbox** API, you can change the base URI from `https://alsoaskedapi.com/v1.1` to `https://sandbox.alsoaskedapi.com/v1.1`.
 
 You'll need to change the API specified in the `\AlsoAsked\Api\Authentication\ApiKeyAuthentication` plugin from `your-api-key` to the API key you've created. If you don't have an API key, follow the [authentication guide](https://developers.alsoasked.com/docs/also-asked/j389o9lgezike-authentication).
 
@@ -47,7 +47,7 @@ $httpClient = (new \Http\Client\Common\PluginClientBuilder())
     // add a base URI plugin to point to the live API URL
     ->addPlugin(new \Http\Client\Common\Plugin\BaseUriPlugin(
         \Http\Discovery\UriFactoryDiscovery::find()
-            ->createUri('https://alsoaskedapi.com/v1'),
+            ->createUri('https://alsoaskedapi.com/v1.1'),
     ))
     // add an authentication plugin to add the API key header
     ->addPlugin(new \Jane\Component\OpenApiRuntime\Client\Plugin\AuthenticationRegistry([
@@ -62,7 +62,7 @@ $apiClient = \AlsoAsked\Api\Client::create($httpClient);
 
 ### Fetch your account details
 
-Use `getAccount` to fetch your account details, this calls the [`GET /v1/account`](https://developers.alsoasked.com/docs/also-asked/b3b98451f0ae2-get-account-information) API endpoint.
+Use `getAccount` to fetch your account details, this calls the [`GET /v1.1/account`](https://developers.alsoasked.com/docs/also-asked/b3b98451f0ae2-get-account-information) API endpoint.
 
 ```php
 /**
@@ -91,7 +91,7 @@ echo 'Registered At: ' . $account->getRegisteredAt()->format(DateTimeInterface::
 
 ### Perform a search
 
-Use `performSearch` to perform a search request, this calls the [`POST /v1/search`](https://developers.alsoasked.com/docs/also-asked/61f57d877f150-perform-search) API endpoint.
+Use `performSearch` to perform a search request, this calls the [`POST /v1.1/search`](https://developers.alsoasked.com/docs/also-asked/61f57d877f150-perform-search) API endpoint.
 
 ```php
 $request = (new \AlsoAsked\Api\Model\SearchRequestOptions())

@@ -42,11 +42,11 @@ info:
     name: AlsoAsked Support
     email: service@alsoasked.com
     url: https://help.alsoasked.com
-  version: 1.0.0
+  version: 1.1.0
 servers:
-  - url: https://alsoaskedapi.com/v1
+  - url: https://alsoaskedapi.com/v1.1
     description: Live
-  - url: https://sandbox.alsoaskedapi.com/v1
+  - url: https://sandbox.alsoaskedapi.com/v1.1
     description: Sandbox
 tags:
   - name: Account

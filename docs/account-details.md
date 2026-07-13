@@ -4,11 +4,11 @@ stoplight-id: 203mwmqb8ei4k
 
 # Account details
 
-The [**`GET /v1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint allows you to view your account details, including the number of credits remaining.
+The [**`GET /v1.1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint allows you to view your account details, including the number of credits remaining.
 
 ## Endpoint
 
-To get your account details, call the [**`GET /v1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint, with your API key included in the `X-Api-Key` header.
+To get your account details, call the [**`GET /v1.1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint, with your API key included in the `X-Api-Key` header.
 
 The response will include the following JSON body:
 
@@ -24,7 +24,7 @@ The response will include the following JSON body:
 }
 ```
 
-For more details, see the [**API reference**](/docs/also-asked/b3b98451f0ae2-get-account-information) for the [**`GET /v1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint.
+For more details, see the [**API reference**](/docs/also-asked/b3b98451f0ae2-get-account-information) for the [**`GET /v1.1/account`**](/docs/also-asked/b3b98451f0ae2-get-account-information) endpoint.
 
 ## Try it out
 
@@ -38,7 +38,7 @@ title: Live
 ```json http
 {
   "method": "GET",
-  "url": "https://alsoaskedapi.com/v1/account",
+  "url": "https://alsoaskedapi.com/v1.1/account",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-live-"
@@ -54,7 +54,7 @@ title: Sandbox
 ```json http
 {
   "method": "GET",
-  "url": "https://sandbox.alsoaskedapi.com/v1/account",
+  "url": "https://sandbox.alsoaskedapi.com/v1.1/account",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-sandbox-"

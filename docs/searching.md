@@ -8,7 +8,7 @@ Searching is the core feature of AlsoAsked, and the most important part of the A
 
 ## Search methods
 
-The simplest way is to use the **synchronous** search method, which returns results immediately. This is the best option for simpler use cases. For more complex use cases, we also offer an **asynchronous** search method, which allows you to perform searches in the background, and retrieve the results later. This is controlled by the `async` property in the [**Search request options**](/docs/also-asked/28445a301eb8a-search-request-options) schema passed to the [**`POST /v1/search`**](/docs/also-asked/61f57d877f150-perform-search) endpoint.
+The simplest way is to use the **synchronous** search method, which returns results immediately. This is the best option for simpler use cases. For more complex use cases, we also offer an **asynchronous** search method, which allows you to perform searches in the background, and retrieve the results later. This is controlled by the `async` property in the [**Search request options**](/docs/also-asked/28445a301eb8a-search-request-options) schema passed to the [**`POST /v1.1/search`**](/docs/also-asked/61f57d877f150-perform-search) endpoint.
 
 ### Comparing synchronous and asynchronous search
 
@@ -27,7 +27,7 @@ It's best to use the synchronous search method for simpler use cases, where you 
 <!-- theme: info -->
 > #### Synchronous search timeout
 >
-> The AlsoAsked API will timeout a synchronous search request if it takes more than 90 seconds to complete. If this happens, the API still return a [**Search Request Results**](/docs/also-asked/f019600cf755a-search-request-results) schema response containing the search ID and status, but the results will be empty. You can then use the search ID to retrieve the results later using the [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
+> The AlsoAsked API will timeout a synchronous search request if it takes more than 90 seconds to complete. If this happens, the API still return a [**Search Request Results**](/docs/also-asked/f019600cf755a-search-request-results) schema response containing the search ID and status, but the results will be empty. You can then use the search ID to retrieve the results later using the [**`GET /v1.1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
 
 #### Asynchronous uses, benefits, and drawbacks
 
@@ -40,7 +40,7 @@ It's best to use the asynchronous search method for more complex use cases, wher
 
 ## Search request options
 
-The [**Search Request Options**](/docs/also-asked/28445a301eb8a-search-request-options) schema allows you to specify options for your search. These options are passed to the [**`POST /v1/search`**](/docs/also-asked/61f57d877f150-perform-search) endpoint in the JSON body, and are identical for both synchronous and asynchronous searches.
+The [**Search Request Options**](/docs/also-asked/28445a301eb8a-search-request-options) schema allows you to specify options for your search. These options are passed to the [**`POST /v1.1/search`**](/docs/also-asked/61f57d877f150-perform-search) endpoint in the JSON body, and are identical for both synchronous and asynchronous searches.
 
 ### Terms
 
@@ -96,7 +96,7 @@ The **`async`** property allows you to specify whether you want to perform an as
 
 If `async` is `false` (the default), then the search will be performed synchronously, and the results will be returned immediately.
 
-If `async` is `true`, then the search will be performed asynchronously, with the results either sent to you via [**webhooks**](/docs/also-asked/kyda8pzsv3vxv-webhooks), or fetched by you manually using the [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
+If `async` is `true`, then the search will be performed asynchronously, with the results either sent to you via [**webhooks**](/docs/also-asked/kyda8pzsv3vxv-webhooks), or fetched by you manually using the [**`GET /v1.1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
 
 This is an **optional** `boolean` property. You can specify either `true` or `false`, with the default being `false` (meaning the search will be performed synchronously).
 
@@ -108,13 +108,13 @@ This is an **optional** `boolean` property. You can specify either `true` or `fa
 
 ## Search request results
 
-The [**Search Request Results**](/docs/also-asked/f019600cf755a-search-request-results) schema is returned by the [**`POST /v1/search`**](/docs/also-asked/61f57d877f150-perform-search) and [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoints, as well being the request body sent to [**webhook endpoints**](/docs/also-asked/kyda8pzsv3vxv-webhooks).
+The [**Search Request Results**](/docs/also-asked/f019600cf755a-search-request-results) schema is returned by the [**`POST /v1.1/search`**](/docs/also-asked/61f57d877f150-perform-search) and [**`GET /v1.1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoints, as well being the request body sent to [**webhook endpoints**](/docs/also-asked/kyda8pzsv3vxv-webhooks).
 
 ### ID
 
 The `id` property is a unique identifier for the search request. This will always be included in the response, and will be a `string` of 32 characters (a-z, A-Z, and 0-9).
 
-You can use this ID to retrieve the results of the search later using the [**`GET /v1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
+You can use this ID to retrieve the results of the search later using the [**`GET /v1.1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint.
 
 ### Language
 
@@ -248,7 +248,7 @@ title: Live
 ```json http
 {
   "method": "POST",
-  "url": "https://alsoaskedapi.com/v1/search",
+  "url": "https://alsoaskedapi.com/v1.1/search",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-live-"
@@ -273,7 +273,7 @@ title: Sandbox
 ```json http
 {
   "method": "POST",
-  "url": "https://sandbox.alsoaskedapi.com/v1/search",
+  "url": "https://sandbox.alsoaskedapi.com/v1.1/search",
   "headers": {
     "Content-Type": "application/json",
     "X-Api-Key": "aa-sandbox-"

@@ -6,8 +6,10 @@ stoplight-id: u8gsgcbodk4lx
 
 ## 2026-07-13
 
-* Added support for a search `depth` of `1`, returning only the top-level questions at a cost of 1 credit per term
-* Fixed child results being duplicated at the top level of the `results` tree - the top level now contains only the root questions, with subquestions nested within their parents
+* Released **API v1.1**, available at `https://alsoaskedapi.com/v1.1` and `https://sandbox.alsoaskedapi.com/v1.1`
+* **v1.1 only:** Fixed child results being duplicated at the top level of the `results` tree - the top level now contains only the root questions, with subquestions nested within their parents. Searches performed through v1 continue to return the previous structure, including in webhook payloads
+* Added support for a search `depth` of `1`, returning only the top-level questions at a cost of 1 credit per term. This applies to both v1 and v1.1
+* **v1.1 only:** Searches that omit the `depth` option now default to a depth of `2`, matching the documented default. Searches performed through v1 continue to default to a depth of `3`
 
 ## 2025-05-20
 
