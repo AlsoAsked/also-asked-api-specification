@@ -8,6 +8,7 @@ security:
   - apiKey: []
 parameters:
   - $ref: ../../components/parameters/search/searchId.yaml
+  - $ref: ../../components/parameters/search/resultsFormat.yaml
 responses:
   '200':
     $ref: ../../components/responses/search/GetSearch.yaml

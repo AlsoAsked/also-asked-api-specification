@@ -196,6 +196,8 @@ The `results` property is an array of objects for each of the results returned f
 
 Each result itself will also contain an array `results` with the same properties, allowing you to traverse the results tree.
 
+When retrieving a search request with the [**`GET /v1.1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-search) endpoint, you can pass a `results_format` query parameter of `flat` to return every result for the term in a single depth-first ordered list instead. In the flat format the nested `results` property is omitted from each result, and the hierarchy can be reconstructed using each result's `position` property.
+
 Each object in the array will contain the following properties:
 
 ##### Question
@@ -203,6 +205,12 @@ Each object in the array will contain the following properties:
 The `question` property is the question that was returned for the search term. This will be a `string`.
 
 For example, if you searched for the term `car` in English in the USA, the `question` property might be `What is the most popular car?`.
+
+##### Position
+
+The `position` property is the position of the result within the results hierarchy. This will be an array of one-based `integer` indices forming the path from the root of the results tree to the result.
+
+For example, a position of `[3, 1]` identifies the first child result of the third root question.
 
 ##### Answer excerpt
 

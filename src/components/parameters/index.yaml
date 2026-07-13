@@ -4,6 +4,8 @@ count:
   $ref: ./misc/count.yaml
 searchId:
   $ref: ./search/searchId.yaml
+resultsFormat:
+  $ref: ./search/resultsFormat.yaml
 X-AlsoAsked-Api-Version:
   $ref: ./webhooks/X-AlsoAsked-Api-Version.yaml
 X-AlsoAsked-Credits:

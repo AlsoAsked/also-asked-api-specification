@@ -1,0 +1,15 @@
+name: results_format
+in: query
+description: |
+  The format the search results are returned in. When set to `tree`, the results are returned as a hierarchy, with
+  child results nested within the `results` property of their parent result. When set to `flat`, every result is
+  returned in a single depth-first ordered list and the `results` property is omitted from each result. In both
+  formats, the `position` property of each result describes its location within the results hierarchy.
+required: false
+allowEmptyValue: false
+schema:
+  type: string
+  enum:
+    $ref: ../../../enums/ResultsFormat.yaml
+  default: tree
+example: tree

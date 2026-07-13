@@ -68,6 +68,8 @@ The [**`GET /v1.1/search/{searchId}`**](/docs/also-asked/723bb74f8c8f3-get-searc
 
 You can use this endpoint to retrieve a search request that you have previously made, along with the results of that search request.
 
+By default the search results are returned as a tree, with child results nested within the `results` property of their parent result. You can pass a `results_format` query parameter of `flat` to return every result in a single depth-first ordered list instead - in this format the nested `results` property is omitted, and each result's `position` property describes its location within the hierarchy.
+
 The response includes the properties outlined in the [**`Search Request Results`**](/docs/also-asked/f019600cf755a-search-request-results) schema. Details of these properties can be found in the [**Searching -> Search request results**](/docs/also-asked/fdmxb8iq84kmn-performing-searches#search-request-results) documentation.
 
 ### Try it out

@@ -9,6 +9,17 @@ properties:
     description: |
       The question.
     example: When to plant out broad beans?
+  position:
+    type: array
+    description: |
+      The position of the search result within the results hierarchy. The position is a list of one-based indices
+      forming the path from the root of the results tree to the result. For example, a position of `[3, 1]`
+      identifies the first child result of the third root question.
+    items:
+      type: integer
+      format: int32
+      minimum: 1
+    example: [3, 1]
   answer_excerpt:
     type: string
     description: |
@@ -61,11 +72,14 @@ properties:
   results:
     type: array
     description: |
-      The list of child search results related to the search result's question.
+      The list of child search results related to the search result's question. This property is omitted when the
+      search results are requested in the flat format, where the hierarchy is conveyed through each result's
+      position instead.
     items:
       $ref: ./SearchResult.yaml
     example:
     - question: When to plant out broad beans?
+      position: [1]
       answer_excerpt: |
         Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
         plant them out from mid-March.
@@ -86,6 +100,7 @@ properties:
       - When to plant out lima beans - PlantPro Digest
       results:
       - question: When can I transplant broad beans?
+        position: [1, 1]
         answer_excerpt: |
           Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
           pots during the autumn and transplanted in to the ground in the spring.
@@ -107,6 +122,7 @@ properties:
         - Raise sunflower seedlings with children / RHS Gardening
         results:
         - question: Do you get a second crop of broad beans?
+          position: [1, 1, 1]
           answer_excerpt: |
             Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
             broad beans in the spring and again in the fall.
@@ -117,6 +133,7 @@ properties:
           ai_overview_page_titles": null
           results: []
         - question: What not to plant with broad beans?
+          position: [1, 1, 2]
           answer_excerpt: |
             Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
             broad beans in the spring and again in the fall.
@@ -127,6 +144,7 @@ properties:
           ai_overview_page_titles": null
           results: []
         - question: How to grow broad beans in a greenhouse?
+          position: [1, 1, 3]
           answer_excerpt: |
             Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
             broad beans in the spring and again in the fall.
@@ -137,6 +155,7 @@ properties:
           ai_overview_page_titles": null
           results: []
       - question: Do broad beans need to be dried before planting?
+        position: [1, 2]
         answer_excerpt: |
           Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are
           simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the

@@ -6,10 +6,12 @@ stoplight-id: u8gsgcbodk4lx
 
 ## 2026-07-13
 
-* Released **API v1.1**, available at `https://alsoaskedapi.com/v1.1` and `https://sandbox.alsoaskedapi.com/v1.1`
-* **v1.1 only:** Fixed child results being duplicated at the top level of the `results` tree - the top level now contains only the root questions, with subquestions nested within their parents. Searches performed through v1 continue to return the previous structure, including in webhook payloads
+* Released **API v1.1**, available at `https://alsoaskedapi.com/v1.1` and `https://sandbox.alsoaskedapi.com/v1.1`. Changes in v1.1:
+  * Fixed child results being duplicated at the top level of the `results` tree - the top level now contains only the root questions, with subquestions nested within their parents. Searches performed through v1 continue to return the previous structure, including in webhook payloads
+  * Added a `position` property to each search result, containing the one-based path to the result within the results tree - for example, `[3, 1]` for the first child of the third root question
+  * Added a `results_format` query parameter to the `GET /search/{searchId}` endpoint, returning the results as a hierarchy (`tree`, the default) or as a single depth-first ordered list (`flat`) with the nested `results` property omitted
+  * Searches that omit the `depth` option now default to a depth of `2`, matching the documented default. Searches performed through v1 continue to default to a depth of `3`
 * Added support for a search `depth` of `1`, returning only the top-level questions at a cost of 1 credit per term. This applies to both v1 and v1.1
-* **v1.1 only:** Searches that omit the `depth` option now default to a depth of `2`, matching the documented default. Searches performed through v1 continue to default to a depth of `3`
 
 ## 2025-05-20
 
