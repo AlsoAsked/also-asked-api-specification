@@ -660,7 +660,6 @@ components:
                 - is
                 - in
                 - id
-                - ir
                 - iq
                 - ie
                 - il
@@ -710,7 +709,6 @@ components:
                 - nr
                 - np
                 - nl
-                - an
                 - nc
                 - nz
                 - ni
@@ -736,7 +734,6 @@ components:
                 - qa
                 - re
                 - ro
-                - ru
                 - rw
                 - sh
                 - kn
@@ -1221,7 +1218,6 @@ components:
             - is
             - in
             - id
-            - ir
             - iq
             - ie
             - il
@@ -1271,7 +1267,6 @@ components:
             - nr
             - np
             - nl
-            - an
             - nc
             - nz
             - ni
@@ -1297,7 +1292,6 @@ components:
             - qa
             - re
             - ro
-            - ru
             - rw
             - sh
             - kn
@@ -2298,7 +2292,6 @@ components:
             - is
             - in
             - id
-            - ir
             - iq
             - ie
             - il
@@ -2348,7 +2341,6 @@ components:
             - nr
             - np
             - nl
-            - an
             - nc
             - nz
             - ni
@@ -2374,7 +2366,6 @@ components:
             - qa
             - re
             - ro
-            - ru
             - rw
             - sh
             - kn
