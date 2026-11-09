@@ -6,7 +6,7 @@ stoplight-id: ka0yym68ltyoi
 
 The AlsoAsked API uses rate limiting to ensure fair usage of the API. The rate limits are applied both per API key and IP address.
 
-We allow for 200 requests to made in a 5 minute window. If you exceed this limit, you will receive a `429 Too Many Requests` response.
+We allow for 200 requests to be made in a 5 minute window. If you exceed this limit, you will receive a `429 Too Many Requests` response.
 
 <!-- theme: info -->
 > #### Rate limiting algorithm
@@ -31,7 +31,7 @@ When you hit the request limit, we also include the following header:
 
 | Header | Description |
 | --- | --- |
-| `Retry-After` | The number of seconds until the rate limit resets. |
+| `Retry-After` | The date and time (in UTC) at which you can make your next request, as an HTTP date such as `Thu, 11 May 2023 07:28:00 GMT`. |
 
 You can determine the number of seconds until the rate limit resets by subtracting the current Unix time from the `X-RateLimit-Reset` header.
 

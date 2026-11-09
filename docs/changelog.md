@@ -4,6 +4,10 @@ stoplight-id: u8gsgcbodk4lx
 
 # Changelog
 
+## 2026-11-09
+
+* Raised the rate limit to 200 requests in a 5 minute window, applied per API key and per IP address
+
 ## 2026-07-13
 
 * Released **API v1.1**, available at `https://alsoaskedapi.com/v1.1` and `https://sandbox.alsoaskedapi.com/v1.1`. Changes in v1.1:
