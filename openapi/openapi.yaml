@@ -387,8 +387,8 @@ components:
         message:
           type: string
           description: |
-            A human-readable message describing the error. This message is intended to be read by a developer and is
-            not suitable for display to an end user.
+            A human-readable message describing the error. This message is intended to be read by a developer and
+            isn't suitable for display to an end user.
       example:
         status: internal_server
         message: An internal server error has occurred.
@@ -420,8 +420,8 @@ components:
         message:
           type: string
           description: |
-            A human-readable message describing the error. This message is intended to be read by a developer and is
-            not suitable for display to an end user.
+            A human-readable message describing the error. This message is intended to be read by a developer and
+            isn't suitable for display to an end user.
           example: The API key provided is invalid.
       example:
         status: invalid_api_key
@@ -454,8 +454,8 @@ components:
         message:
           type: string
           description: |
-            A human-readable message describing the error. This message is intended to be read by a developer and is
-            not suitable for display to an end user.
+            A human-readable message describing the error. This message is intended to be read by a developer and
+            isn't suitable for display to an end user.
           example: |
             Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
             more information.
@@ -2656,8 +2656,8 @@ components:
         message:
           type: string
           description: |
-            A human-readable message describing the error. This message is intended to be read by a developer and is
-            not suitable for display to an end user.
+            A human-readable message describing the error. This message is intended to be read by a developer and
+            isn't suitable for display to an end user.
           example: You must upgrade your account to a Pro plan to access the live API.
       example:
         status: insufficient_plan
@@ -2690,8 +2690,8 @@ components:
         message:
           type: string
           description: |
-            A human-readable message describing the error. This message is intended to be read by a developer and is
-            not suitable for display to an end user.
+            A human-readable message describing the error. This message is intended to be read by a developer and
+            isn't suitable for display to an end user.
           example: You don't have enough credits to perform this request.
       example:
         status: insufficient_credits

@@ -15,8 +15,8 @@ properties:
   message:
     type: string
     description: |
-      A human-readable message describing the error. This message is intended to be read by a developer and is
-      not suitable for display to an end user.
+      A human-readable message describing the error. This message is intended to be read by a developer and
+      isn't suitable for display to an end user.
     example: The API key provided is invalid.
 example:
   $ref: ../../../examples/errors/InvalidApiKeyError.yaml
