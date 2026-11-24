@@ -64,7 +64,7 @@ This is an **optional** `string` property. You can specify any region supported 
 
 The **`latitude`** and **`longitude`** properties allow you to specify a more granular location to perform searches in.
 
-These are **optional** `number/float` properties.
+These are **optional** `number/float` properties. Specify both or neither: a request with only one of them is refused with a `422` validation error. A latitude or longitude of `0` is treated as a real coordinate, so `0, 0` searches at that point rather than in the region's default location.
 
 ### Depth
 

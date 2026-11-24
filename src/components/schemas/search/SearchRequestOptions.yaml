@@ -77,7 +77,9 @@ properties:
     minimum: -90
     maximum: 90
     description: |
-      The latitude of the location to perform the search in.
+      The latitude of the location to perform the search in. Must be provided together with `longitude`; a
+      request with only one of the two is refused with a `422` validation error. A value of `0` is a real
+      coordinate rather than "no location". Values are rounded to 7 decimal places.
     example: 51.5072
   longitude:
     type: number
@@ -85,7 +87,9 @@ properties:
     minimum: -180
     maximum: 180
     description: |
-      The longitude of the location to perform the search in.
+      The longitude of the location to perform the search in. Must be provided together with `latitude`; a
+      request with only one of the two is refused with a `422` validation error. A value of `0` is a real
+      coordinate rather than "no location". Values are rounded to 7 decimal places.
     example: 0.1276
 required:
   - terms

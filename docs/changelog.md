@@ -3,6 +3,9 @@ stoplight-id: u8gsgcbodk4lx
 ---
 
 # Changelog
+## 2026-11-24
+* Searches that specify only one of `latitude` and `longitude` are now refused with a `422` validation error. Previously the lone coordinate was ignored and the region's default location was used
+* A `latitude` or `longitude` of `0` is now searched as a real coordinate. Previously `0, 0` was treated as no location
 
 ## 2026-11-09
 
