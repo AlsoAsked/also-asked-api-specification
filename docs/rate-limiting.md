@@ -6,6 +6,8 @@ stoplight-id: ka0yym68ltyoi
 
 The AlsoAsked API uses rate limiting to ensure fair usage of the API. The rate limits are applied both per API key and IP address.
 
+IPv6 clients are counted by their /64 network, so every address in the same /64 shares one limit.
+
 We allow for 200 requests to be made in a 5 minute window. If you exceed this limit, you will receive a `429 Too Many Requests` response.
 
 <!-- theme: info -->
