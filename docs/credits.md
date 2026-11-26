@@ -97,8 +97,9 @@ AlsoAsked returns refunds to the kind of credit that paid for the term.
 ## Automatic top-up and low-credit emails
 
 If your credits fall below 100 after a search, AlsoAsked can buy API credits for you automatically. To turn on automatic
-top-up and choose the number of credits to buy, use the billing settings on the AlsoAsked website. If automatic top-up
-is off, AlsoAsked sends you an email instead when your credits fall below 100.
+top-up, go to the **Pay-as-you-go credits** page at `https://alsoasked.com/credits`. In the **Automatic top-up**
+section, choose the number of credits to buy, and select **Enable auto top-up**. AlsoAsked charges the card of your
+subscription. If automatic top-up is off, AlsoAsked sends you an email instead when your credits fall below 100.
 
 In a team, only the team owner can change automatic top-up, and only the team owner's own searches start an automatic
 top-up or send the email. The searches of team members use the team owner's credits, but don't start an automatic
