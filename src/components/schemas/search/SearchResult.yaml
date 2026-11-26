@@ -21,21 +21,21 @@ properties:
       minimum: 1
     example: [3, 1]
   answer_excerpt:
-    type: string
+    type: [string, 'null']
     description: |
-      An excerpt of the answer.
+      An excerpt of the answer. The value can be `null` or an empty string if Google showed no answer text.
     example: |
       Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
       plant them out from mid-March.
   answer_href:
-    type: string
+    type: [string, 'null']
     description: |
-      The URL of the page with the answer.
+      The URL of the page with the answer. The value can be `null` or an empty string.
     example: https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
   answer_page_title:
-    type: string
+    type: [string, 'null']
     description: |
-      The title of the page with the answer.
+      The title of the page with the answer. The value can be `null` or an empty string.
     example: When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine
   ai_overview:
     type: boolean
@@ -46,8 +46,8 @@ properties:
   ai_overview_hrefs:
     type: [array, 'null']
     description: |
-      The URLs of the sources of the AI overview. The value of the `ai_overview_hrefs` field is `null` if the answer
-      isn't an AI overview.
+      The URLs of the sources of the AI overview. The value of the `ai_overview_hrefs` field is `null` or an empty
+      list if the answer isn't an AI overview.
     items:
       type: string
     example:
@@ -59,8 +59,8 @@ properties:
   ai_overview_page_titles:
     type: [array, 'null']
     description: |
-      The page titles of the sources of the AI overview. The value of the `ai_overview_page_titles` field is `null` if
-      the answer isn't an AI overview.
+      The page titles of the sources of the AI overview. The value of the `ai_overview_page_titles` field is `null` or
+      an empty list if the answer isn't an AI overview.
     items:
       type: string
     example:

@@ -18,6 +18,7 @@ Each page is Markdown. Each section of a page is written to be correct on its ow
 - [Search results](docs/search-results.md): Find the fields of the search object, its queries, and its results, and learn how to get the results as a tree or as a flat list.
 - [Search history](docs/search-history.md): List the searches in your search history, get one search with its results, and delete a search with the AlsoAsked API.
 - [Credits](docs/credits.md): Learn how AlsoAsked charges credits for searches, how to calculate the cost of a search, and how to check the credits in your account.
+- [Search many terms](docs/bulk-searches.md): Perform searches for hundreds or thousands of terms reliably, and collect the result of every term.
 
 ## Webhooks
 

@@ -52,23 +52,43 @@ public URL of the tunnel as the webhook endpoint.
 
 AlsoAsked has 4 webhook event types:
 
-| Webhook event type | When AlsoAsked sends the webhook event |
-| --- | --- |
-| `search_created` | AlsoAsked created the search. |
-| `search_started` | The search started. |
-| `search_succeeded` | Every term of the search finished, and at least one term has results or no results. |
-| `search_failed` | Every term of the search finished, and every term failed. |
+| Webhook event type | When AlsoAsked sends the webhook event | Status of the search in the body |
+| --- | --- | --- |
+| `search_created` | AlsoAsked recorded the search. | Usually `queueing` or `pending`. `success` if every term had stored results. |
+| `search_started` | The first term of the search started to run. | `running`, or a later status if AlsoAsked sent the event late. |
+| `search_succeeded` | Every term of the search is complete, and at least one term has the status `success` or `no_results`. | `success` or `no_results` |
+| `search_failed` | Every term of the search is complete, and every term has the status `error`. | `error` |
 
-AlsoAsked sends the `search_succeeded` webhook event or the `search_failed` webhook event once, when every term of the
-search has finished. A search never gets both. If at least one term succeeds, the search gets `search_succeeded`, even
-if other terms failed. To see the result of each term, read the `queries` field in the body.
+Each search gets `search_created`, then `search_started`, then one of `search_succeeded` and `search_failed`, with
+these exceptions:
 
-Normally, AlsoAsked sends each webhook event type 1 time for each search. A webhook endpoint receives only the
-webhook event types that you chose for that webhook endpoint.
+- If every term of the search has stored results, no term runs, so the search gets no `search_started` event.
+  `search_created` and the completion event follow immediately.
+- A search whose every term has no results gets `search_succeeded`, not `search_failed`, with the status `no_results`.
+- A search never gets both `search_succeeded` and `search_failed`.
+- After you delete a search, AlsoAsked sends no more webhook events for it.
 
-In rare cases, AlsoAsked can send the same webhook event twice. Make your webhook endpoint handle a repeated webhook
-event safely, for example by checking the `id` field of the search and the `X-AlsoAsked-Webhook-Event` header before
-you process the webhook event.
+A webhook endpoint receives only the webhook event types that you chose for that webhook endpoint. If you add a webhook
+endpoint while a search runs, the webhook endpoint gets only the webhook events that happen after you add it.
+
+To see the result of each term, read the `queries` field in the body of the `search_succeeded` or `search_failed`
+webhook event. Each query has its own `status` field.
+
+## Order and repeats of webhook events
+
+AlsoAsked sends each webhook event separately, and retries a failed webhook event later. So webhook events can arrive
+in a different order from the order of the status changes. For example, a retried `search_created` webhook event can
+arrive after the `search_succeeded` webhook event. Use the `status` field in the body to decide what to do, not the
+order of arrival.
+
+AlsoAsked builds the body when it sends the request, from the search as it is at that moment. A retried webhook event
+has the current status of the search, not the status at the time of the change. For example, a retried
+`search_created` webhook event can have the status `success` and the results.
+
+In rare cases, AlsoAsked sends the same webhook event twice. Every delivery of the same webhook event has the same
+`event_id` field in the body. If your webhook endpoint receives an `event_id` that it already processed, return a `2xx`
+status code and ignore the body. Use the `event_id` field, not the headers: the signature covers the body, but not the
+headers.
 
 ## When AlsoAsked sends webhook events
 
@@ -77,9 +97,12 @@ default value of the `notify_webhooks` field is `true`. If you don't want webhoo
 `notify_webhooks` field to `false`. AlsoAsked sends webhook events for both synchronous searches and asynchronous
 searches. For details, see [Synchronous and asynchronous searches](./searches.md).
 
-For a search on the live API, AlsoAsked sends webhook events only if your account has a Pro plan. For a search on the
-sandbox API, AlsoAsked sends webhook events to your webhook endpoints with the `sandbox` environment. For details, see
-[Sandbox API](./sandbox.md).
+For a search on the live API, AlsoAsked sends webhook events only if your account has a Pro plan when it sends each
+webhook event. For a search on the sandbox API, AlsoAsked sends webhook events to your webhook endpoints with the
+`sandbox` environment. For details, see [Sandbox API](./sandbox.md).
+
+If you're a member of a team, AlsoAsked sends the webhook events for your searches to your own webhook endpoints, and
+signs them with your own webhook signing key, not the team owner's.
 
 ## Webhook request
 
@@ -89,18 +112,23 @@ The webhook request has these headers:
 
 | Header | Value |
 | --- | --- |
+| `Content-Type` | `application/json` |
 | `X-AlsoAsked-Webhook-Event` | The webhook event type, for example `search_succeeded`. |
 | `X-AlsoAsked-Environment` | The environment of the webhook event: `live` or `sandbox`. |
 | `X-AlsoAsked-Timestamp` | The time when AlsoAsked sent the request, as a Unix time in seconds. |
 | `X-AlsoAsked-Signature` | The signature of the request. For details, see [Verify webhook signatures](./verify-webhook-signatures.md). |
-| `X-AlsoAsked-Credits` | The credits that remain in your account. For a sandbox webhook endpoint, the value is the sandbox credits that remain. |
+| `X-AlsoAsked-Credits` | The credits that remain in your account, the same as the `X-AlsoAsked-Credits` header of an API response. For a sandbox webhook endpoint, the value is the sandbox credits that remain. |
 | `X-AlsoAsked-Api-Version` | The version of the webhook request format. The current version is `1.0`. This isn't the version of the AlsoAsked API, such as `v1.1`. |
 | `User-Agent` | `AlsoAsked/1.0` |
 
-The body of the webhook request is the search object for the search. The body is the same as the response body of
-`GET /v1.1/search/{searchId}` for the search, at the time when AlsoAsked sends the request. The `queries` field is
-`null` unless the status of the search is `success`. For the fields of the search object, see
-[Search results](./search-results.md).
+The body of the webhook request starts with the `event_id` field, which holds the ID of the webhook event: 32 letters and digits.
+The other fields are the search object, the same as the response body of `GET /v1.1/search/{searchId}` for the search
+when AlsoAsked sends the request. The `queries` field is `null` until the search is complete. For the fields of the
+search object, see [Search results](./search-results.md).
+
+The body uses the format of the API version that performed the search. This page describes searches that you perform
+with the `v1.1` API. Searches that you perform on the AlsoAsked website send bodies in the older `v1` format, without
+the `event_id` field and without the `status` field of each query.
 
 ## Example webhook request
 
@@ -110,6 +138,7 @@ The following example shows the headers of a `search_succeeded` webhook event fr
 ```http
 POST /alsoasked-webhooks HTTP/1.1
 Host: example.com
+Content-Type: application/json
 User-Agent: AlsoAsked/1.0
 X-AlsoAsked-Webhook-Event: search_succeeded
 X-AlsoAsked-Environment: live
@@ -124,6 +153,7 @@ shortened: it has 1 result, 1 AI overview source, and no child results.
 
 ```json
 {
+  "event_id": "4Jk2mQ9xVb7NzR1cT8yHp3LdWs6FgE0a",
   "id": "9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba",
   "language": "en",
   "region": "us",
@@ -204,9 +234,13 @@ attempt and the last attempt add up to 45 minutes.
 
 AlsoAsked doesn't try again in these cases, and the webhook event gets the status `failed` immediately:
 
-- Your account has no webhook signing key. AlsoAsked can't sign the webhook request without it.
+- Your account has no webhook signing key. AlsoAsked can't sign the webhook request without it. The error of the
+  webhook event says to generate a webhook signing key.
 - The webhook endpoint is for the live API, and your account doesn't have a Pro plan.
 - You deleted the webhook endpoint.
+
+AlsoAsked has no way to send a failed webhook event again. To get the result of the search, send a request to
+`GET /v1.1/search/{searchId}`.
 
 ## Security of webhook events
 
@@ -226,7 +260,17 @@ with the most recent attempt is first.
 
 To see the details of a webhook event, select **View**. The details show the URL, the environment, the status, the
 error, the number of attempts, the time of the last attempt and the next attempt, the request, and the response from
-your webhook endpoint.
+your webhook endpoint. AlsoAsked stores the first 2 MB of the response.
+
+Each webhook event has one of these statuses:
+
+| Status | Meaning |
+| --- | --- |
+| `pending` | AlsoAsked hasn't sent the webhook event yet, or waits to try again after a failed attempt. |
+| `sending` | AlsoAsked is sending the webhook event now. |
+| `succeeded` | Your webhook endpoint returned a `2xx` status code. |
+| `failed` | Every attempt failed, or AlsoAsked doesn't try again. See [Retries of failed webhook events](#retries-of-failed-webhook-events). |
+| `deleted` | You deleted the webhook event, so AlsoAsked doesn't try again. The webhook event stays in the list. |
 
 To stop the retries of a webhook event, select **Delete** for the webhook event, or delete the webhook endpoint.
 
@@ -238,6 +282,11 @@ searches on the AlsoAsked website, do the following steps:
 1. Sign in to AlsoAsked, and go to the **API settings** page at `https://alsoasked.com/developer/settings`.
 2. Select **Website searches should notify webhooks**.
 3. Select **Save changes**.
+
+AlsoAsked sends the webhook events for website searches to your live webhook endpoints, and only if your account has a
+Pro plan. The body of these webhook events uses the older `v1` format: it has no `event_id` field, no `status` field in
+each query, and no `position` field in each result, and child results also appear at the top level of the `results`
+field.
 
 ## Related
 

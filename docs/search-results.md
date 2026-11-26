@@ -44,7 +44,7 @@ with these fields:
 | `created_at` | string | The date and time when AlsoAsked created the search, in ISO 8601 format. |
 | `updated_at` | string | The date and time when the search last changed, in ISO 8601 format. |
 | `cached_at` | string or `null` | The date and time when AlsoAsked stored the oldest of the earlier results that the search used, in ISO 8601 format. The value is `null` if no term used stored results, or on the sandbox API. |
-| `queries` | array or `null` | One query for each term in the search. The value is `null` unless the status of the search is `success`. For the fields, see [Query fields](#query-fields). |
+| `queries` | array or `null` | One query for each term in the search, in the order of the terms in the request. The value is `null` until the search is complete, and for a deleted search. For the fields, see [Query fields](#query-fields). |
 
 A search that gets new results from Google has `cached` set to `false` and `cached_at` set to `null`, even after
 AlsoAsked stores its results for later searches. To get new results instead of stored results, set the `fresh` field to
@@ -55,10 +55,13 @@ AlsoAsked stores its results for later searches. To get new results instead of s
 The `status` field of the search object has one of these values: `queueing`, `pending`, `running`, `fetching`, `error`,
 `no_results`, or `success`. For a deleted search, the `status` field is `null`. A search is complete when its status is `success`, `no_results`, or `error`.
 
-The `queries` field of the search object is `null` unless the status is `success`. When the status is `success`, the
-`queries` field has one query for each term in the search. A `null` value in the `queries` field doesn't always mean
-that the search has no results. The search may not be complete yet. To check, read the `status` field. For details, see
-[Synchronous and asynchronous searches](./searches.md).
+The `queries` field of the search object is `null` until the search is complete. When the search is complete, the
+`queries` field has one query for each term in the search, and each query has its own `status` field. A search with the
+status `success` has at least one term with results, and can also have terms with the status `no_results` or `error`.
+For details, see [Synchronous and asynchronous searches](./searches.md).
+
+The status of a complete search doesn't change. To know when a search is complete, check the `status` field, not the
+`queries` field.
 
 ## Fields of a deleted search
 
@@ -85,11 +88,12 @@ Each query in the `queries` field of the search object has these fields:
 | Name | Type | Description |
 | --- | --- | --- |
 | `term` | string | The term of the query. |
+| `status` | string | The status of the term: `success`, `no_results`, or `error`. AlsoAsked refunds the credits of a term with the status `no_results` or `error`. |
 | `language_fallback` | boolean or `null` | `true` if AlsoAsked found no results in the language of the search, and searched in the default language of the region instead. |
 | `region_fallback` | boolean or `null` | `true` if AlsoAsked found no results in the region of the search, and searched in the default region of the language instead. |
 | `results` | array or `null` | The results for the term. For the fields, see [Result fields](#result-fields). |
 
-If AlsoAsked has no results for the term of a query, the `language_fallback` field, the `region_fallback` field, and the
+If the status of a query is `no_results` or `error`, the `language_fallback` field, the `region_fallback` field, and the
 `results` field of the query are `null`.
 
 ## Result fields
@@ -101,12 +105,12 @@ fields.
 | --- | --- | --- |
 | `question` | string | The question that Google shows for the term. |
 | `position` | array of integers | The place of the result in the results for the term. For details, see [Position of a result](#position-of-a-result). |
-| `answer_excerpt` | string | An excerpt of the answer. |
-| `answer_href` | string | The URL of the page with the answer. |
-| `answer_page_title` | string | The title of the page with the answer. |
+| `answer_excerpt` | string or `null` | An excerpt of the answer. Can be `null` or an empty string if Google showed no answer text. |
+| `answer_href` | string or `null` | The URL of the page with the answer. Can be `null` or an empty string. |
+| `answer_page_title` | string or `null` | The title of the page with the answer. Can be `null` or an empty string. |
 | `ai_overview` | boolean | `true` if the answer is an AI overview, otherwise `false`. |
-| `ai_overview_hrefs` | array of strings or `null` | The URLs of the sources of the AI overview. The value is `null` if the answer isn't an AI overview. |
-| `ai_overview_page_titles` | array of strings or `null` | The page titles of the sources of the AI overview. |
+| `ai_overview_hrefs` | array of strings or `null` | The URLs of the sources of the AI overview. The value is `null` or an empty list if the answer isn't an AI overview. |
+| `ai_overview_page_titles` | array of strings or `null` | The page titles of the sources of the AI overview. The value is `null` or an empty list if the answer isn't an AI overview. |
 | `results` | array | The child results of the result. A result has the `results` field only in the `tree` results format. For details, see [Results formats](#results-formats). |
 
 ## Position of a result

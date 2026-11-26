@@ -48,9 +48,9 @@ To perform a search on the live API, do the following steps:
      }'
    ```
 
-3. Read the response body. If the `status` field of the search is `success`, the `queries` field contains the results.
-   If the search isn't complete, get the search later with `GET /v1.1/search/{searchId}` and the `id` field from the
-   response.
+3. Read the response body. If the search is complete, the `queries` field contains one query for each term. Each
+   query has the status of its term and the results. If the search isn't complete, the `queries` field is `null`. Get the search
+   later with `GET /v1.1/search/{searchId}` and the `id` field from the response.
 
 ## Request body fields
 
@@ -64,30 +64,42 @@ The request body of `POST /v1.1/search` is a JSON object. You must include the `
 | `latitude` | number | None | The latitude of a more exact location, from -90 to 90. Send the `latitude` field together with the `longitude` field. See [Location](#location). |
 | `longitude` | number | None | The longitude of a more exact location, from -180 to 180. Send the `longitude` field together with the `latitude` field. See [Location](#location). |
 | `depth` | integer | `2` | The number of levels of results: `1`, `2`, or `3`. The cost of the search depends on the depth. See [Depth and cost](#depth-and-cost). |
-| `fresh` | boolean | `false` | If `true`, AlsoAsked gets new results from Google instead of cached results. See [Fresh results](#fresh-results). |
+| `fresh` | boolean | `false` | If `true`, AlsoAsked gets new results from Google instead of stored results. See [Fresh results](#fresh-results). |
 | `async` | boolean | `false` | If `false`, the search is a synchronous search. If `true`, the search is an asynchronous search. See [Synchronous and asynchronous searches](#synchronous-and-asynchronous-searches). |
 | `notify_webhooks` | boolean | `true` | If `true`, AlsoAsked sends webhook events for the search. See [Webhook events](#webhook-events). |
 
 The AlsoAsked API checks the request body against the OpenAPI specification. If a field has a value that isn't allowed,
 for example a language code that isn't in the `Language` enum, the API returns `422 Unprocessable Content` with the
-error type `validation`. The `message` field of the error body names the field.
+error type `validation`. The `errors` field of the error body names the field. See
+[Validation errors](./errors.md#validation-errors).
+
+- To use the default value of a field, leave the field out. A field with the value `null` gets a `validation` error.
+- The API ignores fields that it doesn't know, so a misspelled optional field, such as `asynch`, has no effect and no
+  error. Check the spelling of the field names.
+- Send the request body with the `Content-Type: application/json` header.
 
 ## Terms
 
 The `terms` field in the `POST /v1.1/search` request body is an array of strings. The array has 1 to 1,000 terms, and
 each term has 1 to 4,127 characters.
 
+The API counts the length of a term in characters (Unicode code points), not in bytes.
+
 Each term in the `terms` field must be different. If two terms are exactly the same, the API returns the status code
-`422 Unprocessable Content` with the message `terms: all array items must be unique.`
+`422 Unprocessable Content` with the error type `validation`, and the `errors` field names the `terms` field. Terms are
+case-sensitive: `How to brew coffee` and `how to brew coffee` are different terms, and AlsoAsked searches and charges
+for both.
 
 AlsoAsked removes the spaces at the start and at the end of each term. If two terms are the same only after AlsoAsked
 removes the spaces, AlsoAsked searches the term once and charges for the term once. For example, `how to brew coffee`
 and ` how to brew coffee ` count as one term.
 
-A term must contain text other than spaces and quotes. If a term contains only spaces, quotes, or invisible characters,
-the API returns `422 Unprocessable Content` with the error type `validation`, and AlsoAsked charges no credits. The
-`message` field of the error body gives the index of the term, from 0. For example, the message for the first term is
-`terms -> 0: must contain text other than spaces and quotes.`
+A term must contain text other than spaces and double quotes (`"`). If a term contains only spaces, double quotes, or
+invisible characters, the API returns `422 Unprocessable Content` with the error type `validation`, and AlsoAsked
+performs none of the terms and charges no credits. The `field` field of the error gives the index of the term, from 0.
+For example, the `field` field for the first term is `terms.0`. Single quotes and curly quotes count as text.
+
+The `queries` field of the search has one query for each term, in the order of the `terms` field.
 
 ## Location
 
@@ -123,11 +135,12 @@ API. For details, see [Credits](./credits.md).
 
 ## Fresh results
 
-The `fresh` field in the `POST /v1.1/search` request body controls cached results. The default value is `false`, so
-AlsoAsked can use cached results for the search. Set the `fresh` field to `true` to get new results from Google instead
-of cached results.
+The `fresh` field in the `POST /v1.1/search` request body controls stored results. AlsoAsked stores the results of every
+search. The default value of the `fresh` field is `false`, so AlsoAsked can use results stored for an earlier search by
+any account, however old the results are. The term, language code, region code, depth, and location must match
+exactly. Set the `fresh` field to `true` to get new results from Google instead.
 
-On the live API, a term with cached results costs nothing when `fresh` is `false`. When `fresh` is `true`, every term
+On the live API, a term with stored results costs nothing when `fresh` is `false`. When `fresh` is `true`, every term
 costs credits. For details, see [Credits](./credits.md).
 
 ## Synchronous and asynchronous searches
@@ -155,8 +168,10 @@ If the AlsoAsked API accepts the search, the API returns the status code `200 OK
 search, with the same fields as the `GET /v1.1/search/{searchId}` response. The `id` field contains the ID of the
 search, and the `status` field contains the status of the search.
 
-The `queries` field is `null` unless the status of the search is `success`. When the status is `success`, the `queries`
-field contains one query for each term, with the results for that term. For all fields in the response body, see
+The `queries` field is `null` until the search is complete. A search is complete when its status is `success`,
+`no_results`, or `error`. Then the `queries` field contains one query for each term. Each query has the status of its term
+and the results. A search with the status `success` can have terms with the status `no_results` or `error`, and AlsoAsked
+refunds the credits of those terms. For all fields in the response body, see
 [Search results](./search-results.md).
 
 To get the search later, send a request to `GET /v1.1/search/{searchId}` with the `id` field from the response. See
@@ -174,11 +189,13 @@ contains the error type.
 | Status code `402 Payment Required`, error type `insufficient_plan` | You sent the request to the live API, and your account doesn't have a Pro plan. | Change your plan to Pro, or use the sandbox API. See [Sandbox API](./sandbox.md). |
 | Status code `402 Payment Required`, error type `insufficient_credits` | Your account doesn't have enough credits for the search. | Check the credits in your account, or perform the search with fewer terms or a lower depth. See [Credits](./credits.md). |
 | Status code `403 Forbidden` | The value of the `X-Api-Key` header isn't a valid API key, or the API key is for the other API. | Check the API key. See [Authenticate requests](./authentication.md). |
-| Status code `422 Unprocessable Content`, error type `validation`, message `terms: all array items must be unique.` | Two terms in the `terms` field are exactly the same. | Remove the repeated term. AlsoAsked charges no credits for the request. |
-| Status code `422 Unprocessable Content`, error type `validation`, message `terms -> N: must contain text other than spaces and quotes.` | The term at index `N` (from 0) contains only spaces, quotes, or invisible characters. | Remove the term or add text to the term. AlsoAsked charges no credits for the request. |
-| Status code `422 Unprocessable Content`, error type `validation`, message `latitude and longitude must be provided together.` | The request body has the `latitude` field or the `longitude` field, but not both. | Send both fields, or remove both fields. |
-| Status code `422 Unprocessable Content`, error type `validation`, other message | A field has a value that the OpenAPI specification doesn't allow, for example a language code that isn't in the `Language` enum. | Correct the field that the `message` field names. |
-| Status code `429 Too Many Requests` | You sent more requests than the rate limit allows. | Wait, then send the request again. See [Errors](./errors.md). |
+| Status code `422 Unprocessable Content`, error type `validation`, `field` is `terms` | Two terms in the `terms` field are exactly the same. | Remove the repeated term. AlsoAsked charges no credits for the request. |
+| Status code `422 Unprocessable Content`, error type `validation`, `field` is `terms.N` | The term at index `N` (from 0) isn't valid, for example because it contains only spaces, double quotes, or invisible characters, or has more than 4,127 characters. | Remove or correct the term. AlsoAsked charges no credits for the request. |
+| Status code `422 Unprocessable Content`, error type `validation`, `field` is `latitude` or `longitude` | The request body has the `latitude` field or the `longitude` field, but not both. The `field` field names the missing one. | Send both fields, or remove both fields. |
+| Status code `422 Unprocessable Content`, error type `validation`, `field` is `Content-Type` | The request doesn't have the `Content-Type: application/json` header. | Add the header. |
+| Status code `422 Unprocessable Content`, error type `validation`, other `field` | A field has a value that the OpenAPI specification doesn't allow, for example a language code that isn't in the `Language` enum. | Correct the field that the `field` field names. |
+| Status code `429 Too Many Requests` | You sent more requests than the rate limit allows. | Wait until the time in the `Retry-After` header, then send the request again. See [Rate limits](./rate-limits.md). |
+| Status code `500 Internal Server Error`, error type `internal_server` | An error happened in AlsoAsked. | Check your search history before you send the request again, because AlsoAsked may have recorded the search. See [Find a search after a lost response](./search-history.md#find-a-search-after-a-lost-response). |
 
 For all error types, see [Errors](./errors.md).
 

@@ -43,13 +43,18 @@ key to the sandbox API, the sandbox API rejects the key as invalid. For details 
 The sandbox API doesn't get results from Google. A search on the sandbox API returns test results that AlsoAsked
 generates from the request.
 
-The test results contain placeholder text. They aren't real questions and answers. For each term, a search on the sandbox API
-gets 4 top-level results. Each result at a lower level of the search has 6 to 10 child results, up to the depth of the
-search. About 1 in 4 results is an AI overview, with 2 to 5 sources.
+The test results contain placeholder text in Latin. They aren't real questions and answers. For each term that
+succeeds, a search on the sandbox API gets 4 top-level results. Each result at a level lower than the depth of the search
+has 6 to 10 child results. About 1 in 4 results is an AI overview, with 2 to 5 sources. About 1 in 10 queries has `true` in the
+`language_fallback` field, and about 1 in 10 has `true` in the `region_fallback` field.
 
-The test results are deterministic. If you perform two searches on the sandbox API with the same terms, language code,
-region code, latitude, longitude, and depth, both searches get the same test results. Because of this, you can write
-automated tests that check the test results.
+The test results are deterministic. If you perform two searches on the sandbox API with the same terms in the same
+order, and the same language code, region code, latitude, longitude, and depth, both searches get the same test
+results. The test results of a term depend on all the terms of the search and their order, so the same term can get
+different test results in a different search.
+
+The sandbox API never uses stored results. The `cached` field is always `false`, and the `cached_at` field is always
+`null`.
 
 ## Sandbox credits
 
@@ -75,34 +80,82 @@ body of `GET https://sandbox.alsoaskedapi.com/v1.1/account` shows when the next 
 ## Test terms
 
 A test term changes how a search on the sandbox API behaves. To use a test term, add the test term as one of the terms in
-the `terms` field of the `POST https://sandbox.alsoaskedapi.com/v1.1/search` request body. Each term gets its own result,
-the same as on the live API.
+the `terms` field of the `POST https://sandbox.alsoaskedapi.com/v1.1/search` request body. Test terms are lowercase,
+and must match exactly.
+
+These test terms set the result of their own term, the same as a term on the live API:
 
 | Term | Result of the term |
 | --- | --- |
-| `[error]` | The term fails, with no results. |
-| `[no_results]` | The term finishes with no results. |
-| `[delay N]` | The term gets the same result as the search. The test term also sets the delay between status changes to N seconds. The maximum value of N is 3. N can have decimals, for example `[delay 0.5]`. |
-| Any other term | The term succeeds, with test results. |
+| `[error]` | The term fails with the status `error` and no results. |
+| `[no_results]` | The term finishes with the status `no_results` and no results. |
+| Any other term | The term succeeds with the status `success` and test results. |
 
-If the search has no `[delay N]` test term, the delay between status changes is a random value from 1 to 3 seconds.
+These test terms change the timing of the search. Their own term gets the same status as the search:
+
+| Term | Effect |
+| --- | --- |
+| `[delay N]` | Sets the delay before each status change to N seconds. N starts with a digit and can have decimals, for example `[delay 0.5]`. A value greater than 3 counts as 3. |
+| `[timeout]` | The search runs past the 90 seconds that a synchronous search waits. See [Test a search that runs past the timeout](#test-a-search-that-runs-past-the-timeout). |
+
+These test terms make the request fail, so you can test how your integration handles errors. AlsoAsked doesn't record
+the search, doesn't charge sandbox credits, and doesn't send webhook events:
+
+| Term | Response |
+| --- | --- |
+| `[server_error]` | `500 Internal Server Error` with the error type `internal_server`. |
+| `[rate_limit]` | `429 Too Many Requests` with the error type `rate_limit_exceeded`, and a `Retry-After` header 10 seconds after the request. |
+
+The `[rate_limit]` response comes from the sandbox API, not from the rate limiter, so its `X-RateLimit-Remaining`
+header shows your real number of remaining requests, not `0`. For details about the real rate limit, see
+[Rate limits](./rate-limits.md).
+
+## Status changes and timing
+
+A search on the sandbox API starts with the status `pending`, then goes through `running`, `fetching`, and then the
+final status. AlsoAsked waits before each of the three status changes:
+
+- In a synchronous search, each wait is a new random value from 1 to 3 seconds, so the response comes after 3 to 9
+  seconds.
+- In an asynchronous search, AlsoAsked chooses one random value from 1 to 3 seconds and uses it for all three waits.
+- With a `[delay N]` test term, each wait is N seconds. If the search has more than one `[delay N]` test term, the first
+  one counts.
 
 The status of the search comes from the results of its terms, the same as on the live API:
 
 - If at least one term succeeds, the status of the search is `success`.
 - If no term succeeds, and at least one term has no results, the status of the search is `no_results`.
 - If every term fails, the status of the search is `error`.
+- If the search has only `[delay N]` and `[timeout]` terms, the status of the search is `success`.
 
-The order of the terms doesn't matter. When the status of the search is `success`, the `queries` field has one query for
-each term. A query for an `[error]` term or a `[no_results]` term has `null` in its `results`, `language_fallback`, and
-`region_fallback` fields. AlsoAsked refunds the sandbox credits for the `[error]` terms and the `[no_results]` terms.
+The order of the terms doesn't change the status. When the search is complete, the `queries` field has one query for
+each term, and each query has its own `status` field. A query with the status `error` or `no_results` has `null` in its
+`results`, `language_fallback`, and `region_fallback` fields.
 
-A search on the sandbox API goes through these statuses, in this order: `running`, `fetching`, and then the final status.
-The delay happens before each status change.
+## Sandbox credits for test terms
+
+Every term costs sandbox credits, including test terms, except in a request that has `[server_error]` or
+`[rate_limit]`. When the search is complete, AlsoAsked refunds the sandbox credits of the terms with the status
+`error` or `no_results`. If the status of the whole search is `error` or `no_results`, AlsoAsked refunds the sandbox
+credits of every term.
+
+## Test a search that runs past the timeout
+
+On the live API, a synchronous search returns after 90 seconds even if the search isn't complete. The search keeps
+running, and your integration has to get the results later. To test this, add the `[timeout]` test term:
+
+- In a synchronous search, the sandbox API returns immediately with the status `fetching` and `null` in the `queries`
+  field, the same response that the live API gives after 90 seconds. The sandbox API doesn't wait the 90 seconds.
+- In an asynchronous search, the search goes through `running` and `fetching` as usual.
+
+In both modes, the search is complete 2 minutes after you perform it: the 90 seconds of the timeout plus 30 seconds.
+Get the results with `GET https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}` or from the webhook events.
+
+## Example
 
 The following request performs an asynchronous search on the sandbox API. The `how to brew coffee` term succeeds and the
-`[error]` term fails, so the status of the search is `success`. The `[delay 1]` test term sets the delay between status
-changes to 1 second:
+`[error]` term fails, so the status of the search is `success`. The `[delay 1]` test term sets the delay before each
+status change to 1 second:
 
 ```bash
 curl --request POST 'https://sandbox.alsoaskedapi.com/v1.1/search' \
@@ -116,6 +169,20 @@ curl --request POST 'https://sandbox.alsoaskedapi.com/v1.1/search' \
 
 Replace `YOUR_SANDBOX_API_KEY` with your sandbox API key, which starts with `aa-sandbox-`. For more information about
 the `async` field, see [Synchronous and asynchronous searches](./searches.md).
+
+When the search is complete, the `how to brew coffee` query has the status `success`, the `[error]` query has the
+status `error`, and the `[delay 1]` query has the status `success`, the status of the search. AlsoAsked refunds the
+sandbox credits of the `[error]` term.
+
+## What the sandbox API can't test
+
+The sandbox API doesn't have these behaviors of the live API, so test them another way:
+
+- **Stored results:** the sandbox API always gets new test results, so every term costs sandbox credits.
+- **The plan error:** the sandbox API doesn't need a Pro plan, so it never returns `insufficient_plan`.
+- **The real rate limit:** use the `[rate_limit]` test term to test your handling of a `429` response.
+- **Long searches:** sandbox searches finish within seconds, or 2 minutes with `[timeout]`. On the live API, a search
+  with many terms can take up to an hour. See [Synchronous and asynchronous searches](./searches.md).
 
 ## Webhook events from the sandbox API
 

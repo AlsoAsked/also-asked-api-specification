@@ -12,8 +12,8 @@ results again.
 
 ## Before you start
 
-- You need a live API key in the `X-Api-Key` header of each request. For details, see
-  [Authenticate requests](./authentication.md).
+- You need an API key in the `X-Api-Key` header of each request: a live API key for the live API, or a sandbox API key
+  for the sandbox API. For details, see [Authenticate requests](./authentication.md).
 - To get the ID of a search, perform a search or list your searches. For details, see
   [Perform a search](./perform-a-search.md).
 
@@ -39,26 +39,31 @@ The response body of the `GET /v1.1/search` endpoint has these fields:
 
 | Name | Type | Description |
 | --- | --- | --- |
-| `total` | integer | The number of searches in your search history. |
-| `page` | integer | The page in the response. |
 | `results` | array | The searches on the page, newest first. |
+| `total` | integer | The number of searches in your search history, including deleted searches. |
+| `page` | integer | The page in the response. |
 
 Each search in the `results` field has the fields of the search object, except the `queries` field. Each search in the
 `results` field also has the `terms` field: an array of strings with the terms of the search. For a deleted search,
 the `terms` field is `null`. The `results` field doesn't contain the results of the searches. To get the results of a
 search, see [Get one search](#get-one-search).
 
+The live API lists both the searches that you performed with the API and the searches that you performed on the
+AlsoAsked website.
+
+If the `page` query parameter is past the last page, the response has an empty `results` field and the real `total`
+field. To get every page, increase the `page` query parameter until the `results` field is empty. New searches go to the
+start of the list, so a search can move to the next page while you read the pages. To find one search, use its ID with
+the `GET /v1.1/search/{searchId}` endpoint instead.
+
 The following JSON is an example response body from the `GET /v1.1/search` endpoint. The first search in the
 `results` field is a deleted search:
 
 ```json
 {
-  "total": 32,
-  "page": 1,
   "results": [
     {
       "id": "5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba",
-      "terms": null,
       "language": null,
       "region": null,
       "latitude": null,
@@ -69,11 +74,11 @@ The following JSON is an example response body from the `GET /v1.1/search` endpo
       "cached": null,
       "created_at": "2023-01-10T15:00:00+00:00",
       "updated_at": "2023-01-10T15:05:00+00:00",
-      "cached_at": null
+      "cached_at": null,
+      "terms": null
     },
     {
       "id": "7T1aKjx9Vb8YX2tksUeQwTPn6N0ku2E6",
-      "terms": ["What are the best pasta recipes?"],
       "language": "en",
       "region": "gb",
       "latitude": null,
@@ -84,9 +89,12 @@ The following JSON is an example response body from the `GET /v1.1/search` endpo
       "cached": true,
       "created_at": "2023-01-05T10:30:00+00:00",
       "updated_at": "2023-01-05T10:32:00+00:00",
-      "cached_at": "2023-01-04T03:48:00+00:00"
+      "cached_at": "2023-01-04T03:48:00+00:00",
+      "terms": ["What are the best pasta recipes?"]
     }
-  ]
+  ],
+  "total": 32,
+  "page": 1
 }
 ```
 
@@ -129,6 +137,11 @@ following steps:
    ```
 
 If the API deletes the search, the API returns the status code `204 No Content` with no response body.
+
+Deleting a search doesn't stop it. If the search is still running, its terms keep running, and AlsoAsked refunds the
+credits of the terms that fail or have no results, the same as for a search that you don't delete. AlsoAsked sends no
+more webhook events for a deleted search. AlsoAsked keeps the stored results of a deleted search, and can use them for
+later searches.
 
 A deleted search stays in the response of `GET /v1.1/search` and in the response of `GET /v1.1/search/{searchId}`.
 In a deleted search, the `deleted` field is `true`. These fields of a deleted search are `null`: `language`, `region`,
@@ -173,6 +186,23 @@ endpoints return the status code `404 Not Found` with the error type `not_found`
 account, a search older than the history limit of your plan, and a search that doesn't exist. The
 `DELETE /v1.1/search/{searchId}` endpoint also returns `404 Not Found` for a search that's already deleted.
 
+## Find a search after a lost response
+
+If your request to `POST /v1.1/search` gets no response, for example because your client stopped waiting or the
+connection closed, AlsoAsked may still have recorded the search, charged the credits, and started it. Before you
+perform the search again, check your search history:
+
+1. Send a request to `GET /v1.1/search?page=1&count=100`.
+2. Look for a search with the same terms in the `terms` field, created at about the time of your request.
+3. If you find the search, use its `id` field with the `GET /v1.1/search/{searchId}` endpoint to get the results.
+
+If you perform the search again instead, the result depends on the first search:
+
+- If the first search is complete, the terms of the new search use its stored results, so the new search costs no
+  credits for those terms, unless the `fresh` field is `true`.
+- If the first search is still running, its results aren't stored yet, so the new search runs again and costs credits
+  again.
+
 ## If there is a problem
 
 If the AlsoAsked API can't complete a request for your search history, the API returns an error response. The `status`
@@ -180,7 +210,8 @@ field in the error response body has the error type.
 
 | Problem | Cause | What to do |
 | --- | --- | --- |
-| Status code `422 Unprocessable Content`, error type `validation`, from `GET /v1.1/search` | The `page` query parameter is less than `1`, or the `count` query parameter isn't `1` to `100`. For example, the `message` field is `Value "101" for argument "count" is invalid for Request [get /search].` | Set the `page` query parameter to `1` or more, and the `count` query parameter to `1` to `100`. |
+| Status code `422 Unprocessable Content`, error type `validation`, from `GET /v1.1/search` | The `page` query parameter is less than `1`, or the `count` query parameter isn't `1` to `100`. The `errors` field names the query parameter, for example `count`. | Set the `page` query parameter to `1` or more, and the `count` query parameter to `1` to `100`. |
+| Status code `422 Unprocessable Content`, error type `validation`, from `GET /v1.1/search/{searchId}` or `DELETE /v1.1/search/{searchId}` | The `searchId` path parameter isn't 32 letters and digits. The `errors` field names `searchId`. | Check the ID of the search. |
 | Status code `404 Not Found`, error type `not_found`, from `GET /v1.1/search/{searchId}` or `DELETE /v1.1/search/{searchId}` | The search isn't in your search history. The search belongs to another account, is older than the history limit of your plan, or doesn't exist. | Check the `searchId` path parameter. Use an API key of the account that performed the search. |
 
 For all error types, see [Errors](./errors.md).

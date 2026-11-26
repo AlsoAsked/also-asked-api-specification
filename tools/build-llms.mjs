@@ -8,7 +8,7 @@ import { parse } from 'yaml';
 // Navigation order. Each page must exist and have title, description and type in its front matter.
 const SECTIONS = [
   ['Start here', ['overview', 'quickstart', 'authentication', 'sandbox']],
-  ['Searches', ['searches', 'perform-a-search', 'search-results', 'search-history', 'credits']],
+  ['Searches', ['searches', 'perform-a-search', 'search-results', 'search-history', 'credits', 'bulk-searches']],
   ['Webhooks', ['webhooks', 'verify-webhook-signatures']],
   ['Reference', ['account', 'errors', 'rate-limits', 'glossary', 'changelog']],
 ];

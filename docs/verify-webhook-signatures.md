@@ -20,11 +20,15 @@ shows that AlsoAsked sent the webhook event and that nobody changed the body.
 
 To get a webhook signing key, sign in to AlsoAsked, go to the **Webhooks** page at
 `https://alsoasked.com/developer/webhooks`, and select **Generate signing key** in the **Webhook signing key** section.
-AlsoAsked shows the webhook signing key only once, so store it in a safe place.
+AlsoAsked shows the webhook signing key only once, so store it in a safe place. The webhook signing key is 96
+hexadecimal characters. Use these characters as the key exactly as they are, as text: don't decode them from
+hexadecimal into bytes.
 
 To create a new webhook signing key, select **Regenerate signing key** in the **Webhook signing key** section. The new
-webhook signing key replaces the old one immediately, so the old webhook signing key no longer verifies new webhook
-events. Update your server with the new webhook signing key at the same time.
+webhook signing key replaces the old one immediately, and AlsoAsked signs every later attempt with it, including the
+retries of webhook events that it first sent before the change. There's no period when both webhook signing keys are
+in use, so update your server with the new webhook signing key at the same time. A webhook event that your server
+rejects during the change is retried, and the retry has a signature made with the new webhook signing key.
 
 ## How AlsoAsked makes the signature
 
