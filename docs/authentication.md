@@ -38,8 +38,8 @@ To create an API key on the AlsoAsked website, do the following steps:
 6. Copy the API key, and store it in a safe place. AlsoAsked shows the API key only once.
 
 Each account can have a maximum of 10 API keys. Live API keys and sandbox API keys count together. Deleted API keys
-don't count. An API key doesn't expire, and you can't rename it. The **API keys** page shows when each API key was last
-used. You can create and delete API keys only on the AlsoAsked website, not through the API.
+don't count. An API key doesn't expire, and you can't rename it. After an API key is first used, the **API keys** page
+shows when it was last accessed. You can create and delete API keys only on the AlsoAsked website, not through the API.
 
 ## Send an API key to the live API
 
