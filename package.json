@@ -18,7 +18,7 @@
     "lint:openapi": "npm run bundle && spectral lint openapi/openapi.yaml",
     "lint:prose": "./tools/lint-prose.sh",
     "bundle": "./tools/bundle.sh",
-    "style": "node tools/build-style.mjs",
-    "style:check": "npm run style && git diff --exit-code -- vale/AlsoAsked/Terms.yml docs/glossary.md"
+    "style": "node tools/build-style.mjs && node tools/build-llms.mjs",
+    "style:check": "npm run style && git diff --exit-code -- vale/AlsoAsked/Terms.yml docs/glossary.md llms.txt"
   }
 }

@@ -1,0 +1,37 @@
+# AlsoAsked API
+
+> The AlsoAsked API gets the "People Also Ask" questions that Google shows for a term, with their answers and child results. Version v1.1. Live API: https://alsoaskedapi.com/v1.1 (Pro plan). Sandbox API: https://sandbox.alsoaskedapi.com/v1.1 (any account). Send an API key in the X-Api-Key header.
+
+Each page is Markdown. Each section of a page is written to be correct on its own.
+
+## Start here
+
+- [AlsoAsked API overview](docs/overview.md): Learn what the AlsoAsked API does, what you need to use it, and where to start.
+- [Quickstart](docs/quickstart.md): Create a sandbox API key, perform your first search on the sandbox API, read the results, and get the search again.
+- [Authenticate requests](docs/authentication.md): Create an API key and send it in the X-Api-Key header, so that the AlsoAsked API accepts your requests.
+- [Sandbox API](docs/sandbox.md): Learn what the sandbox API is, how it differs from the live API, and how to use test terms to test your integration.
+
+## Searches
+
+- [Synchronous and asynchronous searches](docs/searches.md): Learn how synchronous and asynchronous searches work, and how to choose the right mode for your integration.
+- [Perform a search](docs/perform-a-search.md): Perform a search with the POST /v1.1/search endpoint, and choose the terms, location, depth, and mode of the search.
+- [Search results](docs/search-results.md): Find the fields of the search object, its queries, and its results, and learn how to get the results as a tree or as a flat list.
+- [Search history](docs/search-history.md): List the searches in your search history, get one search with its results, and delete a search with the AlsoAsked API.
+- [Credits](docs/credits.md): Learn how AlsoAsked charges credits for searches, how to calculate the cost of a search, and how to check the credits in your account.
+
+## Webhooks
+
+- [Webhooks](docs/webhooks.md): Learn how AlsoAsked sends webhook events to your webhook endpoints when the status of a search changes, and how your server must respond.
+- [Verify webhook signatures](docs/verify-webhook-signatures.md): Verify the signature of each webhook event, so that you only use webhook events that AlsoAsked sent.
+
+## Reference
+
+- [Account details](docs/account.md): Find the fields that the GET /v1.1/account endpoint returns, and the X-AlsoAsked-Credits header that shows your remaining credits.
+- [Errors](docs/errors.md): Find the error types that the AlsoAsked API returns, what each error type means, and what to do about it.
+- [Rate limits](docs/rate-limits.md): Find how the AlsoAsked API counts your requests, which rate limit headers it returns, and what to do when you get a 429 response.
+- [Glossary](docs/glossary.md): The approved term for each concept in the AlsoAsked API documentation.
+- [Changelog](docs/changelog.md): Find the changes to the AlsoAsked API, with the date of each change.
+
+## OpenAPI
+
+- [OpenAPI specification](openapi/openapi.yaml): every endpoint, field, and response of the AlsoAsked API, version v1.1.
