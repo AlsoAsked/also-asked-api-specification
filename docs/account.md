@@ -82,8 +82,8 @@ The following JSON is an example response body from the `GET /v1.1/account` endp
   "credits": 110,
   "web_credits": 100,
   "api_credits": 10,
-  "credits_reset_at": "2023-02-01T00:00:00Z",
-  "registered_at": "2023-01-01T00:00:00Z"
+  "credits_reset_at": "2023-02-01T00:00:00+00:00",
+  "registered_at": "2023-01-01T00:00:00+00:00"
 }
 ```
 

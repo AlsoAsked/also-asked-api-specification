@@ -1,2 +1,2 @@
 status: invalid_body
-message: 'JSON parsing failed with "Syntax error" for Request [post /search]'
+message: 'JSON parsing failed with "Syntax error" for Request [post /search].'

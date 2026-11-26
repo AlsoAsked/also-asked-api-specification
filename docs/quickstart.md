@@ -111,8 +111,8 @@ that Google shows.
   "deleted": false,
   "depth": 2,
   "cached": false,
-  "created_at": "2026-01-31T12:00:00Z",
-  "updated_at": "2026-01-31T12:00:06Z",
+  "created_at": "2026-01-31T12:00:00+00:00",
+  "updated_at": "2026-01-31T12:00:06+00:00",
   "cached_at": null,
   "queries": [
     {

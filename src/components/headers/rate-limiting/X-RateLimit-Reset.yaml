@@ -1,5 +1,5 @@
 description: |
-  The current time plus the length of the rate limit window, in Unix time (seconds since 1970-01-01T00:00:00Z). A
+  The current time plus the length of the rate limit window, in Unix time (seconds since 1970-01-01T00:00:00+00:00). A
   request that you send now stops counting at this time. To know when you can send again after a `429` response, use
   the `Retry-After` header.
 schema:

@@ -10,18 +10,6 @@ properties:
     description: |
       The ID of the search: 32 letters and digits. Use the ID in the `GET /v1.1/search/{searchId}` endpoint.
     example: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-  terms:
-    anyOf:
-      - type: array
-        items:
-          type: string
-      - type: 'null'
-    description: |
-      The terms of the search. The value of the `terms` field is `null` if the search is deleted.
-    example:
-      - When to plant out broad beans?
-      - How to grow broad beans?
-      - When to harvest broad beans?
   language:
     anyOf:
       - type: string
@@ -93,13 +81,13 @@ properties:
     format: date-time
     description: |
       The date and time when AlsoAsked created the search, in ISO 8601 format.
-    example: '2023-01-01T00:00:00Z'
+    example: '2023-01-01T00:00:00+00:00'
   updated_at:
     type: string
     format: date-time
     description: |
       The date and time when the search last changed, in ISO 8601 format.
-    example: '2023-01-01T00:00:10Z'
+    example: '2023-01-01T00:00:10+00:00'
   cached_at:
     anyOf:
       - type: string
@@ -109,6 +97,18 @@ properties:
       The date and time when AlsoAsked stored the oldest of the earlier results that the search used, in ISO 8601
       format. The value is `null` if no term of the search used stored results, on the sandbox API, or if the search
       is deleted.
-    example: '2022-12-31T00:00:00Z'
+    example: '2022-12-31T00:00:00+00:00'
+  terms:
+    anyOf:
+      - type: array
+        items:
+          type: string
+      - type: 'null'
+    description: |
+      The terms of the search. The value of the `terms` field is `null` if the search is deleted.
+    example:
+      - When to plant out broad beans?
+      - How to grow broad beans?
+      - When to harvest broad beans?
 example:
   $ref: ../../../examples/search/SearchRequest.yaml

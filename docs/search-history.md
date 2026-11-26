@@ -67,8 +67,8 @@ The following JSON is an example response body from the `GET /v1.1/search` endpo
       "deleted": true,
       "depth": null,
       "cached": null,
-      "created_at": "2023-01-10T15:00:00Z",
-      "updated_at": "2023-01-10T15:05:00Z",
+      "created_at": "2023-01-10T15:00:00+00:00",
+      "updated_at": "2023-01-10T15:05:00+00:00",
       "cached_at": null
     },
     {
@@ -82,9 +82,9 @@ The following JSON is an example response body from the `GET /v1.1/search` endpo
       "deleted": false,
       "depth": 2,
       "cached": true,
-      "created_at": "2023-01-05T10:30:00Z",
-      "updated_at": "2023-01-05T10:32:00Z",
-      "cached_at": "2023-01-04T03:48:00Z"
+      "created_at": "2023-01-05T10:30:00+00:00",
+      "updated_at": "2023-01-05T10:32:00+00:00",
+      "cached_at": "2023-01-04T03:48:00+00:00"
     }
   ]
 }
@@ -148,8 +148,8 @@ The following JSON is an example response body from `GET /v1.1/search/{searchId}
   "deleted": true,
   "depth": null,
   "cached": null,
-  "created_at": "2023-01-10T15:00:00Z",
-  "updated_at": "2023-01-10T15:05:00Z",
+  "created_at": "2023-01-10T15:00:00+00:00",
+  "updated_at": "2023-01-10T15:05:00+00:00",
   "cached_at": null,
   "queries": null
 }

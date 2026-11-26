@@ -133,9 +133,9 @@ shortened: it has 1 result, 1 AI overview source, and no child results.
   "deleted": false,
   "depth": 2,
   "cached": true,
-  "created_at": "2023-01-01T00:00:00Z",
-  "updated_at": "2023-01-01T00:00:10Z",
-  "cached_at": "2022-12-31T00:00:00Z",
+  "created_at": "2023-01-01T00:00:00+00:00",
+  "updated_at": "2023-01-01T00:00:10+00:00",
+  "cached_at": "2022-12-31T00:00:00+00:00",
   "queries": [
     {
       "term": "When to plant out broad beans?",

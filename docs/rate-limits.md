@@ -34,7 +34,7 @@ Every response from the live API and the sandbox API has these rate limit header
 | --- | --- | --- |
 | `X-RateLimit-Limit` | Integer | The maximum number of requests that you can send in the window of the rate limit. |
 | `X-RateLimit-Remaining` | Integer | The number of requests that you can still send now. It's the lower of the remaining requests for your API key and for your IP address. |
-| `X-RateLimit-Reset` | Integer | The current time plus the length of the window, in Unix time (seconds since 1970-01-01T00:00:00Z). A request that you send now stops counting at this time. To find the length of the window, subtract the current time from this value. |
+| `X-RateLimit-Reset` | Integer | The current time plus the length of the window, in Unix time (seconds since 1970-01-01T00:00:00+00:00). A request that you send now stops counting at this time. To find the length of the window, subtract the current time from this value. |
 
 ## Response when you reach the rate limit
 

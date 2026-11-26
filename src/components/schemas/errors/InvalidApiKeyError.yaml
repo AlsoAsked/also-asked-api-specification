@@ -19,6 +19,6 @@ properties:
     description: |
       A description of the error for people to read. The text of the `message` field can change, so don't use the
       `message` field in your code.
-    example: The API key provided is invalid
+    example: The API key provided is invalid.
 example:
   $ref: ../../../examples/errors/InvalidApiKeyError.yaml

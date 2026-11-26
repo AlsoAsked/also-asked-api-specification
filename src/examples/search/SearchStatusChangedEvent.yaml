@@ -1,5 +1,16 @@
 event_id: 4Jk2mQ9xVb7NzR1cT8yHp3LdWs6FgE0a
 id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
+language: en
+region: us
+latitude: 51.5072
+longitude: 0.1276
+status: success
+deleted: false
+depth: 3
+cached: true
+created_at: '2023-01-01T00:00:00+00:00'
+updated_at: '2023-01-01T00:00:10+00:00'
+cached_at: '2022-12-31T00:00:00+00:00'
 queries:
 - term: When to plant out broad beans?
   status: success
@@ -8,7 +19,7 @@ queries:
   results:
   - question: When to plant out broad beans?
     position: [1]
-    answer_excerpt: |
+    answer_excerpt: >-
       Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
       plant them out from mid-March.
     answer_href: https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
@@ -29,7 +40,7 @@ queries:
     results:
     - question: When can I transplant broad beans?
       position: [1, 1]
-      answer_excerpt: |
+      answer_excerpt: >-
         Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
         pots during the autumn and transplanted in to the ground in the spring.
       answer_href: >-
@@ -51,7 +62,7 @@ queries:
       results:
       - question: Do you get a second crop of broad beans?
         position: [1, 1, 1]
-        answer_excerpt: |
+        answer_excerpt: >-
           Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
           broad beans in the spring and again in the fall.
         answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
@@ -62,7 +73,7 @@ queries:
         results: []
       - question: What not to plant with broad beans?
         position: [1, 1, 2]
-        answer_excerpt: |
+        answer_excerpt: >-
           Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
           broad beans in the spring and again in the fall.
         answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
@@ -73,7 +84,7 @@ queries:
         results: []
       - question: How to grow broad beans in a greenhouse?
         position: [1, 1, 3]
-        answer_excerpt: |
+        answer_excerpt: >-
           Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
           broad beans in the spring and again in the fall.
         answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
@@ -84,7 +95,7 @@ queries:
         results: []
     - question: Do broad beans need to be dried before planting?
       position: [1, 2]
-      answer_excerpt: |
+      answer_excerpt: >-
         Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are
         simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the
         plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.
@@ -104,14 +115,3 @@ queries:
       - Drying kidney beans - GreenThumb Academy
       - Drying lima beans - PlantPro Digest
       results: []
-language: en
-region: us
-latitude: 51.5072
-longitude: 0.1276
-status: success
-deleted: false
-depth: 3
-cached: true
-created_at: '2023-01-01T00:00:00Z'
-updated_at: '2023-01-01T00:00:10Z'
-cached_at: '2022-12-31T00:00:00Z'

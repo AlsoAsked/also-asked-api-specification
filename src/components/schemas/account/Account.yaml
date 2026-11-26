@@ -58,12 +58,12 @@ properties:
     description: |
       The date and time when the web credits of the account renew, in ISO 8601 format. On the sandbox API, the date and
       time when the sandbox credits reset.
-    example: '2023-02-01T00:00:00Z'
+    example: '2023-02-01T00:00:00+00:00'
   registered_at:
     type: string
     format: date-time
     description: |
       The date and time of the registration of the account, in ISO 8601 format.
-    example: '2023-01-01T00:00:00Z'
+    example: '2023-01-01T00:00:00+00:00'
 example:
   $ref: ../../../examples/account/Account.yaml
