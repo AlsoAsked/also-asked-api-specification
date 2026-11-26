@@ -1,0 +1,5 @@
+# Dependencies whose install scripts are not needed. @scarf/scarf only sends install telemetry.
+allowBuilds:
+  "@scarf/scarf": false
+  core-js: false
+  protobufjs: false
