@@ -43,18 +43,18 @@ properties:
       example `gb`. The value of the `region` field is `null` if the search is deleted.
     example: us
   latitude:
-    type: number
+    type: [number, 'null']
     format: double
-    nullable: true
     description: |
-      The latitude of the search. The value of the `latitude` field is `null` if the search is deleted.
+      The latitude of the search. The value of the `latitude` field is `null` if the search has no location, or if
+      the search is deleted.
     example: 51.5072
   longitude:
-    type: number
+    type: [number, 'null']
     format: double
-    nullable: true
     description: |
-      The longitude of the search. The value of the `longitude` field is `null` if the search is deleted.
+      The longitude of the search. The value of the `longitude` field is `null` if the search has no location, or if
+      the search is deleted.
     example: 0.1276
   status:
     anyOf:
@@ -82,13 +82,12 @@ properties:
       The depth of the search: `1`, `2`, or `3`. The value of the `depth` field is `null` if the search is deleted.
     example: 2
   cached:
-    type:
-      - boolean
-      - 'null'
+    type: [boolean, 'null']
     description: |
-      `true` if the search used cached results. The value of the `cached` field is `null` if the search is deleted. To
-      get new results instead of cached results, set the `fresh` field to `true` in the request body of the
-      `POST /v1.1/search` endpoint.
+      `true` if AlsoAsked has stored results for the first term of the search. This is also `true` for a search that
+      got new results from Google, after AlsoAsked stores the results. To know if the search used results from an
+      earlier search, compare the `cached_at` field with the `created_at` field. On the sandbox API, the value is
+      `false`. The value of the `cached` field is `null` if the search is deleted.
     example: true
   created_at:
     type: string
@@ -108,8 +107,10 @@ properties:
         format: date-time
       - type: 'null'
     description: |
-      The date and time when AlsoAsked saved the cached results, in ISO 8601 format. The value of the `cached_at` field
-      is `null` if the search didn't use cached results, or if the search is deleted.
+      The date and time when AlsoAsked stored the results for the first term of the search, in ISO 8601 format. If the
+      `cached_at` field is earlier than the `created_at` field, the search used results that AlsoAsked stored for an
+      earlier search. The value is `null` if AlsoAsked has no stored results for the first term, on the sandbox API, or
+      if the search is deleted.
     example: '2022-12-31T00:00:00Z'
 example:
   $ref: ../../../examples/search/SearchRequest.yaml

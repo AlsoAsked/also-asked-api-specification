@@ -2,10 +2,14 @@ description: |
   The search doesn't exist, or the search isn't in your search history, for example because the search belongs to
   another account. The error type is `not_found`.
 headers:
-  X-RateLimit-Remaining:
-    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-AlsoAsked-Credits:
+    $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
   X-RateLimit-Limit:
     $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Reset:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Reset.yaml
 content:
   application/json:
     schema:

@@ -1,10 +1,12 @@
 description: |
-  AlsoAsked doesn't accept the API key in the `X-Api-Key` header. The `status` field of the body has the error type.
+  AlsoAsked doesn't accept the API key in the `X-Api-Key` header. The error type is `invalid_api_key`.
 headers:
-  X-RateLimit-Remaining:
-    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
   X-RateLimit-Limit:
     $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Reset:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Reset.yaml
 content:
   application/json:
     schema:
@@ -18,9 +20,3 @@ content:
           key works only on the sandbox API.
         value:
           $ref: ../../../examples/errors/InvalidApiKeyError.yaml
-      ApiAccessDisabledError:
-        summary: API access turned off error
-        description: |
-          An `api_access_disabled` error. AlsoAsked turned off API access for your account. Contact AlsoAsked support.
-        value:
-          $ref: ../../../examples/errors/ApiAccessDisabledError.yaml

@@ -1,13 +1,10 @@
 title: Forbidden error
 type: object
 description: |
-  The error body of a `403 Forbidden` response. The AlsoAsked API returns the status code `403` with the
-  `invalid_api_key` error type.
+  The error body of a `403 Forbidden` response. The error type is `invalid_api_key`.
 oneOf:
   - $ref: ./InvalidApiKeyError.yaml
-  - $ref: ./ApiAccessDisabledError.yaml
 discriminator:
   propertyName: status
   mapping:
     invalid_api_key: ./InvalidApiKeyError.yaml
-    api_access_disabled: ./ApiAccessDisabledError.yaml

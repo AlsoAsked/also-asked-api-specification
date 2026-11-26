@@ -24,22 +24,35 @@ properties:
     items:
       $ref: ./SearchRequest.yaml
     example:
-    - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
+    - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
       terms:
-      - When to plant out broad beans?
-      - How to grow broad beans?
-      - When to harvest broad beans?
-      language: en
-      region: us
+      - Wie kann man Energie sparen?
+      - Was sind die besten Tipps zum Energiesparen?
+      - Wie senke ich meinen Energieverbrauch?
+      language: de
+      region: de
       latitude: 51.5072
       longitude: 0.1276
       status: success
       deleted: false
-      depth: 2
-      cached: false
-      created_at: '2023-01-01T00:00:00Z'
-      updated_at: '2023-01-01T00:00:10Z'
-      cached_at: '2023-01-01T00:00:10Z'
+      depth: 3
+      cached: true
+      created_at: '2023-01-15T18:45:00Z'
+      updated_at: '2023-01-15T18:50:00Z'
+      cached_at: '2023-01-15T18:50:00Z'
+    - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
+      terms: null
+      language: null
+      region: null
+      latitude: null
+      longitude: null
+      status: null
+      deleted: true
+      depth: null
+      cached: null
+      created_at: '2023-01-10T15:00:00Z'
+      updated_at: '2023-01-10T15:05:00Z'
+      cached_at: null
     - id: 7T1aKjx9Vb8YX2tksUeQwTPn6N0ku2E6
       terms:
       - What are the best pasta recipes?
@@ -54,32 +67,21 @@ properties:
       created_at: '2023-01-05T10:30:00Z'
       updated_at: '2023-01-05T10:32:00Z'
       cached_at: '2023-01-04T03:48:00Z'
-    - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
-      terms: null
-      language: null
-      region: null
-      status: null
-      deleted: true
-      depth: null
-      cached: null
-      created_at: '2023-01-10T15:00:00Z'
-      updated_at: '2023-01-10T15:05:00Z'
-      cached_at: null
-    - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
+    - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
       terms:
-      - Wie kann man Energie sparen?
-      - Was sind die besten Tipps zum Energiesparen?
-      - Wie senke ich meinen Energieverbrauch?
-      language: de
-      region: de
+      - When to plant out broad beans?
+      - How to grow broad beans?
+      - When to harvest broad beans?
+      language: en
+      region: us
       latitude: 51.5072
       longitude: 0.1276
       status: success
       deleted: false
       depth: 3
-      cached: false
-      created_at: '2023-01-15T18:45:00Z'
-      updated_at: '2023-01-15T18:50:00Z'
-      cached_at: '2023-01-15T18:50:00Z'
+      cached: true
+      created_at: '2023-01-01T00:00:00Z'
+      updated_at: '2023-01-01T00:00:10Z'
+      cached_at: '2023-01-01T00:00:10Z'
 example:
   $ref: ../../../examples/search/PaginatedSearchRequests.yaml

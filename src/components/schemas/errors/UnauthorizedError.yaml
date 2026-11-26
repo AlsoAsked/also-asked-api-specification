@@ -1,0 +1,12 @@
+title: Unauthorized error
+type: object
+description: |
+  The error body of a `401 Unauthorized` response. The error type is `missing_api_key` or `api_access_disabled`.
+oneOf:
+  - $ref: ./MissingApiKeyError.yaml
+  - $ref: ./ApiAccessDisabledError.yaml
+discriminator:
+  propertyName: status
+  mapping:
+    missing_api_key: ./MissingApiKeyError.yaml
+    api_access_disabled: ./ApiAccessDisabledError.yaml

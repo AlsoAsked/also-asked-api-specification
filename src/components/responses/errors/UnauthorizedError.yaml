@@ -1,0 +1,29 @@
+description: |
+  AlsoAsked can't identify your account. The error type is `missing_api_key` when the request doesn't have the
+  `X-Api-Key` header, or `api_access_disabled` when AlsoAsked turned off API access for your account.
+headers:
+  X-RateLimit-Limit:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Reset:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Reset.yaml
+content:
+  application/json:
+    schema:
+      $ref: ../../schemas/errors/UnauthorizedError.yaml
+    examples:
+      MissingApiKeyError:
+        summary: Missing API key error
+        description: |
+          A `missing_api_key` error. The request doesn't have the `X-Api-Key` header. Put your API key in the
+          `X-Api-Key` header of every request.
+        value:
+          $ref: ../../../examples/errors/MissingApiKeyError.yaml
+      ApiAccessDisabledError:
+        summary: "`api_access_disabled` error"
+        description: |
+          An `api_access_disabled` error. AlsoAsked turned off API access for your account. Contact AlsoAsked support at
+          `support@alsoasked.com`.
+        value:
+          $ref: ../../../examples/errors/ApiAccessDisabledError.yaml

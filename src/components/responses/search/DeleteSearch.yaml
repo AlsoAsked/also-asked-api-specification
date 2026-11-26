@@ -3,7 +3,9 @@ description: |
 headers:
   X-AlsoAsked-Credits:
     $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
-  X-RateLimit-Remaining:
-    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
   X-RateLimit-Limit:
     $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Reset:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Reset.yaml

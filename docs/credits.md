@@ -100,8 +100,8 @@ The `GET /v1.1/account` response body has these credit fields:
 | `api_credits` | The API credits of the account. |
 | `credits_reset_at` | The date and time when the web credits of the account renew, in ISO 8601 format. |
 
-Every response from the AlsoAsked API also has the `X-AlsoAsked-Credits` header, not only the `GET /v1.1/account`
-response. On the live API, the `X-AlsoAsked-Credits` header contains the web credits plus the API credits that remain.
+Responses from the AlsoAsked API also have the `X-AlsoAsked-Credits` header, not only the `GET /v1.1/account`
+response. AlsoAsked doesn't add the header when the request has no API key or an API key that AlsoAsked doesn't accept, or when the live API refuses the request because the account doesn't have a Pro plan. On the live API, the `X-AlsoAsked-Credits` header contains the web credits plus the API credits that remain.
 For details about the account fields, see [Account details](./account.md).
 
 ## Sandbox credits

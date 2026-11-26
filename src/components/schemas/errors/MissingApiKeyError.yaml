@@ -1,0 +1,22 @@
+title: Missing API key error
+type: object
+description: |
+  The error body for the `missing_api_key` error type. The AlsoAsked API returns the `missing_api_key` error type with
+  the status code `401 Unauthorized` when the request doesn't have the `X-Api-Key` header.
+properties:
+  status:
+    type: string
+    description: |
+      The error type. Use the `status` field in your code to decide what to do.
+    enum:
+      $ref: ../../../enums/ErrorType.yaml
+    example: missing_api_key
+    pattern: ^missing_api_key$
+  message:
+    type: string
+    description: |
+      A description of the error for people to read. The text of the `message` field can change, so don't use the
+      `message` field in your code.
+    example: No API key has been specified.
+example:
+  $ref: ../../../examples/errors/MissingApiKeyError.yaml

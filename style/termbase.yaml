@@ -181,7 +181,7 @@ terms:
     matches:
       - "fields: cached, cached_at, fresh"
     reject: []
-    example: If `cached` is `true`, the search used cached results.
+    example: Set `fresh` to `true` if you don't want cached results.
     status: approved
 
   - term: AI overview

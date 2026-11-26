@@ -5,10 +5,10 @@ description: |
 headers:
   Retry-After:
     $ref: ../../headers/rate-limiting/Retry-After.yaml
-  X-RateLimit-Remaining:
-    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
   X-RateLimit-Limit:
     $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
   X-RateLimit-Reset:
     $ref: ../../headers/rate-limiting/X-RateLimit-Reset.yaml
 content:

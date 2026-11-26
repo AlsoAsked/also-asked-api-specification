@@ -6,16 +6,14 @@ InternalServerError:
   $ref: ./errors/InternalServerError.yaml
 InvalidBodyError:
   $ref: ./errors/InvalidBodyError.yaml
-MissingApiKeyError:
-  $ref: ./errors/MissingApiKeyError.yaml
 NotFoundError:
   $ref: ./errors/NotFoundError.yaml
 PaymentRequiredError:
   $ref: ./errors/PaymentRequiredError.yaml
 RateLimitExceededError:
   $ref: ./errors/RateLimitExceededError.yaml
-UnderMaintenanceError:
-  $ref: ./errors/UnderMaintenanceError.yaml
+UnauthorizedError:
+  $ref: ./errors/UnauthorizedError.yaml
 ValidationError:
   $ref: ./errors/ValidationError.yaml
 GetAccount:

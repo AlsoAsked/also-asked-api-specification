@@ -12,6 +12,8 @@ InsufficientPlanError:
   $ref: ./errors/InsufficientPlanError.yaml
 InvalidApiKeyError:
   $ref: ./errors/InvalidApiKeyError.yaml
+MissingApiKeyError:
+  $ref: ./errors/MissingApiKeyError.yaml
 PaymentRequiredError:
   $ref: ./errors/PaymentRequiredError.yaml
 PaginatedSearchRequests:
@@ -26,3 +28,5 @@ SearchRequestOptions:
   $ref: ./search/SearchRequestOptions.yaml
 SearchResult:
   $ref: ./search/SearchResult.yaml
+UnauthorizedError:
+  $ref: ./errors/UnauthorizedError.yaml

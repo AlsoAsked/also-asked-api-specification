@@ -12,8 +12,7 @@ properties:
       The ID of the search: 32 letters and digits. Use the ID in the `GET /v1.1/search/{searchId}` endpoint.
     example: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
   queries:
-    type: array
-    nullable: true
+    type: [array, 'null']
     description: |
       One query for each term in the search. The value of the `queries` field is `null` unless the `status` field is
       `success`. A `null` value doesn't always mean that the search has no results: the search may not be complete yet,
@@ -51,7 +50,7 @@ properties:
           answer_excerpt: |
             Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
             pots during the autumn and transplanted in to the ground in the spring.
-          answer_href: |
+          answer_href: >-
             https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
           answer_page_title: Grow broad beans with children / RHS Gardening
           ai_overview: true
@@ -77,7 +76,7 @@ properties:
             answer_page_title: Growing Broad Beans - Gardening Know How
             ai_overview: false
             ai_overview_hrefs: null
-            ai_overview_page_titles": null
+            ai_overview_page_titles: null
             results: []
           - question: What not to plant with broad beans?
             position: [1, 1, 2]
@@ -88,7 +87,7 @@ properties:
             answer_page_title: Growing Broad Beans - Gardening Know How
             ai_overview: false
             ai_overview_hrefs: null
-            ai_overview_page_titles": null
+            ai_overview_page_titles: null
             results: []
           - question: How to grow broad beans in a greenhouse?
             position: [1, 1, 3]
@@ -99,7 +98,7 @@ properties:
             answer_page_title: Growing Broad Beans - Gardening Know How
             ai_overview: false
             ai_overview_hrefs: null
-            ai_overview_page_titles": null
+            ai_overview_page_titles: null
             results: []
         - question: Do broad beans need to be dried before planting?
           position: [1, 2]
@@ -124,45 +123,48 @@ properties:
           - Drying lima beans - PlantPro Digest
           results: []
   language:
-    type: string
-    nullable: true
+    anyOf:
+    - type: string
+      enum:
+        $ref: ../../../enums/Language.yaml
+    - type: 'null'
     description: |
       The language code of the search, for example `en`. The value of the `language` field is `null` if the search is
       deleted.
-    enum:
-      $ref: ../../../enums/Language.yaml
     example: en
   region:
-    type: string
-    nullable: true
+    anyOf:
+    - type: string
+      enum:
+        $ref: ../../../enums/Region.yaml
+    - type: 'null'
     description: |
       The region code of the search: a two-letter International Organization for Standardization (ISO) 3166-1 code, for
       example `gb`. The value of the `region` field is `null` if the search is deleted.
-    enum:
-      $ref: ../../../enums/Region.yaml
     example: us
   latitude:
-    type: number
+    type: [number, 'null']
     format: double
-    nullable: true
     description: |
-      The latitude of the search. The value of the `latitude` field is `null` if the search is deleted.
+      The latitude of the search. The value of the `latitude` field is `null` if the search has no location, or if
+      the search is deleted.
     example: 51.5072
   longitude:
-    type: number
+    type: [number, 'null']
     format: double
-    nullable: true
     description: |
-      The longitude of the search. The value of the `longitude` field is `null` if the search is deleted.
+      The longitude of the search. The value of the `longitude` field is `null` if the search has no location, or if
+      the search is deleted.
     example: 0.1276
   status:
-    type: string
-    nullable: true
+    anyOf:
+    - type: string
+      enum:
+        $ref: ../../../enums/SearchRequestStatus.yaml
+    - type: 'null'
     description: |
       The status of the search. A search is complete when its status is `success`, `no_results`, or `error`. The value
       of the `status` field is `null` if the search is deleted.
-    enum:
-      $ref: ../../../enums/SearchRequestStatus.yaml
     example: success
   deleted:
     type: boolean
@@ -170,21 +172,20 @@ properties:
       `true` if the search is deleted, otherwise `false`.
     example: false
   depth:
-    type: integer
+    type: [integer, 'null']
     format: int32
-    nullable: true
     minimum: 1
     maximum: 3
     description: |
       The depth of the search: `1`, `2`, or `3`. The value of the `depth` field is `null` if the search is deleted.
     example: 3
   cached:
-    type: boolean
-    nullable: true
+    type: [boolean, 'null']
     description: |
-      `true` if the search used cached results. The value of the `cached` field is `null` if the search is deleted. To
-      get new results instead of cached results, set the `fresh` field to `true` in the request body of the
-      `POST /v1.1/search` endpoint.
+      `true` if AlsoAsked has stored results for the first term of the search. This is also `true` for a search that
+      got new results from Google, after AlsoAsked stores the results. To know if the search used results from an
+      earlier search, compare the `cached_at` field with the `created_at` field. On the sandbox API, the value is
+      `false`. The value of the `cached` field is `null` if the search is deleted.
     example: true
   created_at:
     type: string
@@ -199,12 +200,13 @@ properties:
       The date and time when the search last changed, in ISO 8601 format.
     example: '2023-01-01T00:00:10Z'
   cached_at:
-    type: string
-    nullable: true
+    type: [string, 'null']
     format: date-time
     description: |
-      The date and time when AlsoAsked saved the cached results, in ISO 8601 format. The value of the `cached_at` field
-      is `null` if the search didn't use cached results, or if the search is deleted.
+      The date and time when AlsoAsked stored the results for the first term of the search, in ISO 8601 format. If the
+      `cached_at` field is earlier than the `created_at` field, the search used results that AlsoAsked stored for an
+      earlier search. The value is `null` if AlsoAsked has no stored results for the first term, on the sandbox API, or
+      if the search is deleted.
     example: '2022-12-31T00:00:00Z'
 example:
   $ref: ../../../examples/search/SearchRequestResults.yaml

@@ -20,7 +20,7 @@ properties:
     format: email
     description: |
       The email address of the account.
-    example: mantis.toboggan@gmail.com
+    example: mantis.toboggan@example.com
   plan_type:
     type: string
     description: |
@@ -35,7 +35,7 @@ properties:
     description: |
       The total credits that remain in the account: the value of the `web_credits` field plus the value of the
       `api_credits` field. On the sandbox API, the value of the `credits` field is the sandbox credits.
-    example: 100
+    example: 110
   web_credits:
     type: integer
     format: int64
@@ -51,7 +51,7 @@ properties:
     description: |
       The API credits that remain in the account. API credits pay for searches on the AlsoAsked API when no web credits
       remain. On the sandbox API, the value of the `api_credits` field is `0`.
-    example: 100
+    example: 10
   credits_reset_at:
     type: string
     format: date-time

@@ -24,7 +24,7 @@ results:
   answer_excerpt: |
     Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
     pots during the autumn and transplanted in to the ground in the spring.
-  answer_href: |
+  answer_href: >-
     https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
   answer_page_title: Grow broad beans with children / RHS Gardening
   ai_overview: true
@@ -50,7 +50,7 @@ results:
     answer_page_title: Growing Broad Beans - Gardening Know How
     ai_overview: false
     ai_overview_hrefs: null
-    ai_overview_page_titles": null
+    ai_overview_page_titles: null
     results: []
   - question: What not to plant with broad beans?
     position: [1, 1, 2]
@@ -61,7 +61,7 @@ results:
     answer_page_title: Growing Broad Beans - Gardening Know How
     ai_overview: false
     ai_overview_hrefs: null
-    ai_overview_page_titles": null
+    ai_overview_page_titles: null
     results: []
   - question: How to grow broad beans in a greenhouse?
     position: [1, 1, 3]
@@ -72,7 +72,7 @@ results:
     answer_page_title: Growing Broad Beans - Gardening Know How
     ai_overview: false
     ai_overview_hrefs: null
-    ai_overview_page_titles": null
+    ai_overview_page_titles: null
     results: []
 - question: Do broad beans need to be dried before planting?
   position: [1, 2]

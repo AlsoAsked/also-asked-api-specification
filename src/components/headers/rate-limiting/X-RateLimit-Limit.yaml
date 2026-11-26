@@ -4,4 +4,4 @@ schema:
   type: integer
   format: int64
   minimum: 0
-example: 1000
+example: 200

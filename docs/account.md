@@ -54,7 +54,7 @@ For details, see [Sandbox API](./sandbox.md).
 
 ## Credits header
 
-Every response from the live API and the sandbox API has the `X-AlsoAsked-Credits` header. The value of the
+Responses from the live API and the sandbox API have the `X-AlsoAsked-Credits` header. AlsoAsked doesn't add the header when the request has no API key or an API key that AlsoAsked doesn't accept, or when the live API refuses the request because the account doesn't have a Pro plan. The value of the
 `X-AlsoAsked-Credits` header is the number of credits that remain in the account:
 
 - On the live API, the `X-AlsoAsked-Credits` header has the web credits plus the API credits.

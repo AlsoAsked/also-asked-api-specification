@@ -19,6 +19,6 @@ properties:
     description: |
       A description of the error for people to read. The text of the `message` field can change, so don't use the
       `message` field in your code.
-    example: You don't have enough credits to perform this request.
+    example: You don't have enough credits to perform this request
 example:
   $ref: ../../../examples/errors/InsufficientCreditsError.yaml

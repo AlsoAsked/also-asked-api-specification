@@ -18,7 +18,7 @@ This page lists the terms that the AlsoAsked API documentation uses, with the me
 | API key | The secret value that identifies your account in each request. It starts with `aa-live-` or `aa-sandbox-`. | Create an API key on the API keys page. |
 | asynchronous search | A search where the API sends the response immediately, before the search is complete. Set `async` to `true`. | An asynchronous search returns the search ID immediately. |
 | body | The JSON content of a request or response. | The response body contains the search. |
-| cached result | A result that AlsoAsked got from a previous search, not from Google at the time of your search. Set `fresh` to `true` to get new results. | If `cached` is `true`, the search used cached results. |
+| cached result | A result that AlsoAsked got from a previous search, not from Google at the time of your search. Set `fresh` to `true` to get new results. | Set `fresh` to `true` if you don't want cached results. |
 | child result | A result inside another result. The result that contains it is its parent result. | The `results` field of a result contains its child results. |
 | credit | The unit that AlsoAsked uses to charge for searches. A search costs credits for each term. The cost depends on the depth. | The cost of a search depends on the number of terms and the depth. |
 | delete | To remove access to a search and its results with the `DELETE /v1.1/search/{searchId}` endpoint. | Delete the search when you don't need it. |

@@ -2,10 +2,12 @@ description: |
   The live API needs a Pro plan and your account doesn't have one, or your account doesn't have enough credits for
   the search. The `status` field of the body has the error type: `insufficient_plan` or `insufficient_credits`.
 headers:
-  X-RateLimit-Remaining:
-    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
   X-RateLimit-Limit:
     $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml
+  X-RateLimit-Remaining:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
+  X-RateLimit-Reset:
+    $ref: ../../headers/rate-limiting/X-RateLimit-Reset.yaml
 content:
   application/json:
     schema:

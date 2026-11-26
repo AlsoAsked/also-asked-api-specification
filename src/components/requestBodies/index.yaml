@@ -1,2 +1,4 @@
 PerformSearch:
   $ref: ./search/PerformSearch.yaml
+StatusChangedWebhook:
+  $ref: ./search/StatusChangedWebhook.yaml

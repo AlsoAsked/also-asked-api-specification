@@ -17,7 +17,7 @@ responses:
   '200':
     $ref: ../../components/responses/search/ListSearches.yaml
   '401':
-    $ref: ../../components/responses/errors/MissingApiKeyError.yaml
+    $ref: ../../components/responses/errors/UnauthorizedError.yaml
   '402':
     $ref: ../../components/responses/errors/InsufficientPlanError.yaml
   '403':
@@ -28,5 +28,3 @@ responses:
     $ref: ../../components/responses/errors/RateLimitExceededError.yaml
   '500':
     $ref: ../../components/responses/errors/InternalServerError.yaml
-  '503':
-    $ref: ../../components/responses/errors/UnderMaintenanceError.yaml

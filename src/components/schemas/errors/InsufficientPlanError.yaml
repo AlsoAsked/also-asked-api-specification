@@ -18,6 +18,6 @@ properties:
     description: |
       A description of the error for people to read. The text of the `message` field can change, so don't use the
       `message` field in your code.
-    example: You must upgrade your account to a Pro plan to access the live API.
+    example: You must upgrade your account to a Pro plan to access the live API
 example:
   $ref: ../../../examples/errors/InsufficientPlanError.yaml

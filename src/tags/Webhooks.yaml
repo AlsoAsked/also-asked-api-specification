@@ -1,0 +1,3 @@
+name: Webhooks
+description: |
+  The requests that AlsoAsked sends to your webhook endpoints when the status of a search changes.

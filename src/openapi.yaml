@@ -41,12 +41,13 @@ info:
   termsOfService: https://alsoasked.com/eula
   contact:
     name: AlsoAsked Support
-    email: service@alsoasked.com
+    email: support@alsoasked.com
     url: https://help.alsoasked.com
   version: 1.1.0
 tags:
 - $ref: ./tags/Account.yaml
 - $ref: ./tags/Search.yaml
+- $ref: ./tags/Webhooks.yaml
 
 servers:
 - $ref: ./servers/live.yaml
@@ -64,11 +65,13 @@ paths:
       $ref: ./paths/search/get-search.yaml
     post:
       $ref: ./paths/search/post-search.yaml
-  /search/webhook-example:
-    post:
-      $ref: ./paths/search/post-search-webhook-example.yaml
   /search/{searchId}:
     get:
       $ref: ./paths/search/get-search-searchId.yaml
     delete:
       $ref: ./paths/search/delete-search-searchId.yaml
+
+webhooks:
+  searchStatusChanged:
+    post:
+      $ref: ./webhooks/search-status-changed.yaml

@@ -63,7 +63,8 @@ from the sandbox API, the fields show the sandbox credits:
 - The `api_credits` field is `0`.
 - The `plan_type` field is `pro`.
 
-Every response from the sandbox API also has the `X-AlsoAsked-Credits` header. On the sandbox API, the
+Responses from the sandbox API also have the `X-AlsoAsked-Credits` header, except when the request has no API key or an
+API key that AlsoAsked doesn't accept. On the sandbox API, the
 `X-AlsoAsked-Credits` header contains the sandbox credits that remain.
 
 ## Reset of sandbox credits
