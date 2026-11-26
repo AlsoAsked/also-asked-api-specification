@@ -34,7 +34,7 @@ field in the error body.
 
 | Status code | Error type | Meaning | What to do |
 | --- | --- | --- | --- |
-| `400 Bad Request` | `invalid_body` | The request body isn't valid JSON, or the request body isn't a JSON object. | Send a request body that's a valid JSON object. |
+| `400 Bad Request` | `invalid_body` | The request body isn't valid JSON. | Send a request body that's valid JSON. A body that's valid JSON but has the wrong fields or types gets the error type `validation` instead. |
 | `401 Unauthorized` | `missing_api_key` | The request doesn't have the `X-Api-Key` header. | Put your API key in the `X-Api-Key` header of every request. See [Authenticate requests](./authentication.md). |
 | `401 Unauthorized` | `api_access_disabled` | AlsoAsked turned off API access for your account. | Contact AlsoAsked support at `help@alsoasked.com`. |
 | `402 Payment Required` | `insufficient_plan` | The live API needs a Pro plan, and your account doesn't have a Pro plan. | Change your plan to Pro, or use the sandbox API, which doesn't need a Pro plan. |

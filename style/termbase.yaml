@@ -140,6 +140,7 @@ terms:
     example: When the status is `success`, the `queries` field contains the results.
     status: approved
 
+  # PENDING C2: the 90-second synchronous timeout is the default; confirm the production value.
   - term: synchronous search
     pos: noun
     definition: >-

@@ -162,14 +162,16 @@ searches in your search history. Which searches are in your search history depen
 
 - On the live API, the history limit of your plan sets how old a search in your search history can be. For a Pro plan,
   the history limit is 1 year.
-- On the live API, in a team, the team owner and the team admins see the searches of all members of the team. A
-  member sees only the searches that the member performed.
+- On the live API, in a team, the search history is the search history of the team owner, so the history limit of the
+  team owner's plan applies. The team owner sees all the searches of the team. A team administrator sees the searches of the
+  team members, but not the searches of the team owner. A team member sees only the searches that the member performed.
 - On the sandbox API, you see only your own sandbox searches. The sandbox API has no time limit for the search history.
   For details, see [Sandbox API](./sandbox.md).
 
 If a search isn't in your search history, the `GET /v1.1/search/{searchId}` and `DELETE /v1.1/search/{searchId}`
 endpoints return the status code `404 Not Found` with the error type `not_found`. This happens for a search of another
-account, a search older than the history limit of your plan, and a search that doesn't exist.
+account, a search older than the history limit of your plan, and a search that doesn't exist. The
+`DELETE /v1.1/search/{searchId}` endpoint also returns `404 Not Found` for a search that's already deleted.
 
 ## If there is a problem
 

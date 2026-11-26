@@ -54,8 +54,11 @@ properties:
     type: boolean
     description: |
       Set the `fresh` field to `true` to get new results from Google instead of cached results. The default is `false`.
+      On the live API, a term with cached results costs nothing when `fresh` is `false`. When `fresh` is `true`, every
+      term costs credits.
     example: false
     default: false
+  # PENDING C2: the 90-second synchronous timeout is the default; confirm the production value.
   async:
     type: boolean
     description: |

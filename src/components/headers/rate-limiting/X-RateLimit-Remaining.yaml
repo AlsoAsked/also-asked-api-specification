@@ -1,5 +1,6 @@
 description: |
-  The number of requests that you can still send in the current window of the rate limit.
+  The number of requests that you can still send now: the lower of the remaining requests for your API key and for
+  your IP address.
 schema:
   type: integer
   format: int64

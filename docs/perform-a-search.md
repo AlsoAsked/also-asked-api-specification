@@ -107,7 +107,7 @@ For a more exact location, add the `latitude` field and the `longitude` field to
 ## Depth and cost
 
 The `depth` field in the `POST /v1.1/search` request body sets the number of levels of results: `1`, `2`, or `3`. The
-default depth is `2`. The API also accepts the depth as a string of digits. For example, the API accepts `"2"` as the depth `2`.
+default depth is `2`.
 
 The cost of a search is the number of unique terms multiplied by the cost for the depth. On the live API with a Pro
 plan, the cost for each term is as follows:
@@ -126,6 +126,9 @@ API. For details, see [Credits](./credits.md).
 The `fresh` field in the `POST /v1.1/search` request body controls cached results. The default value is `false`, so
 AlsoAsked can use cached results for the search. Set the `fresh` field to `true` to get new results from Google instead
 of cached results.
+
+On the live API, a term with cached results costs nothing when `fresh` is `false`. When `fresh` is `true`, every term
+costs credits. For details, see [Credits](./credits.md).
 
 ## Synchronous and asynchronous searches
 
@@ -166,7 +169,7 @@ contains the error type.
 
 | Problem | Cause | What to do |
 | --- | --- | --- |
-| Status code `400 Bad Request`, error type `invalid_body` | The request body isn't valid JSON, or the request body isn't a JSON object. | Send a request body that's a valid JSON object. |
+| Status code `400 Bad Request`, error type `invalid_body` | The request body isn't valid JSON. | Send a request body that's valid JSON. A body that's valid JSON but has the wrong fields or types gets the error type `validation` instead. |
 | Status code `401 Unauthorized` | The request doesn't have the `X-Api-Key` header, or AlsoAsked turned off API access for your account. | Put your API key in the `X-Api-Key` header. See [Authenticate requests](./authentication.md). |
 | Status code `402 Payment Required`, error type `insufficient_plan` | You sent the request to the live API, and your account doesn't have a Pro plan. | Change your plan to Pro, or use the sandbox API. See [Sandbox API](./sandbox.md). |
 | Status code `402 Payment Required`, error type `insufficient_credits` | Your account doesn't have enough credits for the search. | Check the credits in your account, or perform the search with fewer terms or a lower depth. See [Credits](./credits.md). |

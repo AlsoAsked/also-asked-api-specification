@@ -281,7 +281,8 @@ components:
       example: 100
     X-RateLimit-Remaining:
       description: |
-        The number of requests that you can still send in the current window of the rate limit.
+        The number of requests that you can still send now: the lower of the remaining requests for your API key and for
+        your IP address.
       schema:
         type: integer
         format: int64
@@ -304,7 +305,9 @@ components:
       example: Thu, 11 May 2023 07:28:00 GMT
     X-RateLimit-Reset:
       description: |
-        The time when the current window of the rate limit resets, in Unix time (seconds since 1970-01-01T00:00:00Z).
+        The current time plus the length of the rate limit window, in Unix time (seconds since 1970-01-01T00:00:00Z). A
+        request that you send now stops counting at this time. To know when you can send again after a `429` response, use
+        the `Retry-After` header.
       schema:
         type: integer
         format: int64
@@ -1414,6 +1417,8 @@ components:
           type: boolean
           description: |
             Set the `fresh` field to `true` to get new results from Google instead of cached results. The default is `false`.
+            On the live API, a term with cached results costs nothing when `fresh` is `false`. When `fresh` is `true`, every
+            term costs credits.
           example: false
           default: false
         async:
@@ -3190,7 +3195,7 @@ components:
                 cached_at: '2022-12-31T00:00:00Z'
     InvalidBodyError:
       description: |
-        The request body isn't valid JSON, or the request body isn't a JSON object. The error type is `invalid_body`.
+        The request body isn't valid JSON. The error type is `invalid_body`.
       headers:
         X-RateLimit-Remaining:
           $ref: '#/components/headers/X-RateLimit-Remaining'
@@ -3204,7 +3209,7 @@ components:
             default:
               summary: Invalid body error
               description: |
-                An `invalid_body` error. The request body isn't valid JSON, or the request body isn't a JSON object.
+                An `invalid_body` error. The request body isn't valid JSON.
               value:
                 status: invalid_body
                 message: The request body is invalid.

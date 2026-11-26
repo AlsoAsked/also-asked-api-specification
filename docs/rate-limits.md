@@ -15,10 +15,13 @@ rate limit.
 The rate limit applies to the live API and the sandbox API. AlsoAsked checks the rate limit before AlsoAsked processes
 the request.
 
-The rate limit counts your requests by API key and by IP address. AlsoAsked counts an IPv6 address by its /64 network,
-so all IPv6 addresses in one /64 network share one rate limit.
+The rate limit counts your requests by API key and by IP address, separately. Each API key has its own count, and each
+IP address has its own count. AlsoAsked refuses a request if the count for the API key or the count for the IP address
+has reached the limit. A refused request doesn't count. AlsoAsked counts an IPv6 address by its /64 network, so all
+IPv6 addresses in one /64 network share one count.
 
-The rate limit uses a sliding window. To find the current rate limit, read the `X-RateLimit-Limit` header in any response
+The rate limit uses a sliding window. AlsoAsked counts the requests that you sent in the last window, measured back from
+now. When a request is older than the window, the request stops counting. To find the current rate limit, read the `X-RateLimit-Limit` header in any response
 from the AlsoAsked API. <!-- PENDING C7: state the limit and the window -->
 
 ## Rate limit headers
@@ -28,8 +31,8 @@ Every response from the live API and the sandbox API has these rate limit header
 | Name | Type | Description |
 | --- | --- | --- |
 | `X-RateLimit-Limit` | Integer | The maximum number of requests that you can send in the window of the rate limit. |
-| `X-RateLimit-Remaining` | Integer | The number of requests that you can still send in the current window of the rate limit. |
-| `X-RateLimit-Reset` | Integer | The time when the window of the rate limit resets, in Unix time (seconds since 1970-01-01T00:00:00Z). |
+| `X-RateLimit-Remaining` | Integer | The number of requests that you can still send now. It's the lower of the remaining requests for your API key and for your IP address. |
+| `X-RateLimit-Reset` | Integer | The current time plus the length of the window, in Unix time (seconds since 1970-01-01T00:00:00Z). A request that you send now stops counting at this time. To find the length of the window, subtract the current time from this value. |
 
 ## Response when you reach the rate limit
 
@@ -50,8 +53,8 @@ the `message` field doesn't describe your rate limit. To find your rate limit, r
 ## `Retry-After` header
 
 The `Retry-After` header in a `429 Too Many Requests` response from the AlsoAsked API gives the time when you can
-send requests again. The value of the `Retry-After` header is an HTTP date, for example `Thu, 26 Nov 2026 12:00:30 GMT`.
-<!-- PENDING R6: verify Retry-After format -->
+send requests again: the time when your oldest counted request stops counting. The value of the `Retry-After` header is
+an HTTP date in Coordinated Universal Time (UTC), for example `Thu, 26 Nov 2026 12:00:30 GMT`.
 
 ## What to do when you get a 429 response
 

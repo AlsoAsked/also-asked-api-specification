@@ -192,6 +192,12 @@ AlsoAsked waits 1 minute for each attempt made so far, and then tries again:
 If all 10 attempts fail, AlsoAsked stops, and the webhook event has the status `failed`. The waits between the first
 attempt and the last attempt add up to 45 minutes.
 
+AlsoAsked doesn't try again in these cases, and the webhook event gets the status `failed` immediately:
+
+- Your account has no webhook signing key. AlsoAsked can't sign the webhook request without it.
+- The webhook endpoint is for the live API, and your account doesn't have a Pro plan.
+- You deleted the webhook endpoint.
+
 ## Security of webhook events
 
 Each webhook request has a signature in the `X-AlsoAsked-Signature` header. The signature is a hash-based message

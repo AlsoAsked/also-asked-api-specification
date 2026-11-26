@@ -2,6 +2,7 @@ operationId: performSearch
 tags:
   - Search
 summary: Perform a search
+# PENDING C2: the 90-second synchronous timeout is the default; confirm the production value.
 description: |
   Perform a search for 1 or more terms. AlsoAsked charges the credits for the search when it creates the search.
 

@@ -15,10 +15,11 @@ check the credits in your account.
 An AlsoAsked account has two kinds of credits:
 
 - **Web credits** pay for searches on the AlsoAsked website and on the AlsoAsked API.
-- **API credits** pay for searches on the AlsoAsked API when no web credits remain.
+- **API credits** pay for searches on the AlsoAsked API when your web credits can't pay for a term.
 
-When you perform a search on the AlsoAsked API, AlsoAsked uses your web credits first. AlsoAsked uses your API credits
-only when no web credits remain. The `credits_reset_at` field in the `GET /v1.1/account` response body shows when your
+When you perform a search on the AlsoAsked API, AlsoAsked uses your web credits first. AlsoAsked charges each term to
+one kind of credit only. If the web credits that remain are fewer than the cost of a term, AlsoAsked charges that term to
+your API credits, and the remaining web credits stay in your account. The `credits_reset_at` field in the `GET /v1.1/account` response body shows when your
 web credits renew.
 
 For plans and prices, see the [AlsoAsked pricing page](https://alsoasked.com/pricing).
@@ -36,13 +37,14 @@ On the live API with a Pro plan, the cost for each term depends on the depth of 
 A depth of `1` is available only through the AlsoAsked API. If you don't set the `depth` field in the
 `POST /v1.1/search` request body, the depth is `2`.
 
-The cost of a search is the number of unique terms multiplied by the cost for each term at the depth of the search:
+On the live API, the cost of a search is the number of unique terms without cached results, multiplied by the cost for
+each term at the depth of the search:
 
 ```text
-cost of a search = number of unique terms × cost for each term at the depth
+cost of a search = number of unique terms without cached results × cost for each term at the depth
 ```
 
-For example, a search with 3 unique terms and a depth of `3` costs 3 × 4 = 12 credits.
+For example, a search with 3 unique terms, none with cached results, and a depth of `3` costs 3 × 4 = 12 credits.
 
 AlsoAsked removes spaces at the start and the end of each term. If two terms in a search are the same after AlsoAsked
 removes the spaces, AlsoAsked searches the term once and charges for the term once. For example, a search with the terms
@@ -53,7 +55,14 @@ removes the spaces, AlsoAsked searches the term once and charges for the term on
 AlsoAsked charges the credits for a search when AlsoAsked creates the search, before the search starts. AlsoAsked
 charges the credits in the same way for a synchronous search and an asynchronous search.
 
-A term that has cached results costs the same as a term that doesn't have cached results.
+## Cached results are free
+
+On the live API, a term costs nothing if AlsoAsked already has cached results for the same term, language code, region
+code, depth, and location (`latitude` and `longitude`), and the `fresh` field in the `POST /v1.1/search` request body is
+`false`. The default value of the `fresh` field is `false`.
+
+If you set the `fresh` field to `true`, AlsoAsked gets new results from Google for every term, and every term costs
+credits.
 
 ## Credit refunds
 
