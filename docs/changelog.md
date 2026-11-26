@@ -15,6 +15,27 @@ This page lists the changes to the AlsoAsked API. The newest changes are first.
 - AlsoAsked now counts only a `2xx` status code from a webhook endpoint as delivered. A redirect (`3xx`) is a failed attempt, and AlsoAsked sends the webhook event again, up to 10 attempts in total. Before this change, AlsoAsked counted a redirect as delivered, so the webhook endpoint didn't get the webhook event. See [Webhooks](./webhooks.md).
 - The `cached` field of a search is now `true` only when at least one term used results that AlsoAsked stored for an earlier search. The `cached_at` field is when AlsoAsked stored the oldest of those results. Before this change, `cached` was `true` for every completed search with results, including a search that got new results from Google. See [Search results](./search-results.md).
 - The `message` field of a `429 Too Many Requests` response no longer refers to a limit per second. The `status` field is still `rate_limit_exceeded`. See [Rate limits](./rate-limits.md).
+- Each query in the `queries` field now has a `status` field with the result of its own term: `success`, `no_results`, or `error`. The `queries` field is now listed when a search ends with the status `no_results` or `error`, as well as `success`. Before this change, the `queries` field was `null` unless the whole search succeeded, so you couldn't see which terms failed. The `queries` field is still `null` while the search runs. See [Search results](./search-results.md).
+- A `422 Unprocessable Content` validation error now has an `errors` field. Each item names the field, parameter, or header that isn't valid, for example `terms.3`, in its `field` field. See [Errors](./errors.md#validation-errors).
+- The body of a webhook event now starts with the `event_id` field. Every delivery of the same webhook event has the same ID, and the signature covers it, so you can use it to ignore a webhook event that you already processed. See [Webhooks](./webhooks.md).
+- AlsoAsked now uses the results that any account stored for an earlier search, however old they are, and a term that uses them costs no credits. Before this change, AlsoAsked used only your own account's results from the last 30 days. AlsoAsked doesn't use stored results whose top-level answer is blank. To get new results, set the `fresh` field to `true`. See [Synchronous and asynchronous searches](./searches.md#searches-with-stored-results).
+- AlsoAsked now sends every webhook event for a team member's search to the webhook endpoints of the member who performed the search. Before this change, AlsoAsked sent the `search_started`, `search_succeeded`, and `search_failed` webhook events to the team owner's webhook endpoints.
+- Webhook events from the sandbox API now use the format of the API version that performed the search, as webhook events from the live API do. Before this change, they always used the `v1` format.
+- The `X-AlsoAsked-Credits` header of a webhook event from the live API now includes API credits, the same as the `X-AlsoAsked-Credits` header of an API response. Before this change, it showed only the credits of your plan.
+- AlsoAsked no longer tries again to send a webhook event that failed because your account has no webhook signing key. The error of the webhook event says to generate a webhook signing key.
+- AlsoAsked sends no more webhook events for a search after you delete it. AlsoAsked still refunds the terms of a deleted search that fail.
+- The sandbox API has 3 new test terms: `[server_error]` returns a `500 Internal Server Error` response, `[rate_limit]` returns a `429 Too Many Requests` response with a `Retry-After` header, and with `[timeout]`, the search runs past the 90 seconds that a synchronous search waits. See [Sandbox API](./sandbox.md#test-terms).
+- If AlsoAsked can't record a search on the sandbox API, it now refunds the sandbox credits.
+- A request body that's valid JSON but isn't a JSON object, for example a list, now gets a `422 Unprocessable Content` validation error. Before this change, it got a `500 Internal Server Error` response.
+
+## 2026-11-25
+
+- AlsoAsked now applies the rate limit to an IPv6 client by its /64 network, not by its full address. See [Rate limits](./rate-limits.md).
+
+## 2026-11-12
+
+- The `[delay N]` test term of the sandbox API now has a maximum of 3 seconds for each status change. Before this change, it had no maximum.
+- An asynchronous search on the sandbox API now finishes within about 9 seconds. Before this change, AlsoAsked waited the delay in seconds instead of milliseconds, so an asynchronous search on the sandbox API could take more than an hour.
 
 ## 2026-11-24
 
