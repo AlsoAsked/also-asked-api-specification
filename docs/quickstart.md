@@ -23,13 +23,12 @@ which are separate from the credits of your plan. For details, see [Sandbox API]
 The sandbox API accepts only a sandbox API key. A sandbox API key starts with `aa-sandbox-`. To create a sandbox API key
 on the AlsoAsked website, do the following steps:
 
-1. Go to **Developers** > **API keys**, at `https://alsoasked.com/developer/keys`.
+1. Sign in to AlsoAsked, and go to the **API keys** page at `https://alsoasked.com/developer/keys`.
 2. Select **Create API key**.
-3. Enter a name for the API key. The name is for your reference only.
-4. Choose **Sandbox** as the environment for the API key.
-5. Copy the API key from the dialog, and store it in a safe place. AlsoAsked shows the API key only once.
-
-<!-- PENDING A7: verify UI labels -->
+3. In the **Name** field, enter a name for the API key. The name is for your reference only.
+4. In the **Environment** field, choose **Sandbox**.
+5. Select **Create API key**.
+6. Copy the API key, and store it in a safe place. AlsoAsked shows the API key only once.
 
 Keep your sandbox API key secret. Don't put an API key in code that runs in a web browser or in a mobile app, and don't
 commit an API key to a code repository. For details, see [Authenticate requests](./authentication.md).

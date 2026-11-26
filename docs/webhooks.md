@@ -18,12 +18,16 @@ an environment (`live` or `sandbox`), and a list of the webhook events that the 
 
 To add a webhook endpoint on the AlsoAsked website, do the following steps:
 
-1. Go to **Developers** > **Webhooks**, at `https://alsoasked.com/developer/webhooks`.
-2. Select **Add webhook endpoint**.
-3. Enter the URL of the webhook endpoint, choose the environment, and choose the webhook events that the webhook
-   endpoint receives.
-
-<!-- PENDING W5: verify UI labels -->
+1. Sign in to AlsoAsked, and go to the **Webhooks** page at `https://alsoasked.com/developer/webhooks`.
+2. If you don't have a webhook signing key, select **Generate signing key** in the **Webhook signing key** section, and
+   store the key in a safe place. AlsoAsked shows the webhook signing key only once. The **Webhook endpoints** section
+   appears after you have a webhook signing key.
+3. In the **Webhook endpoints** section, select **Add webhook endpoint**.
+4. In the **URL** field, enter the URL of the webhook endpoint.
+5. In the **Environment** field, choose **Live** or **Sandbox**.
+6. In the **Events** field, choose one or more of **Search created**, **Search started**, **Search succeeded**, and
+   **Search failed**. The webhook endpoint receives only the webhook events that you choose.
+7. Select **Add endpoint**.
 
 Each account can have a maximum of 5 webhook endpoints.
 
@@ -215,23 +219,24 @@ AlsoAsked sends webhook events from the IP address `18.168.235.198`.
 
 ## Inspect webhook events and stop retries
 
-To see the webhook events that AlsoAsked sent, go to **Developers** > **Webhooks**, at
-`https://alsoasked.com/developer/webhooks`. The **Webhook events** section lists the webhook events, newest first. Each
-webhook event shows the request headers, the request body, and the response from your webhook endpoint.
+To see the webhook events that AlsoAsked sent, go to the **Webhooks** page at
+`https://alsoasked.com/developer/webhooks`. The **Webhook events** section lists the webhook events. The webhook event
+with the most recent attempt is first.
 
-To stop the retries of a webhook event, delete the webhook event or the webhook endpoint.
+To see the details of a webhook event, select **View**. The details show the URL, the environment, the status, the
+error, the number of attempts, the time of the last attempt and the next attempt, the request, and the response from
+your webhook endpoint.
 
-<!-- PENDING W25: verify UI labels -->
+To stop the retries of a webhook event, select **Delete** for the webhook event, or delete the webhook endpoint.
 
 ## Webhook events for website searches
 
 By default, a search that you perform on the AlsoAsked website doesn't send webhook events. To get webhook events for
 searches on the AlsoAsked website, do the following steps:
 
-1. Go to **Developers** > **API settings**, at `https://alsoasked.com/developer/settings`.
-2. Turn on **Website searches should notify webhooks**.
-
-<!-- PENDING W12: verify UI labels -->
+1. Sign in to AlsoAsked, and go to the **API settings** page at `https://alsoasked.com/developer/settings`.
+2. Select **Website searches should notify webhooks**.
+3. Select **Save changes**.
 
 ## Related
 

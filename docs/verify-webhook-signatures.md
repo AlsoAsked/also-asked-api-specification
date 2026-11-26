@@ -18,12 +18,13 @@ shows that AlsoAsked sent the webhook event and that nobody changed the body.
   the webhook events for all webhook endpoints of your account.
 - You need a way to read the raw request body in your server code, as bytes, before your web framework parses the JSON.
 
-To get a webhook signing key, go to **Developers** > **Webhooks** on the AlsoAsked website. You generate the webhook
-signing key when you add your first webhook endpoint. AlsoAsked shows the webhook signing key only once, so store it in
-a safe place. To create a new webhook signing key, select **Regenerate signing key** in the **Webhook signing key**
-section of **Developers** > **Webhooks**.
+To get a webhook signing key, sign in to AlsoAsked, go to the **Webhooks** page at
+`https://alsoasked.com/developer/webhooks`, and select **Generate signing key** in the **Webhook signing key** section.
+AlsoAsked shows the webhook signing key only once, so store it in a safe place.
 
-<!-- PENDING W22: verify UI labels -->
+To create a new webhook signing key, select **Regenerate signing key** in the **Webhook signing key** section. The new
+webhook signing key replaces the old one immediately, so the old webhook signing key no longer verifies new webhook
+events. Update your server with the new webhook signing key at the same time.
 
 ## How AlsoAsked makes the signature
 
