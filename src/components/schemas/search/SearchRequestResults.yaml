@@ -14,13 +14,14 @@ properties:
   queries:
     type: [array, 'null']
     description: |
-      One query for each term in the search. The value of the `queries` field is `null` unless the `status` field is
-      `success`. A `null` value doesn't always mean that the search has no results: the search may not be complete yet,
-      or the search may be deleted. To check, read the `status` field.
+      One query for each term in the search, in the order of the `terms` field of the request. Each query has its own
+      `status` field, so you can see which terms are complete while the search runs. The value of the `queries` field
+      is `null` only if the search is deleted.
     items:
       $ref: ./SearchQuery.yaml
     example:
     - term: When to plant out broad beans?
+      status: success
       language_fallback: false
       region_fallback: false
       results:

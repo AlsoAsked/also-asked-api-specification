@@ -117,6 +117,7 @@ that Google shows.
   "queries": [
     {
       "term": "how to brew coffee",
+      "status": "success",
       "language_fallback": false,
       "region_fallback": false,
       "results": [

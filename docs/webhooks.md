@@ -139,6 +139,7 @@ shortened: it has 1 result, 1 AI overview source, and no child results.
   "queries": [
     {
       "term": "When to plant out broad beans?",
+      "status": "success",
       "language_fallback": false,
       "region_fallback": false,
       "results": [

@@ -1,29 +1,40 @@
 title: Query
 type: object
 description: |
-  One item in the `queries` field of a search. A query contains one term and the results for that term.
+  One item in the `queries` field of a search. A query contains one term, the status of that term, and the results for
+  that term.
 properties:
   term:
     type: string
     description: |
       The term of the query.
     example: When to plant out broad beans?
+  status:
+    type: string
+    enum:
+      $ref: ../../../enums/SearchRequestStatus.yaml
+    description: |
+      The status of the term. Each term of a search has its own status, so some terms can be complete while others are
+      still running. A term is complete when its status is `success`, `no_results`, or `error`, and its status doesn't
+      change after that. The `results` field of the query has results only when the status is `success`.
+    example: success
   language_fallback:
     type: [boolean, 'null']
     description: |
       `true` if AlsoAsked found no results in the language of the search, and searched in the default language of the
-      region instead. The value of the `language_fallback` field is `null` if AlsoAsked has no results for the term.
+      region instead. The value of the `language_fallback` field is `null` if the term has no results.
     example: false
   region_fallback:
     type: [boolean, 'null']
     description: |
       `true` if AlsoAsked found no results in the region of the search, and searched in the default region of the
-      language instead. The value of the `region_fallback` field is `null` if AlsoAsked has no results for the term.
+      language instead. The value of the `region_fallback` field is `null` if the term has no results.
     example: false
   results:
     type: [array, 'null']
     description: |
-      The results for the term. The value of the `results` field is `null` if AlsoAsked has no results for the term. In
+      The results for the term. The value of the `results` field is `null` until the status of the term is `success`,
+      and stays `null` if the status of the term is `no_results` or `error`. In
       the default `tree` results format, the `results` field of the query has the top-level results, and each child
       result is in the `results` field of its parent result. In the `flat` results format of the
       `GET /v1.1/search/{searchId}` endpoint, the `results` field of the query has all the results for the term in one

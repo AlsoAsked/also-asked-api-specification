@@ -129,7 +129,8 @@ terms:
   - term: status
     pos: noun
     definition: >-
-      The stage of a search: `queuing`, `pending`, `running`, `fetching`, `error`, `no_results` or `success`.
+      The stage of a search or of one of its terms: `queueing`, `pending`, `running`, `fetching`, `error`, `no_results`
+      or `success`.
     matches:
       - "field: status"
       - "enum: SearchRequestStatus"
@@ -137,7 +138,7 @@ terms:
       - phrase: 'state'
         level: review
         use: status
-    example: When the status is `success`, the `queries` field contains the results.
+    example: When the status of a query is `success`, the `results` field of the query contains the results.
     status: approved
 
   - term: synchronous search

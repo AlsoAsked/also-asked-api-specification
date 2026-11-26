@@ -6,9 +6,10 @@ description: |
   The request that AlsoAsked sends to your webhook endpoint when the status of a search changes. Your server receives
   this request. It isn't an endpoint of the AlsoAsked API.
 
-  AlsoAsked sends a `POST` request with a JSON body to the URL of your webhook endpoint. The body is the same as the
-  `GET /v1.1/search/{searchId}` response for the search, at the time when AlsoAsked sends the request. The headers
-  contain the webhook event type, the environment, and a signature that you use to verify the request.
+  AlsoAsked sends a `POST` request with a JSON body to the URL of your webhook endpoint. The body has the ID of the
+  webhook event in the `event_id` field, followed by the fields of the `GET /v1.1/search/{searchId}` response for the
+  search, at the time when AlsoAsked sends the request. The headers contain the webhook event type, the environment,
+  and a signature that you use to verify the request.
 
   For details, see [Webhooks](../docs/webhooks.md) and
   [Verify webhook signatures](../docs/verify-webhook-signatures.md).

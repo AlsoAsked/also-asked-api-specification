@@ -28,5 +28,9 @@ SearchRequestOptions:
   $ref: ./search/SearchRequestOptions.yaml
 SearchResult:
   $ref: ./search/SearchResult.yaml
+SearchStatusChangedEvent:
+  $ref: ./search/SearchStatusChangedEvent.yaml
 UnauthorizedError:
   $ref: ./errors/UnauthorizedError.yaml
+ValidationError:
+  $ref: ./errors/ValidationError.yaml

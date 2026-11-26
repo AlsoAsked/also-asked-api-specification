@@ -52,7 +52,7 @@ AlsoAsked stores its results for later searches. To get new results instead of s
 
 ## Search status
 
-The `status` field of the search object has one of these values: `queuing`, `pending`, `running`, `fetching`, `error`,
+The `status` field of the search object has one of these values: `queueing`, `pending`, `running`, `fetching`, `error`,
 `no_results`, or `success`. For a deleted search, the `status` field is `null`. A search is complete when its status is `success`, `no_results`, or `error`.
 
 The `queries` field of the search object is `null` unless the status is `success`. When the status is `success`, the
@@ -157,6 +157,7 @@ shortened from the example in the OpenAPI specification: it has fewer results an
   "queries": [
     {
       "term": "When to plant out broad beans?",
+      "status": "success",
       "language_fallback": false,
       "region_fallback": false,
       "results": [
@@ -244,6 +245,7 @@ fewer AI overview sources.
   "queries": [
     {
       "term": "When to plant out broad beans?",
+      "status": "success",
       "language_fallback": false,
       "region_fallback": false,
       "results": [

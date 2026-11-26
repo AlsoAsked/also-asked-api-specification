@@ -76,7 +76,7 @@ API returns the results immediately in both modes, and the `async` field makes n
 ## Status of a search with more than one term
 
 Each term in a search has its own status, and the status of the search comes from the statuses of its terms. AlsoAsked
-checks the statuses in this order: `running`, `fetching`, `pending`, `queuing`, `success`, `no_results`, `error`. The
+checks the statuses in this order: `running`, `fetching`, `pending`, `queueing`, `success`, `no_results`, `error`. The
 first status that at least one term has becomes the status of the search.
 
 For example, if one term has the status `success` and another term has the status `error`, the status of the search is

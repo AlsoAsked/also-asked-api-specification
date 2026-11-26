@@ -1,0 +1,17 @@
+title: Webhook event body
+description: |
+  The body of a webhook request: the ID of the webhook event, followed by every field of the search, as the
+  `GET /v1.1/search/{searchId}` endpoint returns it when AlsoAsked sends the request.
+allOf:
+- type: object
+  required: [event_id]
+  properties:
+    event_id:
+      type: string
+      pattern: ^[a-zA-Z0-9]{32}$
+      description: |
+        The ID of the webhook event. Every attempt to deliver the same webhook event has the same ID, and the ID is part
+        of the signed body. If your webhook endpoint receives an ID that it already processed, it can ignore the
+        request.
+      example: 4Jk2mQ9xVb7NzR1cT8yHp3LdWs6FgE0a
+- $ref: ./SearchRequestResults.yaml

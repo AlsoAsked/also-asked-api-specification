@@ -1,0 +1,45 @@
+title: Validation error
+type: object
+description: |
+  The error body for the `validation` error type. The AlsoAsked API returns the `validation` error type with the status
+  code `422 Unprocessable Entity` when a field, parameter, or header of the request isn't valid. AlsoAsked doesn't
+  charge credits for the request. The `errors` field names the field, parameter, or header, so your code can find the
+  problem without reading the `message` field.
+properties:
+  status:
+    type: string
+    description: |
+      The error type. Use the `status` field in your code to decide what to do.
+    enum:
+      $ref: ../../../enums/ErrorType.yaml
+    example: validation
+    pattern: ^validation$
+  message:
+    type: string
+    description: |
+      A description of the error for people to read. The text of the `message` field can change, so don't use the
+      `message` field in your code.
+    example: Value "101" for argument "count" is invalid for Request [get /search].
+  errors:
+    type: array
+    description: |
+      The problems with the request, one item for each problem. AlsoAsked stops at the first problem that it finds, so
+      the list has one item, but your code should accept more than one.
+    items:
+      type: object
+      properties:
+        field:
+          type: [string, 'null']
+          description: |
+            Where the problem is. For a field of the request body, the value is the path to the field, with a `.`
+            between the parts: for example, `depth`, or `terms.3` for the fourth term (the index starts at 0). For a
+            query parameter, a path parameter, or a header, the value is its name, for example `count`, `searchId`, or
+            `Content-Type`. The value is `null` if the problem isn't with one field.
+          example: count
+        message:
+          type: string
+          description: |
+            A description of the problem for people to read. The text can change, so don't use it in your code.
+          example: value 101 must be less or equal to 100.
+example:
+  $ref: ../../../examples/errors/ValidationError.yaml

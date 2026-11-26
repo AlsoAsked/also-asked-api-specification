@@ -242,9 +242,10 @@ webhooks:
         The request that AlsoAsked sends to your webhook endpoint when the status of a search changes. Your server receives
         this request. It isn't an endpoint of the AlsoAsked API.
 
-        AlsoAsked sends a `POST` request with a JSON body to the URL of your webhook endpoint. The body is the same as the
-        `GET /v1.1/search/{searchId}` response for the search, at the time when AlsoAsked sends the request. The headers
-        contain the webhook event type, the environment, and a signature that you use to verify the request.
+        AlsoAsked sends a `POST` request with a JSON body to the URL of your webhook endpoint. The body has the ID of the
+        webhook event in the `event_id` field, followed by the fields of the `GET /v1.1/search/{searchId}` response for the
+        search, at the time when AlsoAsked sends the request. The headers contain the webhook event type, the environment,
+        and a signature that you use to verify the request.
 
         For details, see [Webhooks](../docs/webhooks.md) and
         [Verify webhook signatures](../docs/verify-webhook-signatures.md).
@@ -906,7 +907,7 @@ components:
           anyOf:
             - type: string
               enum:
-                - queuing
+                - queueing
                 - pending
                 - running
                 - fetching
@@ -1130,6 +1131,67 @@ components:
             created_at: '2023-01-01T00:00:00Z'
             updated_at: '2023-01-01T00:00:10Z'
             cached_at: null
+    ValidationError:
+      title: Validation error
+      type: object
+      description: |
+        The error body for the `validation` error type. The AlsoAsked API returns the `validation` error type with the status
+        code `422 Unprocessable Entity` when a field, parameter, or header of the request isn't valid. AlsoAsked doesn't
+        charge credits for the request. The `errors` field names the field, parameter, or header, so your code can find the
+        problem without reading the `message` field.
+      properties:
+        status:
+          type: string
+          description: |
+            The error type. Use the `status` field in your code to decide what to do.
+          enum:
+            - internal_server
+            - invalid_api_key
+            - missing_api_key
+            - rate_limit_exceeded
+            - not_found
+            - validation
+            - insufficient_credits
+            - invalid_body
+            - insufficient_plan
+            - api_access_disabled
+          example: validation
+          pattern: ^validation$
+        message:
+          type: string
+          description: |
+            A description of the error for people to read. The text of the `message` field can change, so don't use the
+            `message` field in your code.
+          example: Value "101" for argument "count" is invalid for Request [get /search].
+        errors:
+          type: array
+          description: |
+            The problems with the request, one item for each problem. AlsoAsked stops at the first problem that it finds, so
+            the list has one item, but your code should accept more than one.
+          items:
+            type: object
+            properties:
+              field:
+                type:
+                  - string
+                  - 'null'
+                description: |
+                  Where the problem is. For a field of the request body, the value is the path to the field, with a `.`
+                  between the parts: for example, `depth`, or `terms.3` for the fourth term (the index starts at 0). For a
+                  query parameter, a path parameter, or a header, the value is its name, for example `count`, `searchId`, or
+                  `Content-Type`. The value is `null` if the problem isn't with one field.
+                example: count
+              message:
+                type: string
+                description: |
+                  A description of the problem for people to read. The text can change, so don't use it in your code.
+                example: value 101 must be less or equal to 100.
+      example:
+        status: validation
+        message: Value "101" for argument "count" is invalid for Request [get /search].
+        errors:
+          - field: count
+            message: value 101 must be less or equal to 100.
     SearchRequestOptions:
       title: New search
       type: object
@@ -1837,20 +1899,36 @@ components:
       title: Query
       type: object
       description: |
-        One item in the `queries` field of a search. A query contains one term and the results for that term.
+        One item in the `queries` field of a search. A query contains one term, the status of that term, and the results for
+        that term.
       properties:
         term:
           type: string
           description: |
             The term of the query.
           example: When to plant out broad beans?
+        status:
+          type: string
+          enum:
+            - queueing
+            - pending
+            - running
+            - fetching
+            - error
+            - no_results
+            - success
+          description: |
+            The status of the term. Each term of a search has its own status, so some terms can be complete while others are
+            still running. A term is complete when its status is `success`, `no_results`, or `error`, and its status doesn't
+            change after that. The `results` field of the query has results only when the status is `success`.
+          example: success
         language_fallback:
           type:
             - boolean
             - 'null'
           description: |
             `true` if AlsoAsked found no results in the language of the search, and searched in the default language of the
-            region instead. The value of the `language_fallback` field is `null` if AlsoAsked has no results for the term.
+            region instead. The value of the `language_fallback` field is `null` if the term has no results.
           example: false
         region_fallback:
           type:
@@ -1858,14 +1936,15 @@ components:
             - 'null'
           description: |
             `true` if AlsoAsked found no results in the region of the search, and searched in the default region of the
-            language instead. The value of the `region_fallback` field is `null` if AlsoAsked has no results for the term.
+            language instead. The value of the `region_fallback` field is `null` if the term has no results.
           example: false
         results:
           type:
             - array
             - 'null'
           description: |
-            The results for the term. The value of the `results` field is `null` if AlsoAsked has no results for the term. In
+            The results for the term. The value of the `results` field is `null` until the status of the term is `success`,
+            and stays `null` if the status of the term is `no_results` or `error`. In
             the default `tree` results format, the `results` field of the query has the top-level results, and each child
             result is in the `results` field of its parent result. In the `flat` results format of the
             `GET /v1.1/search/{searchId}` endpoint, the `results` field of the query has all the results for the term in one
@@ -1986,6 +2065,7 @@ components:
                   results: []
       example:
         term: When to plant out broad beans?
+        status: success
         language_fallback: false
         region_fallback: false
         results:
@@ -2119,13 +2199,14 @@ components:
             - array
             - 'null'
           description: |
-            One query for each term in the search. The value of the `queries` field is `null` unless the `status` field is
-            `success`. A `null` value doesn't always mean that the search has no results: the search may not be complete yet,
-            or the search may be deleted. To check, read the `status` field.
+            One query for each term in the search, in the order of the `terms` field of the request. Each query has its own
+            `status` field, so you can see which terms are complete while the search runs. The value of the `queries` field
+            is `null` only if the search is deleted.
           items:
             $ref: '#/components/schemas/SearchQuery'
           example:
             - term: When to plant out broad beans?
+              status: success
               language_fallback: false
               region_fallback: false
               results:
@@ -2562,7 +2643,7 @@ components:
           anyOf:
             - type: string
               enum:
-                - queuing
+                - queueing
                 - pending
                 - running
                 - fetching
@@ -2624,6 +2705,7 @@ components:
         id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
         queries:
           - term: When to plant out broad beans?
+            status: success
             language_fallback: false
             region_fallback: false
             results:
@@ -2831,6 +2913,25 @@ components:
         mapping:
           insufficient_plan: '#/components/schemas/InsufficientPlanError'
           insufficient_credits: '#/components/schemas/InsufficientCreditsError'
+    SearchStatusChangedEvent:
+      title: Webhook event body
+      description: |
+        The body of a webhook request: the ID of the webhook event, followed by every field of the search, as the
+        `GET /v1.1/search/{searchId}` endpoint returns it when AlsoAsked sends the request.
+      allOf:
+        - type: object
+          required:
+            - event_id
+          properties:
+            event_id:
+              type: string
+              pattern: ^[a-zA-Z0-9]{32}$
+              description: |
+                The ID of the webhook event. Every attempt to deliver the same webhook event has the same ID, and the ID is part
+                of the signed body. If your webhook endpoint receives an ID that it already processed, it can ignore the
+                request.
+              example: 4Jk2mQ9xVb7NzR1cT8yHp3LdWs6FgE0a
+        - $ref: '#/components/schemas/SearchRequestResults'
   responses:
     GetAccount:
       description: |
@@ -3084,8 +3185,8 @@ components:
                     cached_at: null
     ValidationError:
       description: |
-        A field or a parameter in the request isn't valid. The error type is `validation`. The `message` field of the body
-        names the field or the parameter.
+        A field, a parameter, or a header of the request isn't valid. The error type is `validation`. The `errors` field of
+        the body names the field, parameter, or header.
       headers:
         X-AlsoAsked-Credits:
           $ref: '#/components/headers/X-AlsoAsked-Credits'
@@ -3098,7 +3199,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/ValidationError'
           examples:
             default:
               summary: Validation error
@@ -3108,6 +3209,9 @@ components:
               value:
                 status: validation
                 message: Value "101" for argument "count" is invalid for Request [get /search].
+                errors:
+                  - field: count
+                    message: value 101 must be less or equal to 100.
     PerformSearch:
       description: |
         The search that AlsoAsked created. For a synchronous search, the API returns the response when the search is
@@ -3136,6 +3240,7 @@ components:
                 id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
                 queries:
                   - term: When to plant out broad beans?
+                    status: success
                     language_fallback: false
                     region_fallback: false
                     results:
@@ -3342,6 +3447,7 @@ components:
                 id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
                 queries:
                   - term: When to plant out broad beans?
+                    status: success
                     language_fallback: false
                     region_fallback: false
                     results:
@@ -3670,23 +3776,26 @@ components:
                 notify_webhooks: false
     StatusChangedWebhook:
       description: |
-        The body of a webhook request. AlsoAsked sends webhook events when the status of a search changes. The body is
-        the same as the `GET /v1.1/search/{searchId}` response for the search, at the time when AlsoAsked sends the webhook
-        request. The `queries` field has the results of the search only when the `status` field is `success`.
+        The body of a webhook request. AlsoAsked sends webhook events when the status of a search changes. The body has the
+        `event_id` field, followed by the fields of the `GET /v1.1/search/{searchId}` response for the search at the time
+        when AlsoAsked sends the webhook request. Each query in the `queries` field has its own `status` field, and has
+        results when its status is `success`.
       required: true
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SearchRequestResults'
+            $ref: '#/components/schemas/SearchStatusChangedEvent'
           examples:
             default:
               summary: Webhook request body
               description: |
                 The body of a webhook request for a search with the status `success`.
               value:
+                event_id: 4Jk2mQ9xVb7NzR1cT8yHp3LdWs6FgE0a
                 id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
                 queries:
                   - term: When to plant out broad beans?
+                    status: success
                     language_fallback: false
                     region_fallback: false
                     results:

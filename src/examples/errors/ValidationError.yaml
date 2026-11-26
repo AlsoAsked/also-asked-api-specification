@@ -1,2 +1,5 @@
 status: validation
 message: Value "101" for argument "count" is invalid for Request [get /search].
+errors:
+- field: count
+  message: value 101 must be less or equal to 100.

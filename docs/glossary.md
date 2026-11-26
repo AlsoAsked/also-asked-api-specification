@@ -43,7 +43,7 @@ This page lists the terms that the AlsoAsked API documentation uses, with the me
 | search | A set of one or more terms that you send to the AlsoAsked API in one request. Each search has an ID, a status, and a depth. | The search has 3 terms and a depth of 2. |
 | send | To transmit a request (you) or a webhook event (AlsoAsked). | Send a request to the `GET /v1.1/account` endpoint. |
 | signature | The value in the `X-AlsoAsked-Signature` header that shows that AlsoAsked sent the webhook event. | Verify the signature before you use the body. |
-| status | The stage of a search: `queuing`, `pending`, `running`, `fetching`, `error`, `no_results` or `success`. | When the status is `success`, the `queries` field contains the results. |
+| status | The stage of a search or of one of its terms: `queueing`, `pending`, `running`, `fetching`, `error`, `no_results` or `success`. | When the status of a query is `success`, the `results` field of the query contains the results. |
 | status code | The three-digit number in an HTTP response that shows the result of the request, for example `429`. | The status code `429` tells you that you sent too many requests. |
 | synchronous search | A search where the API sends the response only when the search is complete, or after 90 seconds. Set `async` to `false`. | A synchronous search returns the results in the response body. |
 | term | A question or phrase that AlsoAsked searches for. A search has 1 to 1,000 terms. | Put each term in the `terms` field. |
