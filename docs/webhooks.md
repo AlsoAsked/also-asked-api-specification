@@ -169,16 +169,16 @@ When your webhook endpoint receives a webhook event, return a `2xx` status code,
 possible. AlsoAsked waits a maximum of 30 seconds for the response. If your server needs more time
 to process the webhook event, return the status code first and process the body after.
 
-AlsoAsked doesn't follow redirects. AlsoAsked counts any response with a status code below `400`
-as delivered, including a redirect (`3xx`). If your webhook endpoint returns a redirect, AlsoAsked doesn't send the
-webhook event again, and your server doesn't get the webhook event. Use the final URL as the webhook endpoint, for
-example the `https://` URL.
+AlsoAsked counts only a `2xx` status code as delivered. AlsoAsked doesn't follow redirects, so a redirect (`3xx`) is a
+failed attempt. The details of the webhook event show the URL that your webhook endpoint redirected to. Use the final
+URL as the webhook endpoint, for example the `https://` URL. AlsoAsked uses the current URL of the webhook endpoint at
+each attempt, so if you correct the URL, the next attempt goes to the new URL.
 
 ## Retries of failed webhook events
 
 AlsoAsked counts an attempt to send a webhook event as failed in these cases:
 
-- The webhook endpoint returns a status code of `400` or more.
+- The webhook endpoint returns a status code that isn't `2xx`, including a redirect (`3xx`).
 - The webhook endpoint doesn't respond within the timeout. The timeout is 30 seconds.
 - AlsoAsked can't connect to the webhook endpoint.
 

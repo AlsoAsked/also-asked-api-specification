@@ -27,8 +27,8 @@ responses:
       Your webhook endpoint received the webhook event. AlsoAsked doesn't send the webhook event again.
   '3XX':
     description: |
-      AlsoAsked doesn't follow redirects, but counts a redirect as delivered, so AlsoAsked doesn't send the webhook
-      event again. Use the final URL of your webhook endpoint.
+      AlsoAsked doesn't follow redirects, so AlsoAsked counts the attempt as failed and sends the webhook event again
+      later, up to 10 attempts in total. Use the final URL of your webhook endpoint.
   '4XX':
     description: |
       AlsoAsked counts the attempt as failed and sends the webhook event again later, up to 10 attempts in total.

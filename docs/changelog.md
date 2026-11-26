@@ -8,17 +8,13 @@ type: reference
 
 This page lists the changes to the AlsoAsked API. The newest changes are first.
 
-## Next release
-
-<!-- PENDING CL1: replace "Next release" with the release date of the cached fix and the new rate limit message -->
-
-- The `cached` field of a search is now `true` only when at least one term used results that AlsoAsked stored for an earlier search. The `cached_at` field is when AlsoAsked stored the oldest of those results. Before this change, `cached` was `true` for every completed search with results, including a search that got new results from Google. See [Search results](./search-results.md).
-- The `message` field of a `429 Too Many Requests` response no longer refers to a limit per second. The `status` field is still `rate_limit_exceeded`. See [Rate limits](./rate-limits.md).
-
 ## 2026-11-26
 
 - AlsoAsked now sends the `search_succeeded` webhook event or the `search_failed` webhook event once, when every term of the search has finished. A search gets `search_failed` only when every term failed. Before this change, AlsoAsked sent the webhook event when the first term finished, and a search with mixed results could get both webhook events. See [Webhooks](./webhooks.md).
 - On the sandbox API, the `[error]` and `[no_results]` test terms now set the result of their own term only, as on the live API. Before this change, a test term set the result of the whole search. See [Sandbox API](./sandbox.md).
+- AlsoAsked now counts only a `2xx` status code from a webhook endpoint as delivered. A redirect (`3xx`) is a failed attempt, and AlsoAsked sends the webhook event again, up to 10 attempts in total. Before this change, AlsoAsked counted a redirect as delivered, so the webhook endpoint didn't get the webhook event. See [Webhooks](./webhooks.md).
+- The `cached` field of a search is now `true` only when at least one term used results that AlsoAsked stored for an earlier search. The `cached_at` field is when AlsoAsked stored the oldest of those results. Before this change, `cached` was `true` for every completed search with results, including a search that got new results from Google. See [Search results](./search-results.md).
+- The `message` field of a `429 Too Many Requests` response no longer refers to a limit per second. The `status` field is still `rate_limit_exceeded`. See [Rate limits](./rate-limits.md).
 
 ## 2026-11-24
 
