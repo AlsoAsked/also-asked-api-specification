@@ -1,6 +1,6 @@
 description: |
-  An internal server error occurred. This error is returned when the server encounters an unexpected issue
-  while processing the request.
+  An error happened in AlsoAsked. The error type is `internal_server`. If a search fails with the `internal_server`
+  error type, AlsoAsked refunds the credits of the search.
 headers:
   X-RateLimit-Remaining:
     $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
@@ -12,9 +12,8 @@ content:
       $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
-        summary: Internal server error response example
+        summary: Internal server error
         description: |
-          The following example shows the response body of an internal server error. This error is returned when the
-          server encounters an unexpected issue while processing the request.
+          An `internal_server` error. An error happened in AlsoAsked.
         value:
           $ref: ../../../examples/errors/InternalServerError.yaml

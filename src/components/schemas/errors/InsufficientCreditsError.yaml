@@ -1,13 +1,15 @@
-title: Insufficient Credits Error
+title: Insufficient credits error
 type: object
 description: |
-  You don't have enough credits to perform this request. You can upgrade your plan to get more credits, or
-  alternatively wait for your credits to be replenished.
+  The error body for the `insufficient_credits` error type. The AlsoAsked API returns the `insufficient_credits` error
+  type with the status code `402 Payment Required` when your account doesn't have enough credits for the search.
+  AlsoAsked doesn't charge credits for the search. Check the credits in your account, or perform the search with fewer
+  terms or a lower depth.
 properties:
   status:
     type: string
     description: |
-      The error status is an identifier for the type of error that occurred.
+      The error type. Use the `status` field in your code to decide what to do.
     enum:
       $ref: ../../../enums/ErrorType.yaml
     example: insufficient_credits
@@ -15,8 +17,8 @@ properties:
   message:
     type: string
     description: |
-      A human-readable message describing the error. This message is intended to be read by a developer and
-      isn't suitable for display to an end user.
+      A description of the error for people to read. The text of the `message` field can change, so don't use the
+      `message` field in your code.
     example: You don't have enough credits to perform this request.
 example:
   $ref: ../../../examples/errors/InsufficientCreditsError.yaml

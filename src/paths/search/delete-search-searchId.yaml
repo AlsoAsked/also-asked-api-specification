@@ -1,10 +1,13 @@
 operationId: deleteSearch
 tags:
   - Search
-summary: Delete search
+summary: Delete a search
 description: |
-  Delete a search request. The search results will be deleted from the cache and the search result's term masked in the
-  search history.
+  Delete a search from your search history. The API returns `204 No Content` with no body.
+
+  A deleted search stays in the `GET /v1.1/search` list and in the `GET /v1.1/search/{searchId}` response. The
+  `deleted` field is `true`. The `id`, `created_at`, and `updated_at` fields keep their values, and the other fields
+  are `null`.
 security:
   - apiKey: []
 parameters:

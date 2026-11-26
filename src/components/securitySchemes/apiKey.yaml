@@ -2,6 +2,8 @@ type: apiKey
 in: header
 name: X-Api-Key
 description: |
-  API key required to authenticate requests to the AlsoAsked API. An API key can be obtained by registering for an
-  account and creating a key under the developer settings. The key must be passed in the header of each request
-  with the key name `X-Api-Key`. Without an API key, all requests will be rejected.
+  Your API key. Send the API key in the `X-Api-Key` header of every request. A live API key starts with `aa-live-`
+  and works only on the live API. A sandbox API key starts with `aa-sandbox-` and works only on the sandbox API. You
+  create API keys in your AlsoAsked account. A request without the `X-Api-Key` header gets the status code
+  `401 Unauthorized` with the error type `missing_api_key`. A request with an API key that isn't valid gets the status
+  code `403 Forbidden` with the error type `invalid_api_key`.

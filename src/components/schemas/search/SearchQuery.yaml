@@ -1,33 +1,33 @@
-title: Search Query
+title: Query
 type: object
 description: |
-  The search query object contains an individual search term for a search request. If the search request has completed
-  with a status of success, the results will be included.
+  One item in the `queries` field of a search. A query contains one term and the results for that term.
 properties:
   term:
     type: string
     description: |
-      The search term.
+      The term of the query.
     example: When to plant out broad beans?
   language_fallback:
     type: boolean
     description: |
-      Whether the search term was searched for in the specified language, or, if no results were returned, the search
-      term was searched for in the default language for the specified region.
+      `true` if AlsoAsked found no results in the language of the search, and searched in the default language of the
+      region instead. The value of the `language_fallback` field is `null` if AlsoAsked has no results for the term.
     example: false
   region_fallback:
     type: boolean
     description: |
-      Whether the search term was searched for in the specified region, or, if no results were returned, the search
-      term was searched for in the default region for the specified language.
+      `true` if AlsoAsked found no results in the region of the search, and searched in the default region of the
+      language instead. The value of the `region_fallback` field is `null` if AlsoAsked has no results for the term.
     example: false
   results:
     type: array
     description: |
-      The list of question and answers for the search term. The list will be empty if the search request has not
-      completed successfully. By default the list contains the root questions, with child results nested within
-      their parents. When the flat results format is requested, it contains every result for the term in
-      depth-first order.
+      The results for the term. The value of the `results` field is `null` if AlsoAsked has no results for the term. In
+      the default `tree` results format, the `results` field of the query has the top-level results, and each child
+      result is in the `results` field of its parent result. In the `flat` results format of the
+      `GET /v1.1/search/{searchId}` endpoint, the `results` field of the query has all the results for the term in one
+      list, in depth-first order.
     items:
       $ref: ./SearchResult.yaml
     example:

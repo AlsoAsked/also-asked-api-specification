@@ -1,25 +1,26 @@
-title: Paginated Search Results
+title: Page of searches
 type: object
 description: |
-  The paginated search results object is returned in the response body of a successful request for previous search
-  requests.
+  One page of the searches in your search history, newest first. The `GET /v1.1/search` endpoint returns the page of
+  searches.
 properties:
   total:
     type: integer
     format: int64
     description: |
-      The total number of search requests.
+      The total number of searches in your search history.
     example: 32
   page:
     type: integer
     format: int64
     description: |
-      The page of search requests which was returned.
+      The number of the page in the response.
     example: 1
   results:
     type: array
     description: |
-      The list of search requests.
+      The searches on the page, newest first. Each search has a `terms` field and no `queries` field. To get the results
+      of a search, use the `GET /v1.1/search/{searchId}` endpoint.
     items:
       $ref: ./SearchRequest.yaml
     example:

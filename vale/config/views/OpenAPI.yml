@@ -1,16 +1,23 @@
 # Selects the reader-facing text in the OpenAPI source: descriptions, titles and summaries.
 # The '?' scopes are optional, because some files do not have a top-level key.
+# 'type: md' lints each value as Markdown, so code in backticks is skipped.
 engine: dasel
 scopes:
   - name: description
     expr: 'description?'
+    type: md
   - name: description
     expr: '..description'
+    type: md
   - name: title
     expr: 'title?'
+    type: md
   - name: title
     expr: '..title'
+    type: md
   - name: summary
     expr: 'summary?'
+    type: md
   - name: summary
     expr: '..summary'
+    type: md

@@ -1,13 +1,15 @@
-title: Invalid Api Key Error
+title: Invalid API key error
 type: object
 description: |
-  The API key provided in the X-Api-Key request header is invalid. This error is returned when the API key provided in
-  the request header has either been deleted or doesn't exist.
+  The error body for the `invalid_api_key` error type. The AlsoAsked API returns the `invalid_api_key` error type with
+  the status code `403 Forbidden` when the value of the `X-Api-Key` header isn't a valid API key, the API key no longer
+  exists, or the API key is for the other API. A live API key works only on the live API, and a sandbox API key works
+  only on the sandbox API.
 properties:
   status:
     type: string
     description: |
-      The error status is an identifier for the type of error that occurred.
+      The error type. Use the `status` field in your code to decide what to do.
     enum:
       $ref: ../../../enums/ErrorType.yaml
     example: invalid_api_key
@@ -15,8 +17,8 @@ properties:
   message:
     type: string
     description: |
-      A human-readable message describing the error. This message is intended to be read by a developer and
-      isn't suitable for display to an end user.
+      A description of the error for people to read. The text of the `message` field can change, so don't use the
+      `message` field in your code.
     example: The API key provided is invalid.
 example:
   $ref: ../../../examples/errors/InvalidApiKeyError.yaml

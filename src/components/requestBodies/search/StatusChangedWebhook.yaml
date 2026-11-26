@@ -1,6 +1,7 @@
 description: |
-  The status changed webhook object is sent in the request body of a webhook notification when a search request's status
-  has changed. If the status of the search is `completed`, the object also contains the search results.
+  The body of a webhook request. AlsoAsked sends webhook events when the status of a search changes. The body is
+  the same as the `GET /v1.1/search/{searchId}` response for the search, at the time when AlsoAsked sends the webhook
+  request. The `queries` field has the results of the search only when the `status` field is `success`.
 required: true
 content:
   application/json:
@@ -8,9 +9,8 @@ content:
       $ref: ../../schemas/search/SearchRequestResults.yaml
     examples:
       default:
-        summary: Status changed webhook request example
+        summary: Webhook request body
         description: |
-          The following example shows the request body of a webhook notification when a search request's status has
-          changed.
+          The body of a webhook request for a search with the status `success`.
         value:
           $ref: ../../../examples/search/SearchRequestResults.yaml

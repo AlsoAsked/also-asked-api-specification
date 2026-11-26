@@ -1,13 +1,14 @@
-title: Insufficient Plan Error
+title: Insufficient plan error
 type: object
 description: |
-  Your account's plan doesn't allow you to perform this request. You can upgrade your account to the Pro plan to access
-  the live API.
+  The error body for the `insufficient_plan` error type. The AlsoAsked API returns the `insufficient_plan` error type
+  with the status code `402 Payment Required` when your account doesn't have a Pro plan. The live API needs a Pro plan.
+  The sandbox API doesn't need a Pro plan.
 properties:
   status:
     type: string
     description: |
-      The error status is an identifier for the type of error that occurred.
+      The error type. Use the `status` field in your code to decide what to do.
     enum:
       $ref: ../../../enums/ErrorType.yaml
     example: insufficient_plan
@@ -15,8 +16,8 @@ properties:
   message:
     type: string
     description: |
-      A human-readable message describing the error. This message is intended to be read by a developer and
-      isn't suitable for display to an end user.
+      A description of the error for people to read. The text of the `message` field can change, so don't use the
+      `message` field in your code.
     example: You must upgrade your account to a Pro plan to access the live API.
 example:
   $ref: ../../../examples/errors/InsufficientPlanError.yaml

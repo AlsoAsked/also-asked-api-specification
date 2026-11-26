@@ -1,6 +1,6 @@
 description: |
-  The API key provided in the request header is missing. This error is returned when no API key is provided in the
-  request header.
+  The request doesn't have the `X-Api-Key` header. The error type is `missing_api_key`. Put your API key in the
+  `X-Api-Key` header of every request.
 headers:
   X-RateLimit-Remaining:
     $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
@@ -12,9 +12,8 @@ content:
       $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
-        summary: Missing API key error response example
+        summary: Missing API key error
         description: |
-          The following example shows the response body of an unauthorized error. This error is returned when no
-          API key is provided in the request header.
+          A `missing_api_key` error. The request doesn't have the `X-Api-Key` header.
         value:
           $ref: ../../../examples/errors/MissingApiKeyError.yaml

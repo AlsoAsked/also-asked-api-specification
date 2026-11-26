@@ -1,7 +1,7 @@
 name: count
 in: query
 description: |
-  The number of results to return.
+  The number of searches on each page of your search history.
 required: false
 allowEmptyValue: false
 schema:

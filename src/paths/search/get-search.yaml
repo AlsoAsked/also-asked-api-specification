@@ -3,8 +3,11 @@ tags:
   - Search
 summary: List searches
 description: |
-  Get a paginated list of searches performed by the current user, sorted by the date they were created, with the most
-  recent searches appearing first.
+  List the searches in your search history, newest first. The `page` query parameter sets the page, and the `count`
+  query parameter sets the number of searches on each page.
+
+  Each search in the `results` field has a `terms` field, but no `queries` field. To get the results of a search, send
+  `GET /v1.1/search/{searchId}`.
 security:
   - apiKey: []
 parameters:

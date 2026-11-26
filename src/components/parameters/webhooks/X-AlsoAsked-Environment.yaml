@@ -1,7 +1,7 @@
 name: X-AlsoAsked-Environment
 in: header
 description: |
-  The environment which the webhook event originates from.
+  The API that the webhook event comes from: `live` for the live API, or `sandbox` for the sandbox API.
 required: true
 schema:
   type: string

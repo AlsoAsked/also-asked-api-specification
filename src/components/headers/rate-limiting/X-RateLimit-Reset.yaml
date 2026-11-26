@@ -1,5 +1,5 @@
 description: |
-  The time at which the current rate limit window resets in UTC epoch seconds.
+  The time when the current window of the rate limit resets, in Unix time (seconds since 1970-01-01T00:00:00Z).
 schema:
   type: integer
   format: int64

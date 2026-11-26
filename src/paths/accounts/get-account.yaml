@@ -1,9 +1,13 @@
 operationId: getAccount
 tags:
   - Account
-summary: Get account information
+summary: Get account details
 description: |
-  Get information about the current user's account.
+  Get the details of the account that owns the API key in the `X-Api-Key` header, including its plan type and its
+  credits.
+
+  On the sandbox API, the `credits` and `web_credits` fields show the sandbox credits, and the `api_credits` field is
+  `0`.
 security:
   - apiKey: []
 responses:

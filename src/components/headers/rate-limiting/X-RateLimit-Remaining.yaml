@@ -1,5 +1,5 @@
 description: |
-  The number of requests remaining in the current rate limit window.
+  The number of requests that you can still send in the current window of the rate limit.
 schema:
   type: integer
   format: int64

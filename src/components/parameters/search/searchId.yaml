@@ -1,7 +1,7 @@
 name: searchId
 in: path
 description: |
-  The ID of the search request.
+  The ID of the search. The ID is in the `id` field of the search.
 required: true
 schema:
   type: string

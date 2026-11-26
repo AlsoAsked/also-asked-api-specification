@@ -1,8 +1,7 @@
-title: Payment Required Error
+title: Payment required error
 type: object
 description: |
-  The payment required error object is returned in the response body of any request that results a
-  `402 Payment Required` error.
+  The error body of a `402 Payment Required` response. The error type is `insufficient_plan` or `insufficient_credits`.
 oneOf:
   - $ref: ./InsufficientPlanError.yaml
   - $ref: ./InsufficientCreditsError.yaml

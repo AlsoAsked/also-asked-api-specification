@@ -1,3 +1,3 @@
 name: Search
 description: |
-  Operations related to searches.
+  Perform a search, get a search, list the searches in your search history, and delete a search.

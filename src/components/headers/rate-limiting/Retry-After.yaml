@@ -1,6 +1,5 @@
 description: |
-  The date and time (in UTC) at which a new request will be permitted, in the format "Date: <day-name>, <day> <month>
-  <year> <hour>:<minute>:<second> GMT" (RFC 1123 format).
+  The time when you can send requests again, as an HTTP date in the RFC 1123 format.
 schema:
   type: string
   format: rfc1123-date-time

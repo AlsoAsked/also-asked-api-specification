@@ -1,6 +1,7 @@
 description: |
-  The paginated search results object is returned in the response body of a successful request for previous search
-  requests.
+  A page of the searches in your search history, newest first. The `total` field has the number of searches in your
+  search history. The searches in the `results` field don't have their results. To get the results of a search, use
+  `GET /v1.1/search/{searchId}`.
 headers:
   X-AlsoAsked-Credits:
     $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
@@ -14,8 +15,8 @@ content:
       $ref: ../../schemas/search/PaginatedSearchRequests.yaml
     examples:
       default:
-        summary: List searches response example
+        summary: List searches response
         description: |
-          The following example shows the response body of a successful request to list previous search requests.
+          The first page of a search history.
         value:
           $ref: ../../../examples/search/PaginatedSearchRequests.yaml

@@ -1,9 +1,18 @@
 operationId: getSearch
 tags:
   - Search
-summary: Get search
+summary: Get a search
 description: |
-  Get the details of a search request, and if the search request has completed successfully, obtain the search results.
+  Get a search by its ID. The response includes the status and the results of the search.
+
+  The `queries` field contains one query for each term only when the `status` field is `success`. Otherwise, the
+  `queries` field is `null`.
+
+  The `results_format` query parameter sets how the API returns the results: `tree` (default) puts child results inside
+  their parent result, and `flat` returns all results in one list.
+
+  You can get only searches in your search history. For a search that isn't in your search history, the API returns
+  `404 Not Found`.
 security:
   - apiKey: []
 parameters:

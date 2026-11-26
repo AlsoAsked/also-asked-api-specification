@@ -1,5 +1,5 @@
 description: |
-  The account object is returned in the response body of a successful request to get account information.
+  The account that owns the API key.
 headers:
   X-AlsoAsked-Credits:
     $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
@@ -13,8 +13,8 @@ content:
       $ref: ../../schemas/account/Account.yaml
     examples:
       default:
-        summary: Get account response example
+        summary: Get account response
         description: |
-          The following example shows the response body of a successful request to get account information.
+          An account with a Pro plan, 100 web credits, and 10 API credits.
         value:
           $ref: ../../../examples/account/Account.yaml

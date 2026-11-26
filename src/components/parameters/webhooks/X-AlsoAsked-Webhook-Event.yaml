@@ -1,7 +1,7 @@
 name: X-AlsoAsked-Webhook-Event
 in: header
 description: |
-  The type of webhook event that is being sent.
+  The type of the webhook event, for example `search_succeeded`.
 required: true
 schema:
   type: string

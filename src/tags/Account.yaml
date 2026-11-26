@@ -1,3 +1,3 @@
 name: Account
 description: |
-  Operations related to managing an account.
+  Get the details and the credits of the account that owns the API key.

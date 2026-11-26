@@ -1,19 +1,22 @@
 operationId: performSearch
 tags:
   - Search
-summary: Perform search
+summary: Perform a search
 description: |
-  Perform a search request.
+  Perform a search for 1 or more terms. AlsoAsked charges the credits for the search when it creates the search.
 
-  The search request is performed either synchronously, meaning the request hangs until the
-  search has completed, or asynchronously, meaning the request returns immediately, which is determined by the `async`
-  request parameter.
+  The `async` field in the request body sets how the API returns the response:
 
-  If the search request completes successfully, as determined by the `status` property, the search
-  results are returned in the response body.
+  - `false` (default): a synchronous search. The API waits until the search is complete, for a maximum of 90 seconds,
+    and then returns the response.
+  - `true`: an asynchronous search. The API returns the response immediately.
 
-  Synchronous requests wait for a maximum of 90 seconds for the search to
-  complete, until which point the response is returned as if it was an asynchronous request.
+  In both cases, the API returns `200 OK` with the search. The `queries` field contains the results only when the
+  `status` field is `success`. Otherwise, the `queries` field is `null`. To get the search later, send
+  `GET /v1.1/search/{searchId}` with the `id` field from the response.
+
+  For details, see [Synchronous and asynchronous searches](../docs/searches.md) and
+  [Perform a search](../docs/perform-a-search.md).
 security:
   - apiKey: []
 requestBody:

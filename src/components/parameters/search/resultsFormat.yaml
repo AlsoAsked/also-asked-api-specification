@@ -1,10 +1,10 @@
 name: results_format
 in: query
 description: |
-  The format the search results are returned in. When set to `tree`, the results are returned as a hierarchy, with
-  child results nested within the `results` property of their parent result. When set to `flat`, every result is
-  returned in a single depth-first ordered list and the `results` property is omitted from each result. In both
-  formats, the `position` property of each result describes its location within the results hierarchy.
+  The format of the results in the response. With the `tree` value, each result has its child results in its
+  `results` field. With the `flat` value, the response has all results in one list, in depth-first order: the child
+  results of each result come after the result. With the `flat` value, the results don't have the `results` field.
+  In both formats, the `position` field of each result gives the path from the top-level results to the result.
 required: false
 allowEmptyValue: false
 schema:

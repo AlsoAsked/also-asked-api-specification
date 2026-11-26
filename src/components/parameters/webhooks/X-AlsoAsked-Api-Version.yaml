@@ -1,7 +1,7 @@
 name: X-AlsoAsked-Api-Version
 in: header
 description: |
-  The version of the AlsoAsked API that the webhook originated from. The version is in the major.minor format.
+  The version that AlsoAsked sends in each webhook request, in the format `major.minor`, for example `1.0`.
 required: true
 schema:
   type: string

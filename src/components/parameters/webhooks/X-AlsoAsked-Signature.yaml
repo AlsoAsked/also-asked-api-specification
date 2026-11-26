@@ -1,12 +1,12 @@
 name: X-AlsoAsked-Signature
 in: header
 description: |
-  The signature of the webhook request. The signature is generated using the HMAC-HSA384 algorithm and the
-  webhook signing key. The signature is in the hex format. You should use this signature to verify that the
-  webhook request originated from AlsoAsked.
-  You can verify the signature using the pseudo code `hex(HMAC-HSA384(signingKey, requestBody + '.' + headerTimestamp))`
-  where `requestBody` is the JSON string of the request body and `headerTimestamp` is the value of the
-  `X-AlsoAsked-Timestamp` header.
+  The signature of the webhook request, as 96 hexadecimal characters. Use the signature to verify that AlsoAsked
+  sent the webhook request. AlsoAsked makes the signature with the `HMAC-SHA384` algorithm:
+  `hex(HMAC-SHA384(key, body + '.' + timestamp))`. In this formula, `key` is your webhook signing key, `body` is the
+  raw request body exactly as you receive it, and `timestamp` is the value of the `X-AlsoAsked-Timestamp` header.
+  Don't parse and serialize the request body again before you verify the signature, because the new JSON can differ
+  from the raw request body.
 required: true
 schema:
   type: string

@@ -1,16 +1,18 @@
-title: Search Request Options
+title: New search
 type: object
 description: |
-  The search request object is used to specify the search criteria for a search request.
+  The request body of the `POST /v1.1/search` endpoint. Only the `terms` field is required.
 properties:
   terms:
     type: array
     description: |
-      The terms to search for.
+      The terms to search for: 1 to 1,000 terms. Each term must be unique. AlsoAsked removes spaces at the start and end
+      of each term. If 2 terms are the same after that, AlsoAsked searches the term once and charges credits for the
+      term once.
     items:
       type: string
       description: |
-        The term to search for.
+        A term: 1 to 4,127 characters. A term must contain text other than spaces and quotes.
       minLength: 1
       maxLength: 4127
     minItems: 1
@@ -23,7 +25,7 @@ properties:
   language:
     type: string
     description: |
-      The language to use when searching for the terms.
+      The language code of the search, for example `en`. The default is `en`.
     enum:
       $ref: ../../../enums/Language.yaml
     example: en
@@ -31,7 +33,8 @@ properties:
   region:
     type: string
     description: |
-      The region code used when performing a search. The region code is a two-letter ISO 3166-1 code.
+      The region code of the search: a two-letter International Organization for Standardization (ISO) 3166-1 code, for
+      example `gb`. The default is `us`.
     enum:
       $ref: ../../../enums/Region.yaml
     example: us
@@ -40,10 +43,9 @@ properties:
     type: integer
     format: int32
     description: |
-      The depth of the search determines the number of hierarchical levels of questions returned in the results.
-      A greater depth value retrieves questions nested within additional layers of subquestions. Be aware that
-      increasing the depth will increase the number of credits consumed. A search depth of 1 or 2 will consume
-      1 credit, whereas a depth of 3 will consume 4 credits.
+      The number of levels of results to get: `1`, `2`, or `3`. The default is `2`. A depth of `1` gets only top-level
+      results. The cost for each term depends on the depth: 1 credit for a depth of `1` or `2`, and 4 credits for a
+      depth of `3`.
     example: 2
     default: 2
     minimum: 1
@@ -51,24 +53,25 @@ properties:
   fresh:
     type: boolean
     description: |
-      The fresh flag determines whether the search results are retrieved from the cache or live from the search engine.
+      Set the `fresh` field to `true` to get new results from Google instead of cached results. The default is `false`.
     example: false
     default: false
   async:
     type: boolean
     description: |
-      The async flag determines whether to run the search in a blocking (synchronous) or non-blocking (asynchronous)
-      manner. When a search request is performed asynchronously, the webhooks configured for the account will be
-      notified when the status of a search changes. When a search is synchronous, the search results are returned in
-      the response body when the search is complete.
+      Sets when the API returns the response. The default is `false`. If the `async` field is `false`, the search is a
+      synchronous search: the API returns the response when the search is complete, or after 90 seconds. If the search
+      isn't complete after 90 seconds, the `queries` field in the response is `null`. If the `async` field is `true`,
+      the search is an asynchronous search: the API returns the response immediately. To get the results later, use the
+      `GET /v1.1/search/{searchId}` endpoint.
     example: false
     default: false
   notify_webhooks:
     type: boolean
     description: |
-      The notify webhooks flag determines whether to notify webhooks when the status of a search changes. Webhooks are
-      notified regardless of whether the search is performed synchronously or asynchronously. Use this flag to disable
-      webhook notifications for synchronous searches which do not require webhook notifications.
+      Set the `notify_webhooks` field to `false` if you don't want webhook events for the search. The default is `true`.
+      AlsoAsked sends webhook events for synchronous searches and for asynchronous searches. On the live API, AlsoAsked
+      sends webhook events only if the account has a Pro plan.
     example: true
     default: true
   latitude:
@@ -77,9 +80,9 @@ properties:
     minimum: -90
     maximum: 90
     description: |
-      The latitude of the location to perform the search in. Must be provided together with `longitude`; a
-      request with only one of the two is refused with a `422` validation error. A value of `0` is a real
-      coordinate rather than "no location". Values are rounded to 7 decimal places.
+      The latitude of the location for the search, from -90 to 90. Send the `latitude` field and the `longitude` field
+      together. If the request body has only one of the two fields, the API returns the status code
+      `422 Unprocessable Content`. A value of `0` is a real coordinate. AlsoAsked rounds the value to 7 decimal places.
     example: 51.5072
   longitude:
     type: number
@@ -87,9 +90,9 @@ properties:
     minimum: -180
     maximum: 180
     description: |
-      The longitude of the location to perform the search in. Must be provided together with `latitude`; a
-      request with only one of the two is refused with a `422` validation error. A value of `0` is a real
-      coordinate rather than "no location". Values are rounded to 7 decimal places.
+      The longitude of the location for the search, from -180 to 180. Send the `latitude` field and the `longitude`
+      field together. If the request body has only one of the two fields, the API returns the status code
+      `422 Unprocessable Content`. A value of `0` is a real coordinate. AlsoAsked rounds the value to 7 decimal places.
     example: 0.1276
 required:
   - terms

@@ -1,7 +1,8 @@
 description: |
-  The search request results object is returned after performing a search request, containing details such as the terms,
-  language, and region used in the search request, as well as the status of the request itself. If the search request
-  has completed successfully, the object also contains the search results.
+  The search that AlsoAsked created. For a synchronous search, the API returns the response when the search is
+  complete or when the timeout ends. For an asynchronous search, the API returns the response immediately. The
+  `queries` field has the results of the search only when the `status` field is `success`. Otherwise, the `queries`
+  field is `null`.
 headers:
   X-AlsoAsked-Credits:
     $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
@@ -15,8 +16,8 @@ content:
       $ref: ../../schemas/search/SearchRequestResults.yaml
     examples:
       default:
-        summary: Perform search response example
+        summary: Perform a search response
         description: |
-          The following example shows the response body of a successful request to perform a search request.
+          A search with the status `success` and its results.
         value:
           $ref: ../../../examples/search/SearchRequestResults.yaml

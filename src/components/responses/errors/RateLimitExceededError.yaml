@@ -1,5 +1,7 @@
 description: |
-  The "rate limit exceeded" error occurs when the client has made too many requests in a short period of time.
+  You sent more requests than the rate limit allows. The error type is `rate_limit_exceeded`. Wait until the time
+  in the `Retry-After` header, then send the request again. To find your rate limit, read the `X-RateLimit-Limit`
+  header, not the `message` field of the body.
 headers:
   Retry-After:
     $ref: ../../headers/rate-limiting/Retry-After.yaml
@@ -15,9 +17,9 @@ content:
       $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
-        summary: Rate limit exceeded error response example
+        summary: Rate limit exceeded error
         description: |
-          The following example shows the response body of a rate limit exceeded error. This error is returned when the
-          client has made too many requests in a short period of time.
+          A `rate_limit_exceeded` error. You sent more requests than the rate limit allows. The `message` field doesn't
+          describe your rate limit.
         value:
           $ref: ../../../examples/errors/RateLimitExceededError.yaml

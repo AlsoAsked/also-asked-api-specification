@@ -1,15 +1,13 @@
 description: |
-  The API is currently under maintenance. This error is returned when the API is temporarily unavailable due to
-  maintenance.
+  The AlsoAsked API is temporarily unavailable because of maintenance. The error type is `under_maintenance`.
 content:
   application/json:
     schema:
       $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
-        summary: Under maintenance error response example
+        summary: Under maintenance error
         description: |
-          The following example shows the response body of an under maintenance error. This error is returned when the
-          API is temporarily unavailable due to maintenance.
+          An `under_maintenance` error. The AlsoAsked API is temporarily unavailable because of maintenance.
         value:
           $ref: ../../../examples/errors/UnderMaintenanceError.yaml

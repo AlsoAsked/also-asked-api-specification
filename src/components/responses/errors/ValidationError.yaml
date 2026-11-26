@@ -1,5 +1,6 @@
 description: |
-  The validation error occurs when the request input data is invalid.
+  A field or a parameter in the request isn't valid. The error type is `validation`. The `message` field of the body
+  names the field or the parameter.
 headers:
   X-RateLimit-Remaining:
     $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
@@ -11,9 +12,9 @@ content:
       $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
-        summary: Validation error response example
+        summary: Validation error
         description: |
-          The following example shows the response body of validation error. This error is returned when the request
-          input data is invalid.
+          A `validation` error for the `count` query parameter with the value `101`, which is more than the maximum of
+          `100`.
         value:
           $ref: ../../../examples/errors/ValidationError.yaml

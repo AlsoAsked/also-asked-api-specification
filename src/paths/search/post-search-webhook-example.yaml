@@ -1,13 +1,17 @@
 operationId: searchWebhookExample
 tags:
   - Search
-summary: Search webhook example
+summary: Example webhook event request
 description: |
-  This is an **example** of a web hook endpoint used to receive notifications when a search request's status changes.
+  This operation isn't an endpoint of the AlsoAsked API, and the `/search/webhook-example` path doesn't exist. The
+  operation describes the request that AlsoAsked sends to your webhook endpoint when the status of a search changes.
 
-  The `/search/webhook-example` doesn't exist, but is used to demonstrate how to implement a webhook endpoint to
-  receive notifications when a search request's status changes, alongside the headers and request body that will be
-  sent to the webhook endpoint.
+  AlsoAsked sends a `POST` request with a JSON body to the URL of your webhook endpoint. The body is the same as the
+  `GET /v1.1/search/{searchId}` response for the search, at the time when AlsoAsked sends the request. The headers
+  contain the webhook event type, the environment, and a signature that you use to verify the request.
+
+  For details, see [Webhooks](../docs/webhooks.md) and
+  [Verify webhook signatures](../docs/verify-webhook-signatures.md).
 parameters:
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Credits.yaml
   - $ref: ../../components/parameters/webhooks/X-AlsoAsked-Api-Version.yaml
@@ -20,7 +24,7 @@ requestBody:
 responses:
   '200':
     description: |
-      The webhook notification was received successfully.
+      Your webhook endpoint received the webhook event. AlsoAsked counts a status code below `400` as delivered.
   '204':
     description: |
-      The webhook notification was received successfully.
+      Your webhook endpoint received the webhook event. AlsoAsked counts a status code below `400` as delivered.

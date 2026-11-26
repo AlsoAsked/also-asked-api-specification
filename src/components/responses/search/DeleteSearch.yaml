@@ -1,5 +1,5 @@
 description: |
-  The empty response is returned after a successful request to delete a search request.
+  AlsoAsked deleted the search. The response has no body.
 headers:
   X-AlsoAsked-Credits:
     $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml

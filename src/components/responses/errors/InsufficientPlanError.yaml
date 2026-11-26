@@ -1,6 +1,6 @@
 description: |
-  Your account's plan doesn't allow you to perform this request. You can upgrade your account to the Pro plan to access
-  the live API.
+  The live API needs a Pro plan, and your account doesn't have a Pro plan. The error type is `insufficient_plan`.
+  Change your plan to Pro, or use the sandbox API, which doesn't need a Pro plan.
 headers:
   X-RateLimit-Remaining:
     $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
@@ -12,9 +12,8 @@ content:
       $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
-        summary: Insufficient plan error response example
+        summary: Insufficient plan error
         description: |
-          The following example shows the response body of an insufficient plan error. This error is returned when
-          your account's plan doesn't allow you to perform this request.
+          An `insufficient_plan` error. The live API needs a Pro plan, and your account doesn't have a Pro plan.
         value:
           $ref: ../../../examples/errors/InsufficientPlanError.yaml

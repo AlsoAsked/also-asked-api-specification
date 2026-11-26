@@ -1,6 +1,6 @@
 description: |
-  The perform search object is sent in the request body of a request to perform synchronous searches, containing details
-  such as The terms to search for and the language and region to search in.
+  The body of a `POST /v1.1/search` request. The body has the terms to search for and the options of the search,
+  for example the language code, the region code, and the depth.
 required: true
 content:
   application/json:
@@ -8,8 +8,8 @@ content:
       $ref: ../../schemas/search/SearchRequestOptions.yaml
     examples:
       default:
-        summary: Perform search example
+        summary: Perform a search
         description: |
-          The following example shows the request body of a request to perform a search.
+          A request body that performs a synchronous search with 3 terms and a depth of 2.
         value:
           $ref: ../../../examples/search/SearchRequestOptions.yaml

@@ -1,5 +1,6 @@
 description: |
-  The requested resource wasn't found.
+  The search doesn't exist, or the search isn't in your search history, for example because the search belongs to
+  another account. The error type is `not_found`.
 headers:
   X-RateLimit-Remaining:
     $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
@@ -11,9 +12,8 @@ content:
       $ref: ../../schemas/errors/Error.yaml
     examples:
       default:
-        summary: Not found error response example
+        summary: Not found error
         description: |
-          The following example shows the response body of a not found error. This error is returned when the requested
-          resource wasn't found.
+          A `not_found` error. The search doesn't exist, or the search isn't in your search history.
         value:
           $ref: ../../../examples/errors/NotFoundError.yaml

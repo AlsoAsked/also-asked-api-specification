@@ -1,37 +1,40 @@
 openapi: 3.1.0
 info:
-  title: AlsoAsked
+  title: AlsoAsked API
   description: |-
-    <!-- focus: false -->
-    ![AlsoAsked Logo](../assets/images/logo-blue.png)
+    The AlsoAsked API gets the "People Also Ask" questions that Google shows for a term. You send a search with 1 or
+    more terms, and the API returns the results for each term.
 
-    ## Overview
+    With the AlsoAsked API, you can perform a search, get the status and the results of a search, list the searches in
+    your search history, delete a search, and get your account details and credits. AlsoAsked can also send webhook
+    events to your webhook endpoints when the status of a search changes.
 
-    The **AlsoAsked API** offers developers access to 'People Also Ask' search results. This API provides insights into
-    frequently asked questions related to specific search queries.
+    ## Live API and sandbox API
 
-    ## Features
+    The AlsoAsked API has two environments with the same endpoints:
 
-    With the **AlsoAsked API**, you can:
+    - **Live API** (`https://alsoaskedapi.com/v1.1`): gets real results from Google and uses the credits of your plan.
+      To use the live API, your account needs a Pro plan. To compare plans, go to
+      [AlsoAsked pricing](https://alsoasked.com/pricing).
+    - **Sandbox API** (`https://sandbox.alsoaskedapi.com/v1.1`): returns test results and uses separate sandbox
+      credits. Any account can use the sandbox API.
 
-    - Conduct synchronous (waiting for completion) or asynchronous (immediate return with ID; updates via webhooks)
-      searches.
-    - Retrieve search results.
-    - View your past search history.
-    - Use webhooks to receive updates on search status, from start to completion or any failures.
-    - Access account details, including the count of remaining credits.
+    Each environment has its own API keys. Send the API key in the `X-Api-Key` header of each request. For details,
+    see [Authenticate requests](../docs/authentication.md).
 
-    ## Requirements
+    ## Guides
 
-    A **Pro subscription** is necessary to use the live API. For developers in the initial stages, our sandbox API
-    provides a testing environment without returning actual 'People Also Ask' results. This allows for development and
-    testing before committing to a **Pro subscription**.
+    - [AlsoAsked API overview](../docs/overview.md)
+    - [Quickstart](../docs/quickstart.md)
+    - [Synchronous and asynchronous searches](../docs/searches.md)
+    - [Perform a search](../docs/perform-a-search.md)
+    - [Webhooks](../docs/webhooks.md)
+    - [Errors](../docs/errors.md)
 
-    For more on the **Pro subscription**, visit our [pricing page](https://alsoasked.com/pricing).
+    ## Get help with the AlsoAsked API
 
-    ## Support
-
-    If you have questions, issues, or feedback, please contact us at [help@alsoasked.com](mailto:help@alsoasked.com).
+    If you have a question about the AlsoAsked API, email AlsoAsked support at
+    [help@alsoasked.com](mailto:help@alsoasked.com).
   license:
     name: Proprietary
     url: https://alsoasked.com/eula

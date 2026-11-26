@@ -1,6 +1,6 @@
 description: |
-  The payment required error object is returned in the response body of any request that results a
-  `402 Payment Required` error.
+  The live API needs a Pro plan and your account doesn't have one, or your account doesn't have enough credits for
+  the search. The `status` field of the body has the error type: `insufficient_plan` or `insufficient_credits`.
 headers:
   X-RateLimit-Remaining:
     $ref: ../../headers/rate-limiting/X-RateLimit-Remaining.yaml
@@ -12,16 +12,15 @@ content:
       $ref: ../../schemas/errors/PaymentRequiredError.yaml
     examples:
       InsufficientPlanError:
-        summary: Insufficient plan error response example
+        summary: Insufficient plan error
         description: |
-          The following example shows the response body of an insufficient plan error. This error is returned when
-          your account's plan doesn't allow you to perform this request.
+          An `insufficient_plan` error. The live API needs a Pro plan, and your account doesn't have a Pro plan.
         value:
           $ref: ../../../examples/errors/InsufficientPlanError.yaml
       InsufficientCreditsError:
-        summary: Insufficient credits error response example
+        summary: Insufficient credits error
         description: |
-          The following example shows the response body of an insufficient credits error. This error is returned when
-          you don't have enough credits to perform this request.
+          An `insufficient_credits` error. Your account doesn't have enough credits for the search. AlsoAsked doesn't
+          charge any credits for the search.
         value:
           $ref: ../../../examples/errors/InsufficientCreditsError.yaml
