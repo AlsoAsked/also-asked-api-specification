@@ -3,6 +3,15 @@ stoplight-id: u8gsgcbodk4lx
 ---
 
 # Changelog
+
+## 2026-11-26
+
+* The `search_succeeded` and `search_failed` webhook events are now sent once, when every term of a search has finished, and `search_failed` is only sent when every term failed. Previously the event was sent when the first term finished, so a search with mixed results could send both
+* Only a `2xx` response from a webhook endpoint now counts as delivered. A redirect (`3xx`) is now a failed attempt and is retried, and the webhook event's error shows where the endpoint redirected to. Previously a redirect counted as delivered, so the webhook endpoint never received the event
+* The `cached` property of a search is now `true` only when at least one term used results stored for an earlier search, and `cached_at` is when the oldest of those results was stored. Previously `cached` was `true` for every completed search with results, including searches that got fresh results
+* In the sandbox, the `[error]` and `[no_results]` terms now set the outcome of their own term only, as in the live environment. Previously one of these terms set the outcome of the whole search
+* The message of a `429 Too Many Requests` response no longer refers to a limit per second. The `status` is still `rate_limit_exceeded`
+
 ## 2026-11-24
 * Searches that specify only one of `latitude` and `longitude` are now refused with a `422` validation error. Previously the lone coordinate was ignored and the region's default location was used
 * A `latitude` or `longitude` of `0` is now searched as a real coordinate. Previously `0, 0` was treated as no location
