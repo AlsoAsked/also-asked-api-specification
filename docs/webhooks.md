@@ -94,7 +94,7 @@ The webhook request has these headers:
 | `X-AlsoAsked-Timestamp` | The time when AlsoAsked sent the request, as a Unix time in seconds. |
 | `X-AlsoAsked-Signature` | The signature of the request. For details, see [Verify webhook signatures](./verify-webhook-signatures.md). |
 | `X-AlsoAsked-Credits` | The credits that remain in your account. For a sandbox webhook endpoint, the value is the sandbox credits that remain. |
-| `X-AlsoAsked-Api-Version` | The API version, for example `1.0`. |
+| `X-AlsoAsked-Api-Version` | The version of the webhook request format. The current version is `1.0`. This isn't the version of the AlsoAsked API, such as `v1.1`. |
 | `User-Agent` | `AlsoAsked/1.0` |
 
 The body of the webhook request is the search object for the search. The body is the same as the response body of
