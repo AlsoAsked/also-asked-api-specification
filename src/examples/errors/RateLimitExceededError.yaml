@@ -1,2 +1,2 @@
 status: rate_limit_exceeded
-message: The maximum number of requests per second have been exceeded.
+message: The rate limit has been exceeded. Wait until the time in the Retry-After header, then send the request again.

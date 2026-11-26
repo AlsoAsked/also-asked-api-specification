@@ -2970,7 +2970,7 @@ components:
                 describe your rate limit.
               value:
                 status: rate_limit_exceeded
-                message: The maximum number of requests per second have been exceeded.
+                message: The rate limit has been exceeded. Wait until the time in the Retry-After header, then send the request again.
     InternalServerError:
       description: |
         An error happened in AlsoAsked. The error type is `internal_server`. If a search fails with the `internal_server`

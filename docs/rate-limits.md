@@ -44,13 +44,12 @@ header and this body:
 ```json
 {
   "status": "rate_limit_exceeded",
-  "message": "The maximum number of requests per second have been exceeded."
+  "message": "The rate limit has been exceeded. Wait until the time in the Retry-After header, then send the request again."
 }
 ```
 
 In your code, use the `status` field of the response body, not the `message` field. The `message` field is text for
-people, and AlsoAsked can change the `message` field. The `message` field says "per second" for every rate limit, so
-the `message` field doesn't describe your rate limit. To find your rate limit, read the `X-RateLimit-Limit` header.
+people, and AlsoAsked can change the `message` field. To find your rate limit, read the `X-RateLimit-Limit` header.
 
 ## `Retry-After` header
 
@@ -89,7 +88,7 @@ Retry-After: Thu, 26 Nov 2026 12:00:30 GMT
 
 {
   "status": "rate_limit_exceeded",
-  "message": "The maximum number of requests per second have been exceeded."
+  "message": "The rate limit has been exceeded. Wait until the time in the Retry-After header, then send the request again."
 }
 ```
 
