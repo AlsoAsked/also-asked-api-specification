@@ -34,7 +34,7 @@ To create an API key on the AlsoAsked website, do the following steps:
 2. Select **Create API key**.
 3. In the **Name** field, enter a name for the API key. The name is for your reference only.
 4. In the **Environment** field, choose **Live** or **Sandbox**.
-5. Select **Create API key**.
+5. Select **Create key**.
 6. Copy the API key, and store it in a safe place. AlsoAsked shows the API key only once.
 
 Each account can have a maximum of 10 API keys.

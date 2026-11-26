@@ -20,6 +20,12 @@ IP address has its own count. AlsoAsked refuses a request if the count for the A
 has reached the limit. A refused request doesn't count. AlsoAsked counts an IPv6 address by its /64 network, so all
 IPv6 addresses in one /64 network share one count.
 
+- Each IP address has one count for the live API and the sandbox API together. Requests to the sandbox API use up
+  requests that you could send to the live API from the same IP address.
+- Every request counts, including a request that gets an error, for example `401 Unauthorized` for a missing API key or
+  `403 Forbidden` for an API key that isn't valid.
+- AlsoAsked counts by the value of the `X-Api-Key` header, even if the value isn't a valid API key.
+
 Each API key and each IP address can send a maximum of 200 requests in 5 minutes.
 
 The rate limit uses a sliding window. AlsoAsked counts the requests that you sent in the last window, measured back from
@@ -28,7 +34,8 @@ response from the AlsoAsked API also shows the limit.
 
 ## Rate limit headers
 
-Every response from the live API and the sandbox API has these rate limit headers:
+Every response from the live API and the sandbox API has these rate limit headers. The only exception is a
+`500 Internal Server Error` response when the rate limiter itself fails:
 
 | Name | Type | Description |
 | --- | --- | --- |
@@ -66,10 +73,6 @@ When the AlsoAsked API returns the status code `429 Too Many Requests`:
 
 Don't send the request again immediately.
 
-## Ask for a higher rate limit
-
-If you need a higher rate limit for the AlsoAsked API, contact `support@alsoasked.com`.
-
 ## Example
 
 The following request gets your account from the live API:
@@ -84,7 +87,11 @@ this body:
 
 ```http
 HTTP/1.1 429 Too Many Requests
+Content-Type: application/json
 Retry-After: Thu, 26 Nov 2026 12:00:30 GMT
+X-RateLimit-Limit: 200
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1795694700
 
 {
   "status": "rate_limit_exceeded",
@@ -92,7 +99,8 @@ Retry-After: Thu, 26 Nov 2026 12:00:30 GMT
 }
 ```
 
-The response also has the rate limit headers `X-RateLimit-Limit`, `X-RateLimit-Remaining`, and `X-RateLimit-Reset`.
+To test how your code handles a `429 Too Many Requests` response, use the `[rate_limit]` test term of the sandbox API.
+See [Sandbox API](./sandbox.md#test-terms).
 
 ## Related
 

@@ -27,7 +27,7 @@ on the AlsoAsked website, do the following steps:
 2. Select **Create API key**.
 3. In the **Name** field, enter a name for the API key. The name is for your reference only.
 4. In the **Environment** field, choose **Sandbox**.
-5. Select **Create API key**.
+5. Select **Create key**.
 6. Copy the API key, and store it in a safe place. AlsoAsked shows the API key only once.
 
 Keep your sandbox API key secret. Don't put an API key in code that runs in a web browser or in a mobile app, and don't
@@ -64,8 +64,9 @@ The fields in the `POST /v1.1/search` request body do these things:
 - The `depth` field sets the number of levels of results: `1`, `2`, or `3`. The default depth is `2`.
 
 The request body has no `async` field. The default value of the `async` field is `false`, so the search is a
-synchronous search. In a synchronous search, the API waits until the search is complete, or until the timeout, before
-it returns the response. The timeout is 90 seconds.
+synchronous search. In a synchronous search, the API waits until the search is complete before it returns the
+response. On the sandbox API, a synchronous search is complete after 3 to 9 seconds. On the live API, the API waits a
+maximum of 90 seconds.
 
 This search has 1 term and a depth of `2`, so the search costs 1 sandbox credit. For details, see [Credits](./credits.md).
 
@@ -77,13 +78,14 @@ search. These are the important fields of the search in the `POST /v1.1/search` 
 - The `id` field contains the ID of the search: 32 letters and digits. Use the ID to get the search again.
 - The `status` field contains the status of the search. A search is complete when its status is `success`,
   `no_results`, or `error`.
-- The `queries` field contains one query for each term in the search. The `queries` field is `null` unless the status
-  of the search is `success`.
+- The `queries` field contains one query for each term in the search. The `queries` field is `null` until the search
+  is complete.
 
 Each query in the `queries` field has these fields:
 
 - The `term` field contains the term of the query.
-- The `results` field contains the top-level results for the term.
+- The `status` field contains the status of the term: `success`, `no_results`, or `error`.
+- The `results` field contains the top-level results for the term, if the status of the term is `success`.
 
 Each result in the `results` field of a query has these fields:
 
@@ -150,8 +152,7 @@ that Google shows.
 }
 ```
 
-If the `status` field isn't `success`, the `queries` field is `null`. A `null` value in the `queries` field doesn't
-always mean that the search has no results. The search may not be complete yet. To get the results later, send a request to
+If the search isn't complete, the `queries` field is `null`. To get the results later, send a request to
 `GET https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}` with the `id` field. See
 [Get the search again](#4-get-the-search-again).
 
@@ -174,8 +175,8 @@ Use the `id` field from the `POST /v1.1/search` response body as the `searchId` 
 4. Run the request in your terminal.
 
 The `GET /v1.1/search/{searchId}` endpoint returns the same search object as the `POST /v1.1/search` endpoint, with
-the same fields. If the status of the search wasn't `success` before, read the `status` field again. When the status is
-`success`, the `queries` field contains the results.
+the same fields. If the search wasn't complete before, read the `status` field again. When the status is `success`,
+`no_results`, or `error`, the search is complete, and the `queries` field contains the queries.
 
 ## Next steps
 
@@ -193,3 +194,5 @@ the same fields. If the status of the search wasn't `success` before, read the `
   [Errors](./errors.md).
 - **Test more cases on the sandbox API.** Add a test term such as `[error]` or `[no_results]` to the `terms` field, so
   that a term fails or has no results. See [Sandbox API](./sandbox.md).
+- **Search many terms.** Learn how to search thousands of terms and collect every result. See
+  [Search many terms](./bulk-searches.md).
