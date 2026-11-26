@@ -37,7 +37,9 @@ To create an API key on the AlsoAsked website, do the following steps:
 5. Select **Create key**.
 6. Copy the API key, and store it in a safe place. AlsoAsked shows the API key only once.
 
-Each account can have a maximum of 10 API keys.
+Each account can have a maximum of 10 API keys. Live API keys and sandbox API keys count together. Deleted API keys
+don't count. An API key doesn't expire, and you can't rename it. The **API keys** page shows when each API key was last
+used. You can create and delete API keys only on the AlsoAsked website, not through the API.
 
 ## Send an API key to the live API
 
@@ -85,9 +87,10 @@ The following table shows the authentication errors:
 | Problem | Cause | What to do |
 | --- | --- | --- |
 | Status code `401 Unauthorized`, error type `missing_api_key` | The request doesn't have the `X-Api-Key` header. | Add the `X-Api-Key` header with your API key to the request. |
+| Status code `403 Forbidden`, error type `invalid_api_key` | The `X-Api-Key` header is empty. | Put your API key in the `X-Api-Key` header. Check that the variable that holds the API key in your code isn't empty. |
 | Status code `403 Forbidden`, error type `invalid_api_key` | The value in the `X-Api-Key` header isn't a valid API key, or someone deleted the API key. | Check that you copied the full API key, or create a new API key. |
 | Status code `403 Forbidden`, error type `invalid_api_key` | You sent a live API key to the sandbox API, or a sandbox API key to the live API. | Send a live API key, which starts with `aa-live-`, to the live API, and a sandbox API key, which starts with `aa-sandbox-`, to the sandbox API. |
-| Status code `401 Unauthorized`, error type `api_access_disabled` | AlsoAsked turned off API access for your account. | Contact AlsoAsked support. |
+| Status code `401 Unauthorized`, error type `api_access_disabled` | AlsoAsked turned off API access for your account. AlsoAsked checks this before it checks the plan. | Contact AlsoAsked support at `support@alsoasked.com`. |
 
 For all error types, see [Errors](./errors.md).
 
@@ -96,7 +99,8 @@ For all error types, see [Errors](./errors.md).
 An API key identifies your account, so anyone with your API key can send requests as your account. Keep each API key
 secret:
 
-- Don't put an API key in code that runs in a web browser or in a mobile app.
+- Don't put an API key in code that runs in a web browser or in a mobile app. The AlsoAsked API doesn't accept requests
+  from web pages on other websites, so send requests from your server.
 - Don't commit an API key to a code repository.
 - If someone else gets your API key, delete the API key and create a new one.
 

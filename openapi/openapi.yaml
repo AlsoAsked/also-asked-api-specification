@@ -345,7 +345,9 @@ components:
         plan_type:
           type: string
           description: |
-            The plan of the account. On the sandbox API, the value of the `plan_type` field is always `pro`.
+            The plan of the account. In a successful response, the value of the `plan_type` field is always `pro`: the live
+            API returns `402 Payment Required` to an account without a Pro plan, and on the sandbox API the value is always
+            `pro`. For a team member, the value is the plan of the team owner.
           enum:
             - free
             - basic
@@ -365,23 +367,23 @@ components:
           format: int64
           minimum: 0
           description: |
-            The web credits that remain in the account. Web credits pay for searches on the AlsoAsked website and on the
-            AlsoAsked API. On the sandbox API, the value of the `web_credits` field is the sandbox credits.
+            The web credits that remain in the account: the credits that come with the plan. AlsoAsked uses web credits
+            before API credits. On the sandbox API, the value of the `web_credits` field is the sandbox credits.
           example: 100
         api_credits:
           type: integer
           format: int64
           minimum: 0
           description: |
-            The API credits that remain in the account. API credits pay for searches on the AlsoAsked API when no web credits
-            remain. On the sandbox API, the value of the `api_credits` field is `0`.
+            The API credits that remain in the account: the credits that you bought. API credits don't expire. On the sandbox
+            API, the value of the `api_credits` field is `0`.
           example: 10
         credits_reset_at:
           type: string
           format: date-time
           description: |
-            The date and time when the web credits of the account renew, in ISO 8601 format. On the sandbox API, the date and
-            time when the sandbox credits reset.
+            The date and time when the web credits of the account renew next, in ISO 8601 format. On the sandbox API, the date
+            and time when the sandbox credits reset next.
           example: '2023-02-01T00:00:00+00:00'
         registered_at:
           type: string
@@ -1526,9 +1528,10 @@ components:
         fresh:
           type: boolean
           description: |
-            Set the `fresh` field to `true` to get new results from Google instead of cached results. The default is `false`.
-            On the live API, a term with cached results costs nothing when `fresh` is `false`. When `fresh` is `true`, every
-            term costs credits.
+            Set the `fresh` field to `true` to get new results from Google instead of stored results. The default is `false`:
+            AlsoAsked can use the results that any account stored for an earlier search with the same term, language, region,
+            depth, and location, however old they are. On the live API, a term with stored results costs nothing when `fresh`
+            is `false`. When `fresh` is `true`, every term costs credits.
           example: false
           default: false
         async:

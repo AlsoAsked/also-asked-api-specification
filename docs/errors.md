@@ -81,8 +81,16 @@ Some responses don't come from the AlsoAsked API itself, so they don't have the 
 section describes:
 
 - **A path or method that the AlsoAsked API doesn't have:** for example, `GET /v2/search` or `PUT /v1.1/search`. The
-  status code is `404 Not Found` or `405 Method Not Allowed`, and the body isn't in the AlsoAsked error format. Check the
-  URL, the version in the URL, and the method.
+  status code is `404 Not Found` or `405 Method Not Allowed`. Check the URL, the version in the URL, and the method.
+- **An unexpected error in AlsoAsked:** the status code is `500 Internal Server Error`. Send the request again later.
+- **A request body larger than 8 MB:** the status code is `413 Content Too Large`, and the body is an HTML page. A
+  search with 1,000 terms of normal length is much smaller than this limit.
+- **A failure of the rate limiter:** the status code is `500 Internal Server Error`, without rate limit headers. Send the
+  request again later.
+
+For the first two cases, the body is `{"message": "..."}` if the request has the `Accept: application/json` header,
+and an HTML page otherwise. Send the `Accept: application/json` header with every request, and handle a response
+without the `status` field as an error that you identify by its status code.
 
 ## Example
 

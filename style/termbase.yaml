@@ -174,15 +174,18 @@ terms:
     example: An asynchronous search returns the search ID immediately.
     status: approved
 
-  - term: cached result
+  - term: stored result
     pos: noun
     definition: >-
-      A result that AlsoAsked got from a previous search, not from Google at the time of your search. Set `fresh` to
-      `true` to get new results.
+      A result that AlsoAsked stored for an earlier search by any account, and uses again instead of getting new results
+      from Google. A term with stored results costs no credits. Set `fresh` to `true` to get new results.
     matches:
       - "fields: cached, cached_at, fresh"
-    reject: []
-    example: Set `fresh` to `true` if you don't want cached results.
+    reject:
+      - phrase: 'cached results?'
+        level: review
+        use: stored result
+    example: Set `fresh` to `true` if you don't want stored results.
     status: approved
 
   - term: AI overview

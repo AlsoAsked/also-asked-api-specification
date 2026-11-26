@@ -53,9 +53,10 @@ properties:
   fresh:
     type: boolean
     description: |
-      Set the `fresh` field to `true` to get new results from Google instead of cached results. The default is `false`.
-      On the live API, a term with cached results costs nothing when `fresh` is `false`. When `fresh` is `true`, every
-      term costs credits.
+      Set the `fresh` field to `true` to get new results from Google instead of stored results. The default is `false`:
+      AlsoAsked can use the results that any account stored for an earlier search with the same term, language, region,
+      depth, and location, however old they are. On the live API, a term with stored results costs nothing when `fresh`
+      is `false`. When `fresh` is `true`, every term costs credits.
     example: false
     default: false
   async:

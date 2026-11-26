@@ -18,7 +18,6 @@ This page lists the terms that the AlsoAsked API documentation uses, with the me
 | API key | The secret value that identifies your account in each request. It starts with `aa-live-` or `aa-sandbox-`. | Create an API key on the API keys page. |
 | asynchronous search | A search where the API sends the response immediately, before the search is complete. Set `async` to `true`. | An asynchronous search returns the search ID immediately. |
 | body | The JSON content of a request or response. | The response body contains the search. |
-| cached result | A result that AlsoAsked got from a previous search, not from Google at the time of your search. Set `fresh` to `true` to get new results. | Set `fresh` to `true` if you don't want cached results. |
 | child result | A result inside another result. The result that contains it is its parent result. | The `results` field of a result contains its child results. |
 | credit | The unit that AlsoAsked uses to charge for searches. A search costs credits for each term. The cost depends on the depth. | The cost of a search depends on the number of terms and the depth. |
 | delete | To remove access to a search and its results with the `DELETE /v1.1/search/{searchId}` endpoint. | Delete the search when you don't need it. |
@@ -45,6 +44,7 @@ This page lists the terms that the AlsoAsked API documentation uses, with the me
 | signature | The value in the `X-AlsoAsked-Signature` header that shows that AlsoAsked sent the webhook event. | Verify the signature before you use the body. |
 | status | The stage of a search or of one of its terms: `queueing`, `pending`, `running`, `fetching`, `error`, `no_results` or `success`. | When the status of a query is `success`, the `results` field of the query contains the results. |
 | status code | The three-digit number in an HTTP response that shows the result of the request, for example `429`. | The status code `429` tells you that you sent too many requests. |
+| stored result | A result that AlsoAsked stored for an earlier search by any account, and uses again instead of getting new results from Google. A term with stored results costs no credits. Set `fresh` to `true` to get new results. | Set `fresh` to `true` if you don't want stored results. |
 | synchronous search | A search where the API sends the response only when the search is complete, or after 90 seconds. Set `async` to `false`. | A synchronous search returns the results in the response body. |
 | term | A question or phrase that AlsoAsked searches for. A search has 1 to 1,000 terms. | Put each term in the `terms` field. |
 | top-level result | A result that isn't inside another result. Its `position` field has one number. | A search with a depth of 1 gets only top-level results. |
