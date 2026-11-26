@@ -938,10 +938,9 @@ components:
             - boolean
             - 'null'
           description: |
-            `true` if AlsoAsked has stored results for the first term of the search. This is also `true` for a search that
-            got new results from Google, after AlsoAsked stores the results. To know if the search used results from an
-            earlier search, compare the `cached_at` field with the `created_at` field. On the sandbox API, the value is
-            `false`. The value of the `cached` field is `null` if the search is deleted.
+            `true` if at least one term of the search used results that AlsoAsked stored for an earlier search, instead of
+            new results from Google. On the sandbox API, the value is `false`. The value of the `cached` field is `null` if
+            the search is deleted.
           example: true
         created_at:
           type: string
@@ -961,10 +960,9 @@ components:
               format: date-time
             - type: 'null'
           description: |
-            The date and time when AlsoAsked stored the results for the first term of the search, in ISO 8601 format. If the
-            `cached_at` field is earlier than the `created_at` field, the search used results that AlsoAsked stored for an
-            earlier search. The value is `null` if AlsoAsked has no stored results for the first term, on the sandbox API, or
-            if the search is deleted.
+            The date and time when AlsoAsked stored the oldest of the earlier results that the search used, in ISO 8601
+            format. The value is `null` if no term of the search used stored results, on the sandbox API, or if the search
+            is deleted.
           example: '2022-12-31T00:00:00Z'
       example:
         id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
@@ -1022,10 +1020,10 @@ components:
               status: success
               deleted: false
               depth: 3
-              cached: true
+              cached: false
               created_at: '2023-01-15T18:45:00Z'
               updated_at: '2023-01-15T18:50:00Z'
-              cached_at: '2023-01-15T18:50:00Z'
+              cached_at: null
             - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
               terms: null
               language: null
@@ -1065,10 +1063,10 @@ components:
               status: success
               deleted: false
               depth: 3
-              cached: true
+              cached: false
               created_at: '2023-01-01T00:00:00Z'
               updated_at: '2023-01-01T00:00:10Z'
-              cached_at: '2023-01-01T00:00:10Z'
+              cached_at: null
       example:
         total: 32
         page: 1
@@ -1085,10 +1083,10 @@ components:
             status: success
             deleted: false
             depth: 3
-            cached: true
+            cached: false
             created_at: '2023-01-15T18:45:00Z'
             updated_at: '2023-01-15T18:50:00Z'
-            cached_at: '2023-01-15T18:50:00Z'
+            cached_at: null
           - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
             terms: null
             language: null
@@ -1128,10 +1126,10 @@ components:
             status: success
             deleted: false
             depth: 3
-            cached: true
+            cached: false
             created_at: '2023-01-01T00:00:00Z'
             updated_at: '2023-01-01T00:00:10Z'
-            cached_at: '2023-01-01T00:00:10Z'
+            cached_at: null
     SearchRequestOptions:
       title: New search
       type: object
@@ -2596,10 +2594,9 @@ components:
             - boolean
             - 'null'
           description: |
-            `true` if AlsoAsked has stored results for the first term of the search. This is also `true` for a search that
-            got new results from Google, after AlsoAsked stores the results. To know if the search used results from an
-            earlier search, compare the `cached_at` field with the `created_at` field. On the sandbox API, the value is
-            `false`. The value of the `cached` field is `null` if the search is deleted.
+            `true` if at least one term of the search used results that AlsoAsked stored for an earlier search, instead of
+            new results from Google. On the sandbox API, the value is `false`. The value of the `cached` field is `null` if
+            the search is deleted.
           example: true
         created_at:
           type: string
@@ -2619,10 +2616,9 @@ components:
             - 'null'
           format: date-time
           description: |
-            The date and time when AlsoAsked stored the results for the first term of the search, in ISO 8601 format. If the
-            `cached_at` field is earlier than the `created_at` field, the search used results that AlsoAsked stored for an
-            earlier search. The value is `null` if AlsoAsked has no stored results for the first term, on the sandbox API, or
-            if the search is deleted.
+            The date and time when AlsoAsked stored the oldest of the earlier results that the search used, in ISO 8601
+            format. The value is `null` if no term of the search used stored results, on the sandbox API, or if the search
+            is deleted.
           example: '2022-12-31T00:00:00Z'
       example:
         id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
@@ -3039,10 +3035,10 @@ components:
                     status: success
                     deleted: false
                     depth: 3
-                    cached: true
+                    cached: false
                     created_at: '2023-01-15T18:45:00Z'
                     updated_at: '2023-01-15T18:50:00Z'
-                    cached_at: '2023-01-15T18:50:00Z'
+                    cached_at: null
                   - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
                     terms: null
                     language: null
@@ -3082,10 +3078,10 @@ components:
                     status: success
                     deleted: false
                     depth: 3
-                    cached: true
+                    cached: false
                     created_at: '2023-01-01T00:00:00Z'
                     updated_at: '2023-01-01T00:00:10Z'
-                    cached_at: '2023-01-01T00:00:10Z'
+                    cached_at: null
     ValidationError:
       description: |
         A field or a parameter in the request isn't valid. The error type is `validation`. The `message` field of the body

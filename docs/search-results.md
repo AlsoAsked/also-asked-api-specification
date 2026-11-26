@@ -40,16 +40,15 @@ with these fields:
 | `status` | string or `null` | The status of the search. For the values, see [Search status](#search-status). |
 | `deleted` | boolean | `true` if the search is deleted, otherwise `false`. |
 | `depth` | integer or `null` | The depth of the search: `1`, `2`, or `3`. |
-| `cached` | boolean or `null` | `true` if AlsoAsked has stored results for the first term of the search. This is also `true` for a search that got new results from Google, after AlsoAsked stores them. On the sandbox API, the value is `false`. |
+| `cached` | boolean or `null` | `true` if at least one term of the search used results that AlsoAsked stored for an earlier search, instead of new results from Google. On the sandbox API, the value is `false`. |
 | `created_at` | string | The date and time when AlsoAsked created the search, in ISO 8601 format. |
 | `updated_at` | string | The date and time when the search last changed, in ISO 8601 format. |
-| `cached_at` | string or `null` | The date and time when AlsoAsked stored the results for the first term of the search, in ISO 8601 format. The value is `null` if AlsoAsked has no stored results for the first term, or on the sandbox API. |
+| `cached_at` | string or `null` | The date and time when AlsoAsked stored the oldest of the earlier results that the search used, in ISO 8601 format. The value is `null` if no term used stored results, or on the sandbox API. |
 | `queries` | array or `null` | One query for each term in the search. The value is `null` unless the status of the search is `success`. For the fields, see [Query fields](#query-fields). |
 
-To know if a search used results that AlsoAsked stored for an earlier search, compare the `cached_at` field with the
-`created_at` field. If the `cached_at` field is earlier than the `created_at` field, the search used stored results. The
-`cached` field alone doesn't tell you this, because the `cached` field is also `true` for a search that got new results
-from Google.
+A search that gets new results from Google has `cached` set to `false` and `cached_at` set to `null`, even after
+AlsoAsked stores its results for later searches. To get new results instead of stored results, set the `fresh` field to
+`true` when you perform the search.
 
 ## Search status
 
