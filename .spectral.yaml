@@ -1,0 +1,4 @@
+# Spectral's built-in OpenAPI rules. This replaces the ruleset that was loaded from stoplight.io.
+extends: [[spectral:oas, all]]
+rules:
+  operation-singular-tag: off
