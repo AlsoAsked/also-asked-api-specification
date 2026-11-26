@@ -11,7 +11,7 @@ stoplight-id: u8gsgcbodk4lx
 * The `cached` property of a search is now `true` only when at least one term used results stored for an earlier search, and `cached_at` is when the oldest of those results was stored. Previously `cached` was `true` for every completed search with results, including searches that got fresh results
 * In the sandbox, the `[error]` and `[no_results]` terms now set the outcome of their own term only, as in the live environment. Previously one of these terms set the outcome of the whole search
 * The message of a `429 Too Many Requests` response no longer refers to a limit per second. The `status` is still `rate_limit_exceeded`
-* In v1.1, each query in `queries` now has a `status` property with the status of its own term, and `queries` is returned while a search is running and when a search ends with `no_results` or `error`. Previously `queries` was `null` until the whole search succeeded, so you couldn't tell which terms had failed
+* In v1.1, each query in `queries` now has a `status` property with the outcome of its own term: `success`, `no_results` or `error`. `queries` is now returned when a search ends with `no_results` or `error`, as well as `success`. Previously `queries` was `null` unless the whole search succeeded, so you couldn't tell which terms had failed. `queries` is still `null` while a search is running
 * In v1.1, `422` validation errors now include an `errors` array. Each item has a `field` property, which names the field, parameter or header (for example `terms.3`), and a `message` property. v1 responses are unchanged
 * Webhook bodies for searches performed through v1.1 now start with an `event_id` property. Every delivery of the same webhook event has the same ID, and the ID is covered by the signature, so you can use it to ignore an event that you've already processed
 * Results that AlsoAsked stored for an earlier search are now reused by every account, however old they are, and a term that uses them costs no credits. Previously only your own account's results from the last 30 days were reused. Set `fresh` to `true` to get new results
@@ -21,7 +21,9 @@ stoplight-id: u8gsgcbodk4lx
 * A webhook event that fails because the account has no webhook signing key is no longer retried, and its error says to generate a webhook signing key
 * Added the sandbox terms `[server_error]`, which returns a `500` error, `[rate_limit]`, which returns a `429` error with a `Retry-After` header, and `[timeout]`, which simulates a search that runs past the 90 second limit of a synchronous search. Searches with `[server_error]` or `[rate_limit]` cost no sandbox credits
 * Sandbox credits are now refunded if a sandbox search fails before it's recorded
-* Terms of a deleted search that stall past their deadline are now refunded, as for any other search. Previously deleting a running search kept its credits
+* Terms of a deleted search that stall past their deadline are now refunded, as for any other search. Previously deleting a running search kept its credits. A deleted search no longer sends webhook events
+* Stored results whose top-level answer is blank are no longer reused, so the search gets new results for that term
+* A request body that is valid JSON but isn't an object, such as a list, now gets a `422` validation error. Previously it got a `500` error
 
 ## 2026-11-25
 
