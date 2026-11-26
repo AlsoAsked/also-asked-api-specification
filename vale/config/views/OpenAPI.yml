@@ -1,0 +1,16 @@
+# Selects the reader-facing text in the OpenAPI source: descriptions, titles and summaries.
+# The '?' scopes are optional, because some files do not have a top-level key.
+engine: dasel
+scopes:
+  - name: description
+    expr: 'description?'
+  - name: description
+    expr: '..description'
+  - name: title
+    expr: 'title?'
+  - name: title
+    expr: '..title'
+  - name: summary
+    expr: 'summary?'
+  - name: summary
+    expr: '..summary'

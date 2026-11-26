@@ -1,3 +1,8 @@
 {
-  "exclude": ["src"]
+  "exclude": [
+    "src",
+    "style",
+    "tools",
+    "vale"
+  ]
 }

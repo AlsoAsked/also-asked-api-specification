@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@redocly/cli':
         specifier: 1.34.1
-        version: 1.34.1(ajv@8.17.1)
+        version: 1.34.1(ajv@8.17.1)(supports-color@7.2.0)
       '@stoplight/spectral-cli':
         specifier: ^6.14.3
         version: 6.14.3
@@ -28,7 +28,10 @@ importers:
         version: 3.0.1
       widdershins:
         specifier: ^4.0.1
-        version: 4.0.1(ajv@8.17.1)(mkdirp@3.0.1)
+        version: 4.0.1(ajv@8.17.1)(mkdirp@3.0.1)(supports-color@7.2.0)
+      yaml:
+        specifier: 2.8.1
+        version: 2.8.1
 
 packages:
 
@@ -164,6 +167,7 @@ packages:
   '@opentelemetry/propagator-jaeger@1.26.0':
     resolution: {integrity: sha512-DelFGkCdaxA1C/QA0Xilszfr0t4YbGd3DjxiCDPh34lfnFr+VkkrjV9S8ZTJvAzfdKERXhfOxIKBoGPJwoSz7Q==}
     engines: {node: '>=14'}
+    deprecated: Package no longer supported. See https://github.com/open-telemetry/opentelemetry-js/pull/7077
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
 
@@ -188,12 +192,14 @@ packages:
   '@opentelemetry/sdk-trace-base@1.26.0':
     resolution: {integrity: sha512-olWQldtvbK4v22ymrKLbIcBi9L2SpMO84sCPY54IVsJhP9fRsxJT194C/AVaAuJzLE30EdhhM1VmvVYR7az+cw==}
     engines: {node: '>=14'}
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
 
   '@opentelemetry/sdk-trace-node@1.26.0':
     resolution: {integrity: sha512-Fj5IVKrj0yeUwlewCRwzOVcr5avTuNnMHWf7GPc1t6WaT78J6CJyF3saZ/0RkZfdeNO8IcBl/bNcWMVZBMRW8Q==}
     engines: {node: '>=14'}
+    deprecated: Use @opentelemetry/sdk-trace package
     peerDependencies:
       '@opentelemetry/api': '>=1.0.0 <1.10.0'
 
@@ -2202,6 +2208,11 @@ packages:
     resolution: {integrity: sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==}
     engines: {node: '>= 6'}
 
+  yaml@2.8.1:
+    resolution: {integrity: sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
   yargs-parser@11.1.1:
     resolution: {integrity: sha512-C6kB/WJDiaxONLJQnF8ccx9SEeoTTLek8RVbaOIsrAUS8VrBEXfmeSnCZxygc+XC2sNMBIwOOnfcxiynjHsVSQ==}
 
@@ -2427,7 +2438,7 @@ snapshots:
       require-from-string: 2.0.2
       uri-js-replace: 1.0.1
 
-  '@redocly/cli@1.34.1(ajv@8.17.1)':
+  '@redocly/cli@1.34.1(ajv@8.17.1)(supports-color@7.2.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/exporter-trace-otlp-http': 0.53.0(@opentelemetry/api@1.9.0)
@@ -2435,8 +2446,8 @@ snapshots:
       '@opentelemetry/sdk-trace-node': 1.26.0(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.27.0
       '@redocly/config': 0.22.2
-      '@redocly/openapi-core': 1.34.1
-      '@redocly/respect-core': 1.34.1(ajv@8.17.1)
+      '@redocly/openapi-core': 1.34.1(supports-color@7.2.0)
+      '@redocly/respect-core': 1.34.1(ajv@8.17.1)(supports-color@7.2.0)
       abort-controller: 3.0.0
       chokidar: 3.6.0
       colorette: 1.4.0
@@ -2450,9 +2461,9 @@ snapshots:
       pluralize: 8.0.0
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
-      redoc: 2.4.0(core-js@3.41.0)(mobx@6.13.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))
+      redoc: 2.4.0(core-js@3.41.0)(mobx@6.13.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(supports-color@7.2.0)
       semver: 7.7.1
-      simple-websocket: 9.1.0
+      simple-websocket: 9.1.0(supports-color@7.2.0)
       styled-components: 6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       yargs: 17.0.1
     transitivePeerDependencies:
@@ -2465,12 +2476,12 @@ snapshots:
 
   '@redocly/config@0.22.2': {}
 
-  '@redocly/openapi-core@1.34.1':
+  '@redocly/openapi-core@1.34.1(supports-color@7.2.0)':
     dependencies:
       '@redocly/ajv': 8.11.2
       '@redocly/config': 0.22.2
       colorette: 1.4.0
-      https-proxy-agent: 7.0.6
+      https-proxy-agent: 7.0.6(supports-color@7.2.0)
       js-levenshtein: 1.1.6
       js-yaml: 4.1.0
       minimatch: 5.1.6
@@ -2479,11 +2490,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@redocly/respect-core@1.34.1(ajv@8.17.1)':
+  '@redocly/respect-core@1.34.1(ajv@8.17.1)(supports-color@7.2.0)':
     dependencies:
       '@faker-js/faker': 7.6.0
       '@redocly/ajv': 8.11.2
-      '@redocly/openapi-core': 1.34.1
+      '@redocly/openapi-core': 1.34.1(supports-color@7.2.0)
       better-ajv-errors: 1.2.0(ajv@8.17.1)
       colorette: 2.0.20
       concat-stream: 2.0.0
@@ -3140,13 +3151,17 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.2
 
-  debug@2.6.9:
+  debug@2.6.9(supports-color@7.2.0):
     dependencies:
       ms: 2.0.0
+    optionalDependencies:
+      supports-color: 7.2.0
 
-  debug@4.4.0:
+  debug@4.4.0(supports-color@7.2.0):
     dependencies:
       ms: 2.1.3
+    optionalDependencies:
+      supports-color: 7.2.0
 
   decamelize@1.2.0: {}
 
@@ -3559,18 +3574,18 @@ snapshots:
 
   http2-client@1.3.5: {}
 
-  https-proxy-agent@7.0.6:
+  https-proxy-agent@7.0.6(supports-color@7.2.0):
     dependencies:
       agent-base: 7.1.3
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
 
-  httpsnippet@1.25.0(mkdirp@3.0.1):
+  httpsnippet@1.25.0(mkdirp@3.0.1)(supports-color@7.2.0):
     dependencies:
       chalk: 1.1.3
       commander: 2.20.3
-      debug: 2.6.9
+      debug: 2.6.9(supports-color@7.2.0)
       event-stream: 3.3.4
       form-data: 3.0.0
       fs-readfile-promise: 2.0.1
@@ -4216,9 +4231,9 @@ snapshots:
     dependencies:
       esprima: 4.0.1
 
-  redoc@2.4.0(core-js@3.41.0)(mobx@6.13.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0)):
+  redoc@2.4.0(core-js@3.41.0)(mobx@6.13.7)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(styled-components@6.1.17(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(supports-color@7.2.0):
     dependencies:
-      '@redocly/openapi-core': 1.34.1
+      '@redocly/openapi-core': 1.34.1(supports-color@7.2.0)
       classnames: 2.5.1
       core-js: 3.41.0
       decko: 1.2.0
@@ -4426,9 +4441,9 @@ snapshots:
     dependencies:
       jsep: 1.4.0
 
-  simple-websocket@9.1.0:
+  simple-websocket@9.1.0(supports-color@7.2.0):
     dependencies:
-      debug: 4.4.0
+      debug: 4.4.0(supports-color@7.2.0)
       queue-microtask: 1.2.3
       randombytes: 2.1.0
       readable-stream: 3.6.2
@@ -4734,12 +4749,12 @@ snapshots:
     dependencies:
       isexe: 2.0.0
 
-  widdershins@4.0.1(ajv@8.17.1)(mkdirp@3.0.1):
+  widdershins@4.0.1(ajv@8.17.1)(mkdirp@3.0.1)(supports-color@7.2.0):
     dependencies:
       dot: 1.1.3
       fast-safe-stringify: 2.1.1
       highlightjs: 9.16.2
-      httpsnippet: 1.25.0(mkdirp@3.0.1)
+      httpsnippet: 1.25.0(mkdirp@3.0.1)(supports-color@7.2.0)
       jgexml: 0.4.4
       markdown-it: 10.0.0
       markdown-it-emoji: 1.4.0
@@ -4788,6 +4803,8 @@ snapshots:
   yaml-ast-parser@0.0.43: {}
 
   yaml@1.10.2: {}
+
+  yaml@2.8.1: {}
 
   yargs-parser@11.1.1:
     dependencies:

@@ -1,0 +1,562 @@
+# AlsoAsked termbase: one approved term for each concept.
+#
+# This file is the source for the Vale vocabulary, the Vale term rules and the glossary page.
+# Do not edit the generated files. Edit this file, then run `npm run style`.
+#
+# Entry keys:
+#   term:       the approved term, as it appears in a sentence.
+#   pos:        part of speech of the approved term (noun, verb, adjective).
+#   definition: one sentence. It must be correct without the rest of the docs.
+#   matches:    the fixed names in the API or the app that this term must agree with.
+#   reject:     words that must not be used for this concept.
+#     phrase:   a regular expression (case-insensitive) for the rejected words.
+#     level:    error = Vale blocks the commit. review = the word is correct in another sense,
+#               so a reviewer checks it. Review entries do not make Vale rules.
+#     use:      the replacement to show in the Vale message.
+#   example:    a correct sentence.
+#   status:     draft = waiting for team confirmation. approved = confirmed.
+
+terms:
+  # --- Searches and results ---------------------------------------------------
+
+  - term: search
+    pos: noun
+    definition: >-
+      A set of one or more terms that you send to the AlsoAsked API in one request. Each search has an ID, a status
+      and a depth.
+    matches:
+      - "endpoint: POST /v1.1/search, GET /v1.1/search/{searchId}"
+      - "path parameter: searchId"
+      - "webhook events: search_created, search_started, search_succeeded, search_failed"
+      - "schema: SearchRequest (identifier only, not prose)"
+    reject:
+      - phrase: 'search requests?'
+        level: error
+        use: search
+      - phrase: 'search jobs?'
+        level: error
+        use: search
+    example: The search has 3 terms and a depth of 2.
+    status: approved
+
+  - term: term
+    pos: noun
+    definition: A question or phrase that AlsoAsked searches for. A search has 1 to 1,000 terms.
+    matches:
+      - "field: terms, term"
+    reject:
+      - phrase: 'search terms?'
+        level: error
+        use: term
+      - phrase: 'keywords?'
+        level: error
+        use: term
+      - phrase: '(?:search )?quer(?:y|ies)'
+        level: review
+        use: term (if you mean the text that AlsoAsked searches for)
+    example: Put each term in the `terms` field.
+    status: approved
+
+  - term: query
+    pos: noun
+    definition: >-
+      One item in the `queries` field of a search. A query contains one term and the results for that term.
+    matches:
+      - "field: queries"
+      - "schema: SearchQuery (identifier only)"
+    reject: []
+    example: The `queries` field contains one query for each term in the search.
+    status: approved
+
+  - term: result
+    pos: noun
+    definition: One question that Google shows for a term, with its answer and its child results.
+    matches:
+      - "field: results"
+      - "schema: SearchResult (identifier only)"
+    reject:
+      - phrase: 'question and answers?'
+        level: review
+        use: result
+    example: Each result has a `question` field and an `answer_excerpt` field.
+    status: approved
+
+  - term: top-level result
+    pos: noun
+    definition: A result that is not inside another result. Its `position` field has one number.
+    matches:
+      - "field: position (one item)"
+    reject:
+      - phrase: 'root (?:questions?|results?)'
+        level: error
+        use: top-level result
+      - phrase: 'parent questions?'
+        level: error
+        use: top-level result, or parent result
+    example: A search with a depth of 1 gets only top-level results.
+    status: approved
+
+  - term: child result
+    pos: noun
+    definition: A result that is inside another result. The result that contains it is its parent result.
+    matches:
+      - "field: results (inside a result)"
+    reject:
+      - phrase: 'sub-?questions?'
+        level: error
+        use: child result
+      - phrase: 'sub-?results?'
+        level: error
+        use: child result
+      - phrase: 'nested questions?'
+        level: error
+        use: child result
+    example: The `results` field of a result contains its child results.
+    status: approved
+
+  - term: depth
+    pos: noun
+    definition: The number of levels of results that a search gets. The value is 1, 2 or 3.
+    matches:
+      - "field: depth"
+    reject:
+      - phrase: 'deep search'
+        level: review
+        use: a search with a depth of 3
+    example: Set the `depth` field to `3` to get 3 levels of results.
+    status: approved
+
+  - term: status
+    pos: noun
+    definition: >-
+      The stage of a search: `queuing`, `pending`, `running`, `fetching`, `error`, `no_results` or `success`.
+    matches:
+      - "field: status"
+      - "enum: SearchRequestStatus"
+    reject:
+      - phrase: 'state'
+        level: review
+        use: status
+    example: When the status is `success`, the `queries` field contains the results.
+    status: approved
+
+  - term: synchronous search
+    pos: noun
+    definition: >-
+      A search where the API sends the response only when the search is complete, or after 90 seconds. Set `async` to
+      `false`.
+    matches:
+      - "field: async = false"
+    reject:
+      - phrase: 'blocking (?:search|request|mode)'
+        level: error
+        use: synchronous search
+    example: A synchronous search returns the results in the response body.
+    status: approved
+
+  - term: asynchronous search
+    pos: noun
+    definition: >-
+      A search where the API sends the response immediately, before the search is complete. Set `async` to `true`.
+    matches:
+      - "field: async = true"
+    reject:
+      - phrase: 'non-blocking (?:search|request|mode)'
+        level: error
+        use: asynchronous search
+      - phrase: 'fire[- ]and[- ]forget'
+        level: error
+        use: asynchronous search
+      - phrase: 'background search'
+        level: error
+        use: asynchronous search
+    example: An asynchronous search returns the search ID immediately.
+    status: approved
+
+  - term: cached result
+    pos: noun
+    definition: >-
+      A result that AlsoAsked got from a previous search, not from Google at the time of your search. Set `fresh` to
+      `true` to get new results.
+    matches:
+      - "fields: cached, cached_at, fresh"
+    reject: []
+    example: If `cached` is `true`, the search used cached results.
+    status: approved
+
+  - term: AI overview
+    pos: noun
+    definition: An answer that Google generates from more than one web page.
+    matches:
+      - "fields: ai_overview, ai_overview_hrefs, ai_overview_page_titles"
+    reject:
+      - phrase: 'AI summary'
+        level: error
+        use: AI overview
+      - phrase: 'SGE'
+        level: error
+        use: AI overview
+    example: If `ai_overview` is `true`, the answer is an AI overview.
+    status: approved
+
+  - term: language code
+    pos: noun
+    definition: The code of the language for a search, for example `en`.
+    matches:
+      - "field: language"
+      - "enum: Language"
+    reject: []
+    example: The default language code is `en`.
+    status: approved
+
+  - term: region code
+    pos: noun
+    definition: The two-letter ISO 3166-1 code of the country for a search, for example `us`.
+    matches:
+      - "field: region"
+      - "enum: Region"
+    reject:
+      - phrase: 'country code'
+        level: review
+        use: region code
+    example: The default region code is `us`.
+    status: approved
+
+  # --- HTTP and the API -------------------------------------------------------
+
+  - term: AlsoAsked API
+    pos: noun
+    definition: The HTTP API that you use to create searches and get results.
+    matches:
+      - "hosts: alsoaskedapi.com, sandbox.alsoaskedapi.com"
+    reject:
+      - phrase: "AlsoAsked's API"
+        level: error
+        use: the AlsoAsked API
+    example: The AlsoAsked API accepts JSON request bodies.
+    status: approved
+
+  - term: endpoint
+    pos: noun
+    definition: One HTTP method and path of the AlsoAsked API, for example `POST /v1.1/search`.
+    matches: []
+    reject:
+      - phrase: 'routes?'
+        level: review
+        use: endpoint
+      - phrase: 'API calls?'
+        level: review
+        use: request
+    example: Send the request to the `GET /v1.1/account` endpoint.
+    status: approved
+
+  - term: request
+    pos: noun
+    definition: An HTTP message that you send to an endpoint. Use it only in this sense.
+    matches: []
+    reject: []
+    example: Each request must include the `X-Api-Key` header.
+    status: approved
+
+  - term: response
+    pos: noun
+    definition: The HTTP message that the AlsoAsked API returns for a request.
+    matches: []
+    reject: []
+    example: The response has the status code `200 OK`.
+    status: approved
+
+  - term: field
+    pos: noun
+    definition: >-
+      A name and value in a JSON object, for example `"depth": 2`.
+    matches:
+      - "OpenAPI: properties"
+    reject:
+      - phrase: 'propert(?:y|ies)'
+        level: error
+        use: field
+      - phrase: 'attributes?'
+        level: error
+        use: field
+      - phrase: 'flags?'
+        level: error
+        use: field (for example, "the `async` field")
+      - phrase: 'options?'
+        level: review
+        use: field
+    example: Set the `depth` field to `3`.
+    status: approved
+
+  - term: parameter
+    pos: noun
+    definition: A value in the URL of a request, in the path or in the query string.
+    matches:
+      - "path parameter: searchId"
+      - "query parameters: page, count, results_format"
+    reject: []
+    example: Use the `page` query parameter to get the next page.
+    status: approved
+
+  - term: header
+    pos: noun
+    definition: A name and value in the HTTP headers of a request or response.
+    matches: []
+    reject: []
+    example: Put your API key in the `X-Api-Key` header.
+    status: approved
+
+  - term: body
+    pos: noun
+    definition: The JSON content of a request or response.
+    matches: []
+    reject:
+      - phrase: 'payloads?'
+        level: error
+        use: body
+    example: The response body contains the search.
+    status: approved
+
+  - term: status code
+    pos: noun
+    definition: The three-digit HTTP code in a response, for example `429`.
+    matches: []
+    reject:
+      - phrase: '(?:HTTP|response) codes?'
+        level: error
+        use: status code
+    example: The status code `429` tells you that you sent too many requests.
+    status: approved
+
+  # --- Account, keys and environments -----------------------------------------
+
+  - term: API key
+    pos: noun
+    definition: >-
+      The secret value that identifies your account in each request. It starts with `aa-live-` or `aa-sandbox-`.
+    matches:
+      - "UI: API Keys"
+      - "header: X-Api-Key"
+    reject:
+      - phrase: '(?:access|API|auth|bearer) tokens?'
+        level: error
+        use: API key
+    example: Create an API key on the API keys page.
+    status: approved
+
+  - term: live API
+    pos: noun
+    definition: The AlsoAsked API that gets real results from Google and uses credits. Its host is `alsoaskedapi.com`.
+    matches:
+      - "enum: Environment = live"
+      - "error message: 'the live API'"
+    reject:
+      - phrase: 'production (?:API|environment)'
+        level: error
+        use: live API
+    example: You need a Pro plan to use the live API.
+    status: approved
+
+  - term: sandbox API
+    pos: noun
+    definition: >-
+      The AlsoAsked API for testing. It returns test results and uses separate sandbox credits, not the credits of
+      your plan. Its host is `sandbox.alsoaskedapi.com`.
+    matches:
+      - "enum: Environment = sandbox"
+    reject:
+      - phrase: '(?:test|staging) (?:API|environment)'
+        level: error
+        use: sandbox API
+    example: Use the sandbox API while you develop your integration.
+    status: approved
+
+  - term: account
+    pos: noun
+    definition: Your AlsoAsked account. The API keys, credits and plan belong to it.
+    matches:
+      - "endpoint: GET /v1.1/account"
+    reject:
+      - phrase: 'customers?'
+        level: review
+        use: account, or you
+      - phrase: 'users?'
+        level: review
+        use: account, or you
+    example: The response contains the credits in your account.
+    status: approved
+
+  - term: plan
+    pos: noun
+    definition: The AlsoAsked subscription level of an account, for example Pro.
+    matches:
+      - "field: plan_type"
+      - "error message: 'Pro plan'"
+    reject:
+      - phrase: 'subscriptions?'
+        level: review
+        use: plan
+      - phrase: 'tiers?'
+        level: error
+        use: plan
+    example: You need a Pro plan to use the live API.
+    status: approved
+
+  - term: credit
+    pos: noun
+    definition: >-
+      The unit that AlsoAsked uses to charge for searches. A search costs credits for each term. The cost depends on
+      the depth.
+    matches:
+      - "fields: credits, web_credits, api_credits, credits_reset_at"
+      - "header: X-AlsoAsked-Credits"
+    reject: []
+    example: The cost of a search depends on the number of terms and the depth.
+    status: approved
+
+  - term: rate limit
+    pos: noun
+    definition: The maximum number of requests that you can send in 5 minutes.
+    matches:
+      - "headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After"
+    reject:
+      - phrase: 'throttl(?:e|ed|es|ing)'
+        level: error
+        use: rate limit
+    example: If you go above the rate limit, the API returns the status code `429`.
+    status: approved
+
+  # --- Webhooks ---------------------------------------------------------------
+
+  - term: webhook endpoint
+    pos: noun
+    definition: A URL on your server that receives webhook events from AlsoAsked. Always write both words.
+    matches:
+      - "UI: Webhook Endpoints"
+    reject:
+      - phrase: 'callbacks?(?: URLs?)?'
+        level: error
+        use: webhook endpoint
+      - phrase: 'webhook URLs?'
+        level: error
+        use: webhook endpoint
+    example: Add a webhook endpoint on the Webhook Endpoints page.
+    status: approved
+
+  - term: webhook event
+    pos: noun
+    definition: >-
+      A request that AlsoAsked sends to your webhook endpoints when the status of a search changes, for example
+      `search_succeeded`.
+    matches:
+      - "enum: WebhookEventType"
+      - "header: X-AlsoAsked-Webhook-Event"
+    reject:
+      - phrase: 'notifications?'
+        level: review
+        use: webhook event
+    example: AlsoAsked sends a `search_started` webhook event when the search starts.
+    status: approved
+
+  - term: webhook signing key
+    pos: noun
+    definition: The secret value that AlsoAsked uses to make the signature of each webhook event.
+    matches:
+      - "header: X-AlsoAsked-Signature"
+    reject:
+      - phrase: '(?:signing|webhook|shared) secrets?'
+        level: error
+        use: webhook signing key
+    example: Use your webhook signing key to verify the signature.
+    status: approved
+
+  - term: signature
+    pos: noun
+    definition: The value in the `X-AlsoAsked-Signature` header that shows that AlsoAsked sent the webhook event.
+    matches:
+      - "header: X-AlsoAsked-Signature"
+    reject: []
+    example: Verify the signature before you use the body.
+    status: approved
+
+  # --- Verbs ------------------------------------------------------------------
+
+  - term: perform
+    pos: verb
+    definition: To start a new search with the `POST /v1.1/search` endpoint. Use it only with "search".
+    matches:
+      - "operation: performSearch"
+      - "PHP client: performSearch()"
+    reject:
+      - phrase: '(?:conduct|execute|run|do|make)(?:s|ed|ing)? (?:a |the |an |your )?(?:a?synchronous )?search(?:es)?'
+        level: error
+        use: perform a search
+      - phrase: 'creat(?:e|es|ed|ing) (?:a |the |an |your )?(?:a?synchronous )?search(?:es)?'
+        level: review
+        use: perform a search (for the reader's action). "AlsoAsked creates the search" is correct.
+    example: Perform a search with the terms that you want results for.
+    status: approved
+
+  - term: get
+    pos: verb
+    definition: To read data from the AlsoAsked API with a `GET` request.
+    matches: []
+    reject:
+      - phrase: 'retriev(?:e|es|ed|ing)'
+        level: error
+        use: get
+      - phrase: 'fetch(?:es|ed|ing)?'
+        level: review
+        use: get (but `fetching` is a status value)
+    example: Get the search with the `GET /v1.1/search/{searchId}` endpoint.
+    status: approved
+
+  - term: send
+    pos: verb
+    definition: To transmit a request (you) or a webhook event (AlsoAsked).
+    matches: []
+    reject:
+      - phrase: 'make (?:a |an )?(?:API )?requests?'
+        level: error
+        use: send a request
+      - phrase: '(?:issue|submit)(?:s|ted|ting)? (?:a |the )?requests?'
+        level: error
+        use: send a request
+    example: Send a request to the `GET /v1.1/account` endpoint.
+    status: approved
+
+  - term: return
+    pos: verb
+    definition: What the AlsoAsked API does with a response.
+    matches: []
+    reject:
+      - phrase: '(?:respond|reply|replies|replied) with'
+        level: error
+        use: return
+    example: The API returns the status code `404` if the search does not exist.
+    status: approved
+
+  - term: verify
+    pos: verb
+    definition: To make sure that a signature is correct.
+    matches: []
+    reject:
+      - phrase: 'validat(?:e|es|ed|ing) (?:the |a )?signatures?'
+        level: error
+        use: verify the signature
+      - phrase: 'check(?:s|ed|ing)? (?:the |a )?signatures?'
+        level: error
+        use: verify the signature
+    example: Verify the signature of each webhook event.
+    status: approved
+
+  - term: delete
+    pos: verb
+    definition: To remove a search with the `DELETE /v1.1/search/{searchId}` endpoint.
+    matches: []
+    reject:
+      - phrase: 'remov(?:e|es|ed|ing) (?:a |the )?search(?:es)?'
+        level: error
+        use: delete the search
+    example: Delete the search when you do not need it.
+    status: approved

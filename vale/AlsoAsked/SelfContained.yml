@@ -1,0 +1,10 @@
+# A reader, or an LLM that gets one section, cannot follow a reference to a position on the page.
+extends: existence
+message: "Link to the section by name instead of '%s'."
+level: error
+ignorecase: true
+tokens:
+  - see (?:above|below)
+  - (?:as )?(?:mentioned|described|shown|explained) (?:above|below|earlier|previously)
+  - (?:in|as described in) the (?:next|previous|following|preceding) (?:section|example|step)s?
+  - the (?:above|below) (?:section|example|table|step)s?
