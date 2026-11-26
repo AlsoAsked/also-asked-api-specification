@@ -33,7 +33,7 @@ This page lists the terms that the AlsoAsked API documentation uses, with the me
 | perform | To start a new search with the `POST /v1.1/search` endpoint. Use it only with `search`. | Perform a search with the terms that you want results for. |
 | plan | The AlsoAsked subscription level of an account, for example Pro. | You need a Pro plan to use the live API. |
 | query | One item in the `queries` field of a search. A query contains one term and the results for that term. | The `queries` field contains one query for each term in the search. |
-| rate limit | The maximum number of requests that you can send in 5 minutes. | If you send more requests than the rate limit allows, the API returns the status code `429`. |
+| rate limit | The maximum number of requests that you can send in a time window. | If you send more requests than the rate limit allows, the API returns the status code `429`. |
 | region code | The two-letter ISO 3166-1 code of the country for a search, for example `us`. | The default region code is `us`. |
 | request | An HTTP message that you send to an endpoint. Use it only in this sense. | Each request must include the `X-Api-Key` header. |
 | response | The HTTP message that the AlsoAsked API returns for a request. | The response has the status code `200 OK`. |

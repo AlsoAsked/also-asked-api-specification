@@ -416,7 +416,7 @@ terms:
 
   - term: rate limit
     pos: noun
-    definition: The maximum number of requests that you can send in 5 minutes.
+    definition: The maximum number of requests that you can send in a time window.
     matches:
       - "headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, Retry-After"
     reject:
