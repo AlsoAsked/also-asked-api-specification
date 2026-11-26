@@ -78,8 +78,8 @@ If a search is deleted, the `deleted` field of the search object is `true`. Thes
 - `cached_at`
 - `queries`
 
-The `id` field, the `created_at` field, and the `updated_at` field of a deleted search object keep their values. For
-details, see [Search history](./search-history.md).
+The `id` field and the `created_at` field of a deleted search object keep their values, and the `updated_at` field has
+the time when you deleted the search. For details, see [Search history](./search-history.md).
 
 ## Query fields
 

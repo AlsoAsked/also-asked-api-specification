@@ -145,8 +145,8 @@ later searches.
 
 A deleted search stays in the response of `GET /v1.1/search` and in the response of `GET /v1.1/search/{searchId}`.
 In a deleted search, the `deleted` field is `true`. These fields of a deleted search are `null`: `language`, `region`,
-`latitude`, `longitude`, `status`, `depth`, `cached`, `cached_at`, and `queries`. The `id`, `created_at`, and
-`updated_at` fields keep their values.
+`latitude`, `longitude`, `status`, `depth`, `cached`, `cached_at`, and `queries`. The `id` and `created_at` fields
+keep their values, and the `updated_at` field has the time when you deleted the search.
 
 The following JSON is an example response body from `GET /v1.1/search/{searchId}` for a deleted search:
 

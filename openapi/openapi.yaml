@@ -211,8 +211,8 @@ paths:
         Delete a search from your search history. The API returns `204 No Content` with no body.
 
         A deleted search stays in the `GET /v1.1/search` list and in the `GET /v1.1/search/{searchId}` response. The
-        `deleted` field is `true`. The `id`, `created_at`, and `updated_at` fields keep their values, and the other fields
-        are `null`.
+        `deleted` field is `true`. The `id` and `created_at` fields keep their values, the `updated_at` field has the time
+        of the deletion, and the other fields are `null`.
 
         Deleting a search doesn't stop it. If the search is still running, its terms keep running, and AlsoAsked refunds
         the terms that fail or have no results. AlsoAsked sends no more webhook events for a deleted search.

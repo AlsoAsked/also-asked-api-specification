@@ -64,6 +64,8 @@ these exceptions:
 
 - If every term of the search has stored results, no term runs, so the search gets no `search_started` event.
   `search_created` and the completion event follow immediately.
+- If the search fails before any term starts to run, the search gets no `search_started` event, only
+  `search_created` and `search_failed`.
 - A search whose every term has no results gets `search_succeeded`, not `search_failed`, with the status `no_results`.
 - A search never gets both `search_succeeded` and `search_failed`.
 - After you delete a search, AlsoAsked sends no more webhook events for it.

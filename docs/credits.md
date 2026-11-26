@@ -14,9 +14,9 @@ check the credits in your account.
 
 An AlsoAsked account has two kinds of credits:
 
-- **Web credits** come with your plan. A Pro plan has 1,000 web credits each month. When your web credits renew,
-  AlsoAsked sets them to the full amount of your plan, so web credits that you didn't use don't carry over. The
-  `credits_reset_at` field in the `GET /v1.1/account` response body shows when your web credits renew next.
+- **Web credits** come with your plan, and renew each month. When your web credits renew, AlsoAsked sets them to the
+  full amount of your plan, so web credits that you didn't use don't carry over. The `credits_reset_at` field in the
+  `GET /v1.1/account` response body shows when your web credits renew next.
 - **API credits** are credits that you buy. API credits don't expire and don't renew. You can use them only while your
   account has a Pro plan.
 

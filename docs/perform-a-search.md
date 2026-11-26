@@ -121,8 +121,9 @@ For a more exact location, add the `latitude` field and the `longitude` field to
 The `depth` field in the `POST /v1.1/search` request body sets the number of levels of results: `1`, `2`, or `3`. The
 default depth is `2`.
 
-The cost of a search is the number of unique terms multiplied by the cost for the depth. On the live API with a Pro
-plan, the cost for each term is as follows:
+The cost of a search is the number of unique terms without stored results, multiplied by the cost for the depth. A term
+with stored results costs nothing, unless the `fresh` field is `true`. See [Fresh results](#fresh-results). On the live
+API with a Pro plan, the cost for each term is as follows:
 
 | Depth | Cost for each term |
 | --- | --- |
@@ -130,8 +131,8 @@ plan, the cost for each term is as follows:
 | `2` | 1 credit |
 | `3` | 4 credits |
 
-For example, a search with 3 unique terms and a depth of `3` costs 12 credits. Depth `1` is available only through the
-API. For details, see [Credits](./credits.md).
+For example, a search with 3 unique terms, none with stored results, and a depth of `3` costs 12 credits. Depth `1` is
+available on the API, but not on the AlsoAsked website. For details, see [Credits](./credits.md).
 
 ## Fresh results
 

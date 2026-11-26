@@ -104,12 +104,13 @@ The status of a term doesn't change after it's `success`, `no_results`, or `erro
 ## How long a search can take
 
 A term that isn't complete by its deadline fails with the status `error`, and
-AlsoAsked refunds its credits. The deadline depends on the number of terms in the search and the depth:
+AlsoAsked refunds its credits. The deadline starts when you perform the search, and depends on the number of terms in
+the search:
 
-| Search | Depth 1 or 2 | Depth 3 |
-| --- | --- | --- |
-| 1 term | 10 minutes | 15 minutes |
-| More than 1 term | 30 minutes | 60 minutes |
+| Search | Deadline of each term |
+| --- | --- |
+| 1 term | 15 minutes |
+| More than 1 term | 60 minutes |
 
 AlsoAsked checks for terms past their deadline every minute, so a term can fail up to about 2 minutes after its
 deadline. Because every term finishes by its deadline, every search is complete within about an hour of when you

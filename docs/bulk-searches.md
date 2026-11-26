@@ -27,9 +27,12 @@ that runs without a person watching it.
 2. **Split the list into searches of up to 1,000 terms.** One `POST /v1.1/search` request can have 1 to 1,000 terms.
    Don't send each term as its own search: 5,000 searches with 1 term each need 5,000 requests, which is more than the
    rate limit allows. See [Rate limits](./rate-limits.md).
-3. **Check your credits.** Send a request to `GET /v1.1/account`, and compare the `credits` field with the cost of the
-   next search. If your account doesn't have enough credits for the whole search, the API rejects the search with
-   `402 Payment Required` and the error type `insufficient_credits`, and performs none of its terms.
+3. **Check your credits.** Send a request to `GET /v1.1/account`. AlsoAsked pays for each term with one kind of credit,
+   web credits first, so a few web credits can be left that can't pay for a whole term. To be safe, make sure that the
+   `credits` field is at least the cost of the search plus the cost of one term. Terms with stored results cost nothing
+   and don't count. If your account
+   doesn't have enough credits for the whole search, the API rejects the search with `402 Payment Required` and the
+   error type `insufficient_credits`, and performs none of its terms. See [Credits](./credits.md).
 4. **Perform each search as an asynchronous search.** Set the `async` field to `true` and the `notify_webhooks` field
    to `true`. Leave the `fresh` field as `false`, so that terms with stored results cost no credits.
 
@@ -52,8 +55,8 @@ that runs without a person watching it.
    you send the next request. If a request gets no response, don't send it again until you check your search history.
    See [Find a search after a lost response](./search-history.md#find-a-search-after-a-lost-response).
 6. **Wait for each search to complete.** A search is complete when its `status` field is `success`, `no_results`, or
-   `error`. With more than 1 term, a search can take up to 30 minutes at a depth of 1 or 2, and up to 60 minutes at a
-   depth of 3. Use one of these ways to know when a search is complete:
+   `error`. With more than 1 term, a search can take up to 60 minutes. A term that isn't complete by then fails with
+   the status `error`. Use one of these ways to know when a search is complete:
    - **Webhook events (recommended):** your webhook endpoint receives `search_succeeded` or `search_failed`. The body
      has the results. Then you don't need to send requests to check the search.
    - **Polling:** send a request to `GET /v1.1/search/{searchId}` for each search that isn't complete, for example every

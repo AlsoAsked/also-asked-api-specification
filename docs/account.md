@@ -120,8 +120,8 @@ happen:
 - The sandbox API keeps working.
 - AlsoAsked keeps your API keys, webhook endpoints, and API credits. They work again when you have a Pro plan again.
 
-If you cancel a Pro plan, the plan stays active until the end of the period that you paid for. If a payment fails, the
-Pro plan stops at once.
+If you cancel a Pro plan, the plan stays active until the end of the period that you paid for. If a payment is overdue,
+the Pro plan stops until the payment succeeds.
 
 ## Related
 
