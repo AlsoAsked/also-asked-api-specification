@@ -53,7 +53,7 @@ automated tests that check the test results.
 
 ## Sandbox credits
 
-The sandbox API has its own credits: 1,000 sandbox credits. <!-- PENDING C3: confirm production value --> Sandbox
+The sandbox API has its own credits: 1,000 sandbox credits. Sandbox
 credits are separate from the credits of your plan. A search on the sandbox API uses sandbox credits only.
 
 To see your sandbox credits, send a request to `GET https://sandbox.alsoaskedapi.com/v1.1/account`. In the response body
@@ -74,22 +74,34 @@ body of `GET https://sandbox.alsoaskedapi.com/v1.1/account` shows when the next 
 ## Test terms
 
 A test term changes how a search on the sandbox API behaves. To use a test term, add the test term as one of the terms in
-the `terms` field of the `POST https://sandbox.alsoaskedapi.com/v1.1/search` request body.
+the `terms` field of the `POST https://sandbox.alsoaskedapi.com/v1.1/search` request body. Each term gets its own result,
+the same as on the live API.
 
-| Test term | What the test term does |
+| Term | Result of the term |
 | --- | --- |
-| `[error]` | The search ends with the `error` status. |
-| `[no_results]` | The search ends with the `no_results` status. |
-| `[delay N]` | Sets the delay between status changes to N seconds. The maximum value of N is 3. N can have decimals, for example `[delay 0.5]`. |
+| `[error]` | The term fails, with no results. |
+| `[no_results]` | The term finishes with no results. |
+| `[delay N]` | The term gets the same result as the search. The test term also sets the delay between status changes to N seconds. The maximum value of N is 3. N can have decimals, for example `[delay 0.5]`. |
+| Any other term | The term succeeds, with test results. |
 
-If the search has no `[error]` test term and no `[no_results]` test term, the search ends with the `success` status. If
-the search has no `[delay N]` test term, the delay between status changes is a random value from 1 to 3 seconds.
+If the search has no `[delay N]` test term, the delay between status changes is a random value from 1 to 3 seconds.
+
+The status of the search comes from the results of its terms, the same as on the live API:
+
+- If at least one term succeeds, the status of the search is `success`.
+- If no term succeeds, and at least one term has no results, the status of the search is `no_results`.
+- If every term fails, the status of the search is `error`.
+
+The order of the terms doesn't matter. When the status of the search is `success`, the `queries` field has one query for
+each term. A query for an `[error]` term or a `[no_results]` term has `null` in its `results`, `language_fallback`, and
+`region_fallback` fields. AlsoAsked refunds the sandbox credits for the `[error]` terms and the `[no_results]` terms.
 
 A search on the sandbox API goes through these statuses, in this order: `running`, `fetching`, and then the final status.
-The final status is `success`, `error`, or `no_results`. The delay happens before each status change.
+The delay happens before each status change.
 
-The following request performs an asynchronous search on the sandbox API. Because of the `[error]` test term, the search ends
-with the `error` status, and the `[delay 1]` test term sets the delay between status changes to 1 second:
+The following request performs an asynchronous search on the sandbox API. The `how to brew coffee` term succeeds and the
+`[error]` term fails, so the status of the search is `success`. The `[delay 1]` test term sets the delay between status
+changes to 1 second:
 
 ```bash
 curl --request POST 'https://sandbox.alsoaskedapi.com/v1.1/search' \
@@ -113,7 +125,7 @@ webhook events only if the `notify_webhooks` field in the `POST https://sandbox.
 ## Get more sandbox credits
 
 If you need more sandbox credits, or a faster reset of sandbox credits, contact
-[help@alsoasked.com](mailto:help@alsoasked.com).
+[support@alsoasked.com](mailto:support@alsoasked.com).
 
 ## Related
 

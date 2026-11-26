@@ -84,4 +84,4 @@ documentation describes version `v1.1`. The version is part of the base URL, for
 ## Get help with the AlsoAsked API
 
 If you have a question about the AlsoAsked API, email AlsoAsked support at
-[help@alsoasked.com](mailto:help@alsoasked.com).
+[support@alsoasked.com](mailto:support@alsoasked.com).

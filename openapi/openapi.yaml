@@ -36,7 +36,7 @@ info:
     ## Get help with the AlsoAsked API
 
     If you have a question about the AlsoAsked API, email AlsoAsked support at
-    [help@alsoasked.com](mailto:help@alsoasked.com).
+    [support@alsoasked.com](mailto:support@alsoasked.com).
   license:
     name: Proprietary
     url: https://alsoasked.com/eula
@@ -469,7 +469,7 @@ components:
       description: |
         The error body for the `api_access_disabled` error type. The AlsoAsked API returns the `api_access_disabled` error
         type with the status code `401 Unauthorized` when AlsoAsked turned off API access for your account. Contact AlsoAsked
-        support at `help@alsoasked.com`.
+        support at `support@alsoasked.com`.
       properties:
         status:
           type: string

@@ -58,7 +58,6 @@ properties:
       term costs credits.
     example: false
     default: false
-  # PENDING C2: the 90-second synchronous timeout is the default; confirm the production value.
   async:
     type: boolean
     description: |

@@ -135,7 +135,7 @@ costs credits. For details, see [Credits](./credits.md).
 The `async` field in the `POST /v1.1/search` request body sets the mode of the search. The default value is `false`.
 
 - If the `async` field is `false`, the search is a synchronous search. The API waits until the search is complete, or
-  until the timeout, before it returns the response. The default timeout is 90 seconds. <!-- PENDING C2: confirm production value -->
+  until the timeout, before it returns the response. The timeout is 90 seconds.
 - If the `async` field is `true`, the search is an asynchronous search. The API returns the response immediately,
   without waiting for the search to finish.
 

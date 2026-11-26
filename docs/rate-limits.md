@@ -20,9 +20,11 @@ IP address has its own count. AlsoAsked refuses a request if the count for the A
 has reached the limit. A refused request doesn't count. AlsoAsked counts an IPv6 address by its /64 network, so all
 IPv6 addresses in one /64 network share one count.
 
+Each API key and each IP address can send a maximum of 200 requests in 5 minutes.
+
 The rate limit uses a sliding window. AlsoAsked counts the requests that you sent in the last window, measured back from
-now. When a request is older than the window, the request stops counting. To find the current rate limit, read the `X-RateLimit-Limit` header in any response
-from the AlsoAsked API. <!-- PENDING C7: state the limit and the window -->
+now. When a request is older than the window, the request stops counting. The `X-RateLimit-Limit` header in each
+response from the AlsoAsked API also shows the limit.
 
 ## Rate limit headers
 
@@ -67,7 +69,7 @@ Don't send the request again immediately.
 
 ## Ask for a higher rate limit
 
-If you need a higher rate limit for the AlsoAsked API, contact `help@alsoasked.com`.
+If you need a higher rate limit for the AlsoAsked API, contact `support@alsoasked.com`.
 
 ## Example
 

@@ -15,7 +15,7 @@ This page lists the changes to the AlsoAsked API. The newest changes are first.
 
 ## 2026-11-09
 
-- AlsoAsked raised the rate limit to 200 requests in a 5-minute window. The rate limit applies to each API key and to each IP address. <!-- PENDING C7: confirm the current limit and window -->
+- AlsoAsked raised the rate limit to 200 requests in a 5-minute window. The rate limit applies to each API key and to each IP address.
 
 ## 2026-07-13
 

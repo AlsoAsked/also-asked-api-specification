@@ -108,7 +108,7 @@ For details about the account fields, see [Account details](./account.md).
 
 The sandbox API uses sandbox credits, not the credits of your plan. A search on the sandbox API costs the same number of
 sandbox credits as a search with a Pro plan on the live API. The sandbox API has 1,000 sandbox credits.
-<!-- PENDING C3: confirm production value --> Sandbox credits reset to the full amount 24 hours after the last reset.
+Sandbox credits reset to the full amount 24 hours after the last reset.
 On the sandbox API, the `X-AlsoAsked-Credits` header contains the sandbox credits that remain. For details, see
 [Sandbox API](./sandbox.md).
 

@@ -25,7 +25,7 @@ To add a webhook endpoint on the AlsoAsked website, do the following steps:
 
 <!-- PENDING W5: verify UI labels -->
 
-Each account can have a maximum of 5 webhook endpoints. <!-- PENDING C5 -->
+Each account can have a maximum of 5 webhook endpoints.
 
 ## Rules for the webhook endpoint URL
 
@@ -52,14 +52,19 @@ AlsoAsked has 4 webhook event types:
 | --- | --- |
 | `search_created` | AlsoAsked created the search. |
 | `search_started` | The search started. |
-| `search_succeeded` | The search is complete with results or with no results. |
-| `search_failed` | The search failed. |
+| `search_succeeded` | Every term of the search finished, and at least one term has results or no results. |
+| `search_failed` | Every term of the search finished, and every term failed. |
 
-AlsoAsked sends the `search_succeeded` webhook event or the `search_failed` webhook event once, when all terms of the
-search are complete. <!-- PENDING W8: completion event timing fix -->
+AlsoAsked sends the `search_succeeded` webhook event or the `search_failed` webhook event once, when every term of the
+search has finished. A search never gets both. If at least one term succeeds, the search gets `search_succeeded`, even
+if other terms failed. To see the result of each term, read the `queries` field in the body.
 
-AlsoAsked sends each webhook event type a maximum of 1 time for each search. A webhook endpoint receives only the
+Normally, AlsoAsked sends each webhook event type 1 time for each search. A webhook endpoint receives only the
 webhook event types that you chose for that webhook endpoint.
+
+In rare cases, AlsoAsked can send the same webhook event twice. Make your webhook endpoint handle a repeated webhook
+event safely, for example by checking the `id` field of the search and the `X-AlsoAsked-Webhook-Event` header before
+you process the webhook event.
 
 ## When AlsoAsked sends webhook events
 
@@ -157,10 +162,10 @@ shortened: it has 1 result, 1 AI overview source, and no child results.
 ## Respond to a webhook event
 
 When your webhook endpoint receives a webhook event, return a `2xx` status code, for example `200 OK`, as quickly as
-possible. AlsoAsked waits a maximum of 30 seconds for the response. <!-- PENDING C6 --> If your server needs more time
+possible. AlsoAsked waits a maximum of 30 seconds for the response. If your server needs more time
 to process the webhook event, return the status code first and process the body after.
 
-AlsoAsked doesn't follow redirects. <!-- PENDING C6 --> AlsoAsked counts any response with a status code below `400`
+AlsoAsked doesn't follow redirects. AlsoAsked counts any response with a status code below `400`
 as delivered, including a redirect (`3xx`). If your webhook endpoint returns a redirect, AlsoAsked doesn't send the
 webhook event again, and your server doesn't get the webhook event. Use the final URL as the webhook endpoint, for
 example the `https://` URL.
@@ -170,10 +175,10 @@ example the `https://` URL.
 AlsoAsked counts an attempt to send a webhook event as failed in these cases:
 
 - The webhook endpoint returns a status code of `400` or more.
-- The webhook endpoint doesn't respond within the timeout. The default timeout is 30 seconds. <!-- PENDING C6 -->
+- The webhook endpoint doesn't respond within the timeout. The timeout is 30 seconds.
 - AlsoAsked can't connect to the webhook endpoint.
 
-AlsoAsked tries to send each webhook event a maximum of 10 times. <!-- PENDING C4 --> After a failed attempt,
+AlsoAsked tries to send each webhook event a maximum of 10 times. After a failed attempt,
 AlsoAsked waits 1 minute for each attempt made so far, and then tries again:
 
 | Failed attempt | Wait before the next attempt |

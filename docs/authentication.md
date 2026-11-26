@@ -38,7 +38,7 @@ To create an API key on the AlsoAsked website, do the following steps:
 
 <!-- PENDING A7: verify UI labels -->
 
-Each account can have a maximum of 10 API keys. <!-- PENDING C1: confirm production value -->
+Each account can have a maximum of 10 API keys.
 
 ## Send an API key to the live API
 

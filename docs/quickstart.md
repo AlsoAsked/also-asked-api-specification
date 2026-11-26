@@ -66,7 +66,7 @@ The fields in the `POST /v1.1/search` request body do these things:
 
 The request body has no `async` field. The default value of the `async` field is `false`, so the search is a
 synchronous search. In a synchronous search, the API waits until the search is complete, or until the timeout, before
-it returns the response. The default timeout is 90 seconds. <!-- PENDING C2: confirm production value -->
+it returns the response. The timeout is 90 seconds.
 
 This search has 1 term and a depth of `2`, so the search costs 1 sandbox credit. For details, see [Credits](./credits.md).
 
@@ -191,5 +191,5 @@ the same fields. If the status of the search wasn't `success` before, read the `
   changes. See [Webhooks](./webhooks.md).
 - **Handle errors.** Learn the error types that the AlsoAsked API returns and what to do for each error type. See
   [Errors](./errors.md).
-- **Test more cases on the sandbox API.** Add a test term to the `terms` field, so that the search ends with the
-  `error` status or the `no_results` status. See [Sandbox API](./sandbox.md).
+- **Test more cases on the sandbox API.** Add a test term such as `[error]` or `[no_results]` to the `terms` field, so
+  that a term fails or has no results. See [Sandbox API](./sandbox.md).

@@ -54,7 +54,7 @@ curl --request POST 'https://alsoaskedapi.com/v1.1/search' \
 
 In a synchronous search, the API checks the search every second and waits until the search is complete. A search is
 complete when its status is `success`, `no_results`, or `error`. If the search isn't complete after the timeout, the API
-stops waiting and returns the response anyway. The default timeout is 90 seconds. <!-- PENDING C2: confirm the production timeout -->
+stops waiting and returns the response anyway. The timeout is 90 seconds.
 
 The timeout isn't an error. The response still has the status code `200 OK`, but the `queries` field is `null`, not an
 empty list. To get the results later, send a request to `GET /v1.1/search/{searchId}` with the `id` field from the response.

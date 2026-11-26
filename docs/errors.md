@@ -36,7 +36,7 @@ field in the error body.
 | --- | --- | --- | --- |
 | `400 Bad Request` | `invalid_body` | The request body isn't valid JSON. | Send a request body that's valid JSON. A body that's valid JSON but has the wrong fields or types gets the error type `validation` instead. |
 | `401 Unauthorized` | `missing_api_key` | The request doesn't have the `X-Api-Key` header. | Put your API key in the `X-Api-Key` header of every request. See [Authenticate requests](./authentication.md). |
-| `401 Unauthorized` | `api_access_disabled` | AlsoAsked turned off API access for your account. | Contact AlsoAsked support at `help@alsoasked.com`. |
+| `401 Unauthorized` | `api_access_disabled` | AlsoAsked turned off API access for your account. | Contact AlsoAsked support at `support@alsoasked.com`. |
 | `402 Payment Required` | `insufficient_plan` | The live API needs a Pro plan, and your account doesn't have a Pro plan. | Change your plan to Pro, or use the sandbox API, which doesn't need a Pro plan. |
 | `402 Payment Required` | `insufficient_credits` | Your account doesn't have enough credits for the search. | Check the credits in your account, or perform the search with fewer terms or a lower depth. See [Credits](./credits.md). |
 | `403 Forbidden` | `invalid_api_key` | The value of the `X-Api-Key` header isn't a valid API key, the API key no longer exists, or the API key is for the other API. A live API key works only on the live API, and a sandbox API key works only on the sandbox API. | Check that the API key in the `X-Api-Key` header exists and matches the API that you send the request to. See [Authenticate requests](./authentication.md). |

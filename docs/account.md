@@ -49,7 +49,7 @@ The sandbox API has its own credits, which are separate from the credits of your
 | `api_credits` | `0` |
 | `plan_type` | `pro` |
 
-The sandbox API has 1,000 sandbox credits by default. <!-- PENDING C3: confirm the production sandbox credits -->
+The sandbox API has 1,000 sandbox credits.
 For details, see [Sandbox API](./sandbox.md).
 
 ## Credits header

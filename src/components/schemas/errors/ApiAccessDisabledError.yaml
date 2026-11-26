@@ -3,7 +3,7 @@ type: object
 description: |
   The error body for the `api_access_disabled` error type. The AlsoAsked API returns the `api_access_disabled` error
   type with the status code `401 Unauthorized` when AlsoAsked turned off API access for your account. Contact AlsoAsked
-  support at `help@alsoasked.com`.
+  support at `support@alsoasked.com`.
 properties:
   status:
     type: string
