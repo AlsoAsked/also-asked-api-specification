@@ -8,12 +8,12 @@ description: |
   The `async` field in the request body sets how the API returns the response:
 
   - `false` (default): a synchronous search. The API waits until the search is complete, for a maximum of 90 seconds,
-    and then returns the response.
+    and then returns the response. If the search isn't complete after 90 seconds, it keeps running.
   - `true`: an asynchronous search. The API returns the response immediately.
 
-  In both cases, the API returns `200 OK` with the search. The `queries` field contains the results only when the
-  `status` field is `success`. Otherwise, the `queries` field is `null`. To get the search later, send
-  `GET /v1.1/search/{searchId}` with the `id` field from the response.
+  In both cases, the API returns `200 OK` with the search. The `queries` field is `null` until the search is complete:
+  when its `status` field is `success`, `no_results`, or `error`. Then each query has the status and the results of its
+  term. To get the search later, send `GET /v1.1/search/{searchId}` with the `id` field from the response.
 
   For details, see [Synchronous and asynchronous searches](../docs/searches.md) and
   [Perform a search](../docs/perform-a-search.md).

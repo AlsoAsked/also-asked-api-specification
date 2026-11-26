@@ -1,6 +1,6 @@
 description: |
-  AlsoAsked can't identify your account. The error type is `missing_api_key` when the request doesn't have the
-  `X-Api-Key` header, or `api_access_disabled` when AlsoAsked turned off API access for your account.
+  The request can't use the API. The error type is `missing_api_key` when the request doesn't have the `X-Api-Key`
+  header, or `api_access_disabled` when the API key is valid but AlsoAsked turned off API access for your account.
 headers:
   X-RateLimit-Limit:
     $ref: ../../headers/rate-limiting/X-RateLimit-Limit.yaml

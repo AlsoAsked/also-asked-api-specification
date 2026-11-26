@@ -132,12 +132,12 @@ paths:
         The `async` field in the request body sets how the API returns the response:
 
         - `false` (default): a synchronous search. The API waits until the search is complete, for a maximum of 90 seconds,
-          and then returns the response.
+          and then returns the response. If the search isn't complete after 90 seconds, it keeps running.
         - `true`: an asynchronous search. The API returns the response immediately.
 
-        In both cases, the API returns `200 OK` with the search. The `queries` field contains the results only when the
-        `status` field is `success`. Otherwise, the `queries` field is `null`. To get the search later, send
-        `GET /v1.1/search/{searchId}` with the `id` field from the response.
+        In both cases, the API returns `200 OK` with the search. The `queries` field is `null` until the search is complete:
+        when its `status` field is `success`, `no_results`, or `error`. Then each query has the status and the results of its
+        term. To get the search later, send `GET /v1.1/search/{searchId}` with the `id` field from the response.
 
         For details, see [Synchronous and asynchronous searches](../docs/searches.md) and
         [Perform a search](../docs/perform-a-search.md).
@@ -171,8 +171,8 @@ paths:
       description: |
         Get a search by its ID. The response includes the status and the results of the search.
 
-        The `queries` field contains one query for each term only when the `status` field is `success`. Otherwise, the
-        `queries` field is `null`.
+        The `queries` field is `null` until the search is complete: when its `status` field is `success`, `no_results`, or
+        `error`. Then the `queries` field contains one query for each term, with the status and the results of that term.
 
         The `results_format` query parameter sets how the API returns the results: `tree` (default) puts child results inside
         their parent result, and `flat` returns all results in one list.
@@ -212,6 +212,9 @@ paths:
         A deleted search stays in the `GET /v1.1/search` list and in the `GET /v1.1/search/{searchId}` response. The
         `deleted` field is `true`. The `id`, `created_at`, and `updated_at` fields keep their values, and the other fields
         are `null`.
+
+        Deleting a search doesn't stop it. If the search is still running, its terms keep running, and AlsoAsked refunds
+        the terms that fail or have no results. AlsoAsked sends no more webhook events for a deleted search.
       security:
         - apiKey: []
       parameters:
@@ -227,6 +230,8 @@ paths:
           $ref: '#/components/responses/ForbiddenError'
         '404':
           $ref: '#/components/responses/NotFoundError'
+        '422':
+          $ref: '#/components/responses/ValidationError'
         '429':
           $ref: '#/components/responses/RateLimitExceededError'
         '500':
@@ -2893,8 +2898,8 @@ components:
                 registered_at: '2023-01-01T00:00:00+00:00'
     UnauthorizedError:
       description: |
-        AlsoAsked can't identify your account. The error type is `missing_api_key` when the request doesn't have the
-        `X-Api-Key` header, or `api_access_disabled` when AlsoAsked turned off API access for your account.
+        The request can't use the API. The error type is `missing_api_key` when the request doesn't have the `X-Api-Key`
+        header, or `api_access_disabled` when the API key is valid but AlsoAsked turned off API access for your account.
       headers:
         X-RateLimit-Limit:
           $ref: '#/components/headers/X-RateLimit-Limit'
@@ -3000,7 +3005,8 @@ components:
     InternalServerError:
       description: |
         An error happened in AlsoAsked. The error type is `internal_server`. If a search fails with the `internal_server`
-        error type, AlsoAsked refunds the credits of the search.
+        error type, AlsoAsked refunds the credits of the search. Check your search history before you perform the search
+        again. If the rate limiter fails, the response has no rate limit headers and no `X-AlsoAsked-Credits` header.
       headers:
         X-AlsoAsked-Credits:
           $ref: '#/components/headers/X-AlsoAsked-Credits'
@@ -3305,8 +3311,11 @@ components:
     PaymentRequiredError:
       description: |
         The live API needs a Pro plan and your account doesn't have one, or your account doesn't have enough credits for
-        the search. The `status` field of the body has the error type: `insufficient_plan` or `insufficient_credits`.
+        the search. The `status` field of the body has the error type: `insufficient_plan` or `insufficient_credits`. The
+        `X-AlsoAsked-Credits` header is in an `insufficient_credits` response, but not in an `insufficient_plan` response.
       headers:
+        X-AlsoAsked-Credits:
+          $ref: '#/components/headers/X-AlsoAsked-Credits'
         X-RateLimit-Limit:
           $ref: '#/components/headers/X-RateLimit-Limit'
         X-RateLimit-Remaining:
