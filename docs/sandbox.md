@@ -43,6 +43,10 @@ key to the sandbox API, the sandbox API rejects the key as invalid. For details 
 The sandbox API doesn't get results from Google. A search on the sandbox API returns test results that AlsoAsked
 generates from the request.
 
+The test results contain placeholder text. They aren't real questions and answers. For each term, a search on the sandbox API
+gets 4 top-level results. Each result at a lower level of the search has 6 to 10 child results, up to the depth of the
+search. About 1 in 4 results is an AI overview, with 2 to 5 sources.
+
 The test results are deterministic. If you perform two searches on the sandbox API with the same terms, language code,
 region code, latitude, longitude, and depth, both searches get the same test results. Because of this, you can write
 automated tests that check the test results.
