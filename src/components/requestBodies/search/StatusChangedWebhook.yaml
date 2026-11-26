@@ -1,8 +1,8 @@
 description: |
   The body of a webhook request. AlsoAsked sends webhook events when the status of a search changes. The body has the
   `event_id` field, followed by the fields of the `GET /v1.1/search/{searchId}` response for the search at the time
-  when AlsoAsked sends the webhook request. Each query in the `queries` field has its own `status` field, and has
-  results when its status is `success`.
+  when AlsoAsked sends the webhook request. The `queries` field is `null` until the search is complete. Then each query
+  in the `queries` field has its own `status` field, and has results when its status is `success`.
 required: true
 content:
   application/json:

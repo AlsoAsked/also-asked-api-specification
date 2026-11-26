@@ -1910,17 +1910,14 @@ components:
         status:
           type: string
           enum:
-            - queueing
-            - pending
-            - running
-            - fetching
-            - error
-            - no_results
             - success
+            - no_results
+            - error
           description: |
-            The status of the term. Each term of a search has its own status, so some terms can be complete while others are
-            still running. A term is complete when its status is `success`, `no_results`, or `error`, and its status doesn't
-            change after that. The `results` field of the query has results only when the status is `success`.
+            The status of the term: `success` if the term has results, `no_results` if Google has no results for the term,
+            or `error` if the term failed. Each term of a search has its own status, so a search with the status `success`
+            can have terms with the status `no_results` or `error`. AlsoAsked refunds the credits of a term with the status
+            `no_results` or `error`.
           example: success
         language_fallback:
           type:
@@ -1943,8 +1940,8 @@ components:
             - array
             - 'null'
           description: |
-            The results for the term. The value of the `results` field is `null` until the status of the term is `success`,
-            and stays `null` if the status of the term is `no_results` or `error`. In
+            The results for the term. The value of the `results` field is `null` if the status of the term is `no_results`
+            or `error`. In
             the default `tree` results format, the `results` field of the query has the top-level results, and each child
             result is in the `results` field of its parent result. In the `flat` results format of the
             `GET /v1.1/search/{searchId}` endpoint, the `results` field of the query has all the results for the term in one
@@ -2199,9 +2196,10 @@ components:
             - array
             - 'null'
           description: |
-            One query for each term in the search, in the order of the `terms` field of the request. Each query has its own
-            `status` field, so you can see which terms are complete while the search runs. The value of the `queries` field
-            is `null` only if the search is deleted.
+            One query for each term in the search, in the order of the `terms` field of the request. The value of the
+            `queries` field is `null` until the search is complete, and if the search is deleted. A search is complete when
+            its `status` field is `success`, `no_results`, or `error`. Each query has its own `status` field, so you can see
+            which terms have results and which terms failed.
           items:
             $ref: '#/components/schemas/SearchQuery'
           example:
@@ -3778,8 +3776,8 @@ components:
       description: |
         The body of a webhook request. AlsoAsked sends webhook events when the status of a search changes. The body has the
         `event_id` field, followed by the fields of the `GET /v1.1/search/{searchId}` response for the search at the time
-        when AlsoAsked sends the webhook request. Each query in the `queries` field has its own `status` field, and has
-        results when its status is `success`.
+        when AlsoAsked sends the webhook request. The `queries` field is `null` until the search is complete. Then each query
+        in the `queries` field has its own `status` field, and has results when its status is `success`.
       required: true
       content:
         application/json:

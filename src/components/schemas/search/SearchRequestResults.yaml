@@ -14,9 +14,10 @@ properties:
   queries:
     type: [array, 'null']
     description: |
-      One query for each term in the search, in the order of the `terms` field of the request. Each query has its own
-      `status` field, so you can see which terms are complete while the search runs. The value of the `queries` field
-      is `null` only if the search is deleted.
+      One query for each term in the search, in the order of the `terms` field of the request. The value of the
+      `queries` field is `null` until the search is complete, and if the search is deleted. A search is complete when
+      its `status` field is `success`, `no_results`, or `error`. Each query has its own `status` field, so you can see
+      which terms have results and which terms failed.
     items:
       $ref: ./SearchQuery.yaml
     example:

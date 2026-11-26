@@ -11,12 +11,12 @@ properties:
     example: When to plant out broad beans?
   status:
     type: string
-    enum:
-      $ref: ../../../enums/SearchRequestStatus.yaml
+    enum: [success, no_results, error]
     description: |
-      The status of the term. Each term of a search has its own status, so some terms can be complete while others are
-      still running. A term is complete when its status is `success`, `no_results`, or `error`, and its status doesn't
-      change after that. The `results` field of the query has results only when the status is `success`.
+      The status of the term: `success` if the term has results, `no_results` if Google has no results for the term,
+      or `error` if the term failed. Each term of a search has its own status, so a search with the status `success`
+      can have terms with the status `no_results` or `error`. AlsoAsked refunds the credits of a term with the status
+      `no_results` or `error`.
     example: success
   language_fallback:
     type: [boolean, 'null']
@@ -33,8 +33,8 @@ properties:
   results:
     type: [array, 'null']
     description: |
-      The results for the term. The value of the `results` field is `null` until the status of the term is `success`,
-      and stays `null` if the status of the term is `no_results` or `error`. In
+      The results for the term. The value of the `results` field is `null` if the status of the term is `no_results`
+      or `error`. In
       the default `tree` results format, the `results` field of the query has the top-level results, and each child
       result is in the `results` field of its parent result. In the `flat` results format of the
       `GET /v1.1/search/{searchId}` endpoint, the `results` field of the query has all the results for the term in one
