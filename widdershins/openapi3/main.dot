@@ -1,7 +1,0 @@
-# {{=data.api.info && data.api.info.title}} {{=data.version}}
-
-{{? data.api.info && data.api.info.description}}{{=data.api.info.description}}{{?}}
-
-{{= data.templates.servers(data) }}
-{{= data.templates.authentication(data) }}
-{{= data.templates.resources(data) }}

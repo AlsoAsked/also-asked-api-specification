@@ -40,7 +40,7 @@ The team chose this basis after a pilot that compared it with a Simplified Techn
 
 ## Words
 
-- Use the approved term from `style/termbase.yaml` for each concept, every time. Don't use a synonym to avoid repetition. The glossary (`style/generated/glossary.md`) lists every term.
+- Use the approved term from `style/termbase.yaml` for each concept, every time. Don't use a synonym to avoid repetition. The glossary (`docs/glossary.md`) lists every term.
 - Use each word in one meaning. `Request` always means an HTTP request, so don't use it as a verb.
 - Prefer the common word: `use`, not `utilize`; `start`, not `commence`; `get`, not `obtain`.
 - Write an abbreviation in full the first time on each page: `Coordinated Universal Time (UTC)`. You don't need to do this for `API`, `HTTP`, `JSON`, and `URL`.

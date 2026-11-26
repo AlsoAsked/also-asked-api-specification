@@ -22,7 +22,7 @@ terms:
   - term: search
     pos: noun
     definition: >-
-      A set of one or more terms that you send to the AlsoAsked API in one request. Each search has an ID, a status
+      A set of one or more terms that you send to the AlsoAsked API in one request. Each search has an ID, a status,
       and a depth.
     matches:
       - "endpoint: POST /v1.1/search, GET /v1.1/search/{searchId}"
@@ -70,7 +70,7 @@ terms:
 
   - term: result
     pos: noun
-    definition: One question that Google shows for a term, with its answer and its child results.
+    definition: One question that Google shows for a term. A result has an answer and can have child results.
     matches:
       - "field: results"
       - "schema: SearchResult (identifier only)"
@@ -83,7 +83,7 @@ terms:
 
   - term: top-level result
     pos: noun
-    definition: A result that is not inside another result. Its `position` field has one number.
+    definition: A result that isn't inside another result. Its `position` field has one number.
     matches:
       - "field: position (one item)"
     reject:
@@ -98,7 +98,7 @@ terms:
 
   - term: child result
     pos: noun
-    definition: A result that is inside another result. The result that contains it is its parent result.
+    definition: A result inside another result. The result that contains it is its parent result.
     matches:
       - "field: results (inside a result)"
     reject:
@@ -116,7 +116,7 @@ terms:
 
   - term: depth
     pos: noun
-    definition: The number of levels of results that a search gets. The value is 1, 2 or 3.
+    definition: The number of levels of results that a search gets. The value is 1, 2, or 3.
     matches:
       - "field: depth"
     reject:
@@ -290,7 +290,7 @@ terms:
 
   - term: parameter
     pos: noun
-    definition: A value in the URL of a request, in the path or in the query string.
+    definition: A value in the path or the query string of a request URL.
     matches:
       - "path parameter: searchId"
       - "query parameters: page, count, results_format"
@@ -319,7 +319,7 @@ terms:
 
   - term: status code
     pos: noun
-    definition: The three-digit HTTP code in a response, for example `429`.
+    definition: The three-digit number in an HTTP response that shows the result of the request, for example `429`.
     matches: []
     reject:
       - phrase: '(?:HTTP|response) codes?'
@@ -373,7 +373,7 @@ terms:
 
   - term: account
     pos: noun
-    definition: Your AlsoAsked account. The API keys, credits and plan belong to it.
+    definition: Your AlsoAsked account. The API keys, credits, and plan belong to it.
     matches:
       - "endpoint: GET /v1.1/account"
     reject:
@@ -423,7 +423,7 @@ terms:
       - phrase: 'throttl(?:e|ed|es|ing)'
         level: error
         use: rate limit
-    example: If you go above the rate limit, the API returns the status code `429`.
+    example: If you send more requests than the rate limit allows, the API returns the status code `429`.
     status: approved
 
   # --- Webhooks ---------------------------------------------------------------
@@ -483,7 +483,7 @@ terms:
 
   - term: perform
     pos: verb
-    definition: To start a new search with the `POST /v1.1/search` endpoint. Use it only with "search".
+    definition: To start a new search with the `POST /v1.1/search` endpoint. Use it only with `search`.
     matches:
       - "operation: performSearch"
       - "PHP client: performSearch()"
@@ -533,7 +533,7 @@ terms:
       - phrase: '(?:respond|reply|replies|replied) with'
         level: error
         use: return
-    example: The API returns the status code `404` if the search does not exist.
+    example: The API returns the status code `404` if the search doesn't exist.
     status: approved
 
   - term: verify
@@ -552,11 +552,11 @@ terms:
 
   - term: delete
     pos: verb
-    definition: To remove a search with the `DELETE /v1.1/search/{searchId}` endpoint.
+    definition: To remove access to a search and its results with the `DELETE /v1.1/search/{searchId}` endpoint.
     matches: []
     reject:
       - phrase: 'remov(?:e|es|ed|ing) (?:a |the )?search(?:es)?'
         level: error
         use: delete the search
-    example: Delete the search when you do not need it.
+    example: Delete the search when you don't need it.
     status: approved

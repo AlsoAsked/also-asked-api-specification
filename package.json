@@ -13,11 +13,12 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "lint": "npm run lint:yaml && npm run lint:openapi && npm run lint:prose",
+    "lint": "npm run style:check && npm run lint:yaml && npm run lint:openapi && npm run lint:prose",
     "lint:yaml": "yamllint src/",
     "lint:openapi": "npm run bundle && spectral lint openapi/openapi.yaml",
     "lint:prose": "./tools/lint-prose.sh",
     "bundle": "./tools/bundle.sh",
-    "style": "node tools/build-style.mjs"
+    "style": "node tools/build-style.mjs",
+    "style:check": "npm run style && git diff --exit-code -- vale/AlsoAsked/Terms.yml docs/glossary.md"
   }
 }
