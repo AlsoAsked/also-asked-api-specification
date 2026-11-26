@@ -6,7 +6,8 @@ description: |
   Get a search by its ID. The response includes the status and the results of the search.
 
   The `queries` field is `null` until the search is complete: when its `status` field is `success`, `no_results`, or
-  `error`. Then the `queries` field contains one query for each term, with the status and the results of that term.
+  `error`. Then the `queries` field contains one query for each term. Each query has the status and the results of
+  its term.
 
   The `results_format` query parameter sets how the API returns the results: `tree` (default) puts child results inside
   their parent result, and `flat` returns all results in one list.
