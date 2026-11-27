@@ -99,12 +99,46 @@ describe('static/_redirects', () => {
     const branch = rules.find((rule) => rule.source === '/docs/also-asked/branches/main/*');
 
     expect(branch?.target).toBe('/docs/also-asked/:splat');
-    expect(rules.indexOf(branch as Rule)).toBeLessThan(
-      rules.findIndex((rule) => STOPLIGHT_ID.test(rule.source)),
-    );
   });
 
-  it('ends with the catch-all for old Stoplight URLs', () => {
-    expect(rules.at(-1)).toMatchObject({ source: '/docs/also-asked/*', target: '/docs/overview' });
+  // Cloudflare keeps the rules keyed by source, not in file order, so with overlapping rules a
+  // catch-all can win over a specific rule (it did at cutover). wrangler dev keeps the file order.
+  it('has no two rules that can match the same path', () => {
+    for (const [index, rule] of rules.entries()) {
+      for (const other of rules.slice(index + 1)) {
+        expect(canOverlap(rule, other), `line ${rule.line} and line ${other.line}`).toBe(false);
+      }
+    }
+  });
+
+  it('detects overlapping rules', () => {
+    const rule = (source: string): Rule => ({ line: 0, source, target: '', status: '', fields: 3 });
+
+    expect(canOverlap(rule('/docs/also-asked/*'), rule('/docs/also-asked/abc'))).toBe(true);
+    expect(canOverlap(rule('/docs/also-asked/abc-*'), rule('/docs/also-asked/*'))).toBe(true);
+    expect(canOverlap(rule('/docs/also-asked/abc-*'), rule('/docs/also-asked/abc'))).toBe(false);
+    expect(canOverlap(rule('/docs/also-asked/abc-*'), rule('/docs/also-asked/abd-*'))).toBe(false);
   });
 });
+
+// The part of a source before its first splat or placeholder.
+function literalPrefix(rule: Rule): string {
+  const end = rule.source.search(/\*|\/:/);
+  return end === -1 ? rule.source : rule.source.slice(0, end + (rule.source[end] === '/' ? 1 : 0));
+}
+
+// Whether some path could match both rules. A static source matches only itself, and a dynamic
+// source matches paths that start with its literal prefix.
+function canOverlap(a: Rule, b: Rule): boolean {
+  if (!isDynamic(a) && !isDynamic(b)) {
+    return a.source === b.source;
+  }
+  if (!isDynamic(a)) {
+    return a.source.startsWith(literalPrefix(b));
+  }
+  if (!isDynamic(b)) {
+    return b.source.startsWith(literalPrefix(a));
+  }
+  const [prefixA, prefixB] = [literalPrefix(a), literalPrefix(b)];
+  return prefixA.startsWith(prefixB) || prefixB.startsWith(prefixA);
+}

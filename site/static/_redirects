@@ -1,4 +1,7 @@
-# Redirects for Cloudflare Workers static assets. The first matching rule applies.
+# Redirects for Cloudflare Workers static assets.
+# Cloudflare stores the rules keyed by source and doesn't keep their order, so no two rules may match
+# the same path (tests/redirects.spec.ts checks this). wrangler dev keeps the order, so it can't show
+# an overlap.
 # Limits: 2,000 static and 100 dynamic (splat or placeholder) rules.
 
 / /docs/overview 301
@@ -78,6 +81,5 @@
 /docs/also-asked/f019600cf755a /docs/search-results 301
 /docs/also-asked/f019600cf755a-* /docs/search-results 301
 
-# Anything else from the old site.
+# The old site's root. Other old URLs get the 404 page: a catch-all would overlap the rules above.
 /docs/also-asked /docs/overview 301
-/docs/also-asked/* /docs/overview 301
