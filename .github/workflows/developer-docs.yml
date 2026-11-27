@@ -1,0 +1,150 @@
+# Builds the developer docs site (site/) for pushes to main and for pull requests, and deploys main to Cloudflare.
+# The build runs the release gate first (npm run lint and npm run check:release), so it fails if the gate fails.
+name: Developer docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: developer-docs-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  PNPM_VERSION: 12.23.0
+  VALE_VERSION: 3.28.1
+  VALE_SHA256: 068954ad869ebec24b8dec6ebcd1cbb1fd5f5a83e966a35baedfae8b2cdc093a
+  YAMLLINT_VERSION: 1.38.0
+
+jobs:
+  build:
+    # RunsOn self-hosted runners, as in also-asked-web and also-asked-frontend. This repository is
+    # public: runs for pull requests from forks wait for approval (organisation policy).
+    runs-on: runs-on=${{ github.run_id }}/spot=lowest-price/family=m7a+m7i+m7i-flex+r7i+c7i+c7a+r7a+t3+t3a/ram=16+512/cpu=32+256/extras=s3-cache
+    timeout-minutes: 20
+    steps:
+      - uses: runs-on/action@4a3bfc79f21a9b97e972e2ba75a2b0b1e9688670 # v2.7.1
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          # The full history gives each guide page its "Last updated" date and its sitemap lastmod.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: site/.nvmrc
+
+      - name: Install pnpm, Vale and yamllint
+        run: |
+          npm install --global "pnpm@${PNPM_VERSION}"
+          echo "PNPM_STORE=$(pnpm store path --silent)" >> "$GITHUB_ENV"
+          curl --fail --silent --show-error --location --output /tmp/vale.tar.gz \
+            "https://github.com/errata-ai/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz"
+          echo "${VALE_SHA256}  /tmp/vale.tar.gz" | sha256sum --check --strict
+          sudo tar -xzf /tmp/vale.tar.gz -C /usr/local/bin vale
+          pipx install "yamllint==${YAMLLINT_VERSION}"
+
+      # Pull requests can read the caches that main writes, but only write caches of their own.
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.PNPM_STORE }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml', 'site/pnpm-lock.yaml') }}
+          restore-keys: pnpm-${{ runner.os }}-
+
+      - name: Install the specification tooling
+        run: pnpm install --frozen-lockfile
+
+      - name: Install the site dependencies
+        working-directory: site
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint and type-check the site
+        working-directory: site
+        run: pnpm run lint
+
+      - name: Check the site for unused files, exports and dependencies
+        working-directory: site
+        run: pnpm run check:deps
+
+      - name: Test the site
+        working-directory: site
+        run: pnpm test
+
+      - name: Run the release gate and build the site
+        working-directory: site
+        run: pnpm run build:release
+
+      - name: Check that the build changed no committed files
+        run: git diff --exit-code
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        with:
+          name: developer-docs
+          path: site/build
+          include-hidden-files: true
+          retention-days: 7
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: runs-on=${{ github.run_id }}/spot=lowest-price/family=m7a+m7i+m7i-flex+r7i+c7i+c7a+r7a+t3+t3a/ram=16+512/cpu=32+256/extras=s3-cache
+    timeout-minutes: 10
+    # Holds CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID. Limit the environment to the main branch.
+    environment: developer-docs
+    steps:
+      # A re-run of an old run would publish that commit's docs again, so only the head of main is
+      # deployed.
+      - name: Refuse to deploy an old commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::main is at $head, but this run is for $GITHUB_SHA; not deploying an old commit."
+            exit 1
+          fi
+
+      - uses: runs-on/action@4a3bfc79f21a9b97e972e2ba75a2b0b1e9688670 # v2.7.1
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          sparse-checkout: site
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: site/.nvmrc
+
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: developer-docs
+          path: site/build
+
+      - name: Install pnpm
+        run: |
+          npm install --global "pnpm@${PNPM_VERSION}"
+          echo "PNPM_STORE=$(pnpm store path --silent)" >> "$GITHUB_ENV"
+
+      - uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ env.PNPM_STORE }}
+          key: pnpm-${{ runner.os }}-${{ hashFiles('site/pnpm-lock.yaml') }}
+          restore-keys: pnpm-${{ runner.os }}-
+
+      - name: Install the site dependencies
+        working-directory: site
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy to Cloudflare
+        working-directory: site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: pnpm run deploy

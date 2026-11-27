@@ -1,0 +1,14 @@
+# The site is its own pnpm project, separate from the specification tooling in the repository root.
+# Dependencies whose install scripts are not needed:
+# - @parcel/watcher, @swc/core, esbuild, workerd: their platform binaries come from optional dependencies.
+# - core-js: the script only prints a funding message.
+# - postman-code-generators: the script runs a package manager install inside each code generator folder.
+allowBuilds:
+  "@parcel/watcher": false
+  "@swc/core": false
+  core-js: false
+  esbuild: false
+  postman-code-generators: false
+  workerd: false
+minimumReleaseAgeExclude:
+  - vite@8.4.0

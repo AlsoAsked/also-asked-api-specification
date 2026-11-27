@@ -5,3 +5,9 @@ npm run lint
 
 npm run bundle
 git add openapi/openapi.yaml
+
+# The docs site (site/) has its own tooling. Check it only when the commit changes it.
+if git diff --cached --name-only -- site | grep -q .; then
+  pnpm --dir site exec lint-staged
+  pnpm --dir site run check:deps
+fi

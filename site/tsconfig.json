@@ -1,0 +1,36 @@
+{
+  "extends": "@docusaurus/tsconfig",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "allowJs": false,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "resolveJsonModule": true,
+    "types": ["node", "@docusaurus/module-type-aliases", "docusaurus-theme-openapi-docs"],
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "docusaurus.config.ts",
+    "sidebars.ts",
+    "sidebars-api.ts",
+    "vitest.config.mts",
+    "plugins",
+    "scripts",
+    "src",
+    "tests"
+  ],
+  "exclude": ["node_modules", "build", ".docusaurus", ".generated", "api"]
+}

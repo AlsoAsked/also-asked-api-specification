@@ -1,0 +1,23 @@
+/* AlsoAsked brand colours, from also-asked-frontend (src/styles/base/variables.css). */
+:root {
+  --ifm-color-primary: oklch(56.98% 0.227 262.52);
+  --ifm-color-primary-dark: oklch(53.98% 0.227 262.52);
+  --ifm-color-primary-darker: oklch(50.98% 0.227 262.52);
+  --ifm-color-primary-darkest: oklch(40.37% 0.156 262.8);
+  --ifm-color-primary-light: oklch(60.98% 0.2 262.52);
+  --ifm-color-primary-lighter: oklch(64.98% 0.18 262.52);
+  --ifm-color-primary-lightest: oklch(70.98% 0.15 262.52);
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 10%);
+}
+
+[data-theme="dark"] {
+  --ifm-color-primary: oklch(70.98% 0.15 262.52);
+  --ifm-color-primary-dark: oklch(66.98% 0.16 262.52);
+  --ifm-color-primary-darker: oklch(64.98% 0.18 262.52);
+  --ifm-color-primary-darkest: oklch(60.98% 0.2 262.52);
+  --ifm-color-primary-light: oklch(74.98% 0.13 262.52);
+  --ifm-color-primary-lighter: oklch(78.98% 0.11 262.52);
+  --ifm-color-primary-lightest: oklch(84.98% 0.08 262.52);
+  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 30%);
+}

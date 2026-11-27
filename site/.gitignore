@@ -1,0 +1,9 @@
+/node_modules
+/build
+/.docusaurus
+/.cache-loader
+/.wrangler
+# Generated from ../openapi/openapi.yaml by scripts/generate-api-docs.mts.
+/.generated
+/api
+/coverage

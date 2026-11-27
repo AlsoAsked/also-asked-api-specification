@@ -1,0 +1,83 @@
+# Redirects for Cloudflare Workers static assets. The first matching rule applies.
+# Limits: 2,000 static and 100 dynamic (splat or placeholder) rules.
+
+/ /docs/overview 301
+/docs /docs/overview 301
+/docs/ /docs/overview 301
+
+# Old Stoplight URLs: /docs/also-asked/<id>-<slug>, /docs/also-asked/<id>, and the same under branches/main/.
+# The IDs are from the Stoplight sidebar on 2026-11-26. The old anchors don't exist on the new pages.
+/docs/also-asked/branches/main/* /docs/also-asked/:splat 301
+
+# Guides.
+/docs/also-asked/mb7qgcm4twoet /docs/overview 301
+/docs/also-asked/mb7qgcm4twoet-* /docs/overview 301
+/docs/also-asked/u8gsgcbodk4lx /docs/changelog 301
+/docs/also-asked/u8gsgcbodk4lx-* /docs/changelog 301
+/docs/also-asked/j389o9lgezike /docs/authentication 301
+/docs/also-asked/j389o9lgezike-* /docs/authentication 301
+/docs/also-asked/bomfn6xy30nih /docs/sandbox 301
+/docs/also-asked/bomfn6xy30nih-* /docs/sandbox 301
+/docs/also-asked/kyda8pzsv3vxv /docs/webhooks 301
+/docs/also-asked/kyda8pzsv3vxv-* /docs/webhooks 301
+/docs/also-asked/ka0yym68ltyoi /docs/rate-limits 301
+/docs/also-asked/ka0yym68ltyoi-* /docs/rate-limits 301
+/docs/also-asked/203mwmqb8ei4k /docs/account 301
+/docs/also-asked/203mwmqb8ei4k-* /docs/account 301
+/docs/also-asked/fdmxb8iq84kmn /docs/searches 301
+/docs/also-asked/fdmxb8iq84kmn-* /docs/searches 301
+/docs/also-asked/gjsbz1kf26lkg /docs/search-history 301
+/docs/also-asked/gjsbz1kf26lkg-* /docs/search-history 301
+# The PHP client page is left out until the v2 client.
+/docs/also-asked/la1fgjm2kahnf /docs/overview 301
+/docs/also-asked/la1fgjm2kahnf-* /docs/overview 301
+
+# API reference and operations.
+/docs/also-asked/f7a2d2ccdcc92 /api 301
+/docs/also-asked/f7a2d2ccdcc92-* /api 301
+/docs/also-asked/b3b98451f0ae2 /api/get-account 301
+/docs/also-asked/b3b98451f0ae2-* /api/get-account 301
+/docs/also-asked/dbb7cfb7f037d /api/list-searches 301
+/docs/also-asked/dbb7cfb7f037d-* /api/list-searches 301
+/docs/also-asked/61f57d877f150 /api/perform-search 301
+/docs/also-asked/61f57d877f150-* /api/perform-search 301
+/docs/also-asked/c5d1f380b6f63 /api/search-status-changed 301
+/docs/also-asked/c5d1f380b6f63-* /api/search-status-changed 301
+/docs/also-asked/723bb74f8c8f3 /api/get-search 301
+/docs/also-asked/723bb74f8c8f3-* /api/get-search 301
+/docs/also-asked/d9ca28e424d9a /api/delete-search 301
+/docs/also-asked/d9ca28e424d9a-* /api/delete-search 301
+
+# Schemas.
+/docs/also-asked/937210dd9ff0f /docs/account 301
+/docs/also-asked/937210dd9ff0f-* /docs/account 301
+/docs/also-asked/5c0fa799b7d5a /docs/errors 301
+/docs/also-asked/5c0fa799b7d5a-* /docs/errors 301
+/docs/also-asked/ff4d764a12d61 /docs/errors 301
+/docs/also-asked/ff4d764a12d61-* /docs/errors 301
+/docs/also-asked/c9697302dd90c /docs/errors 301
+/docs/also-asked/c9697302dd90c-* /docs/errors 301
+/docs/also-asked/fb398bfd98b2f /docs/errors 301
+/docs/also-asked/fb398bfd98b2f-* /docs/errors 301
+/docs/also-asked/4ac8d11238737 /docs/errors 301
+/docs/also-asked/4ac8d11238737-* /docs/errors 301
+/docs/also-asked/0ce2114891f7a /docs/errors 301
+/docs/also-asked/0ce2114891f7a-* /docs/errors 301
+/docs/also-asked/4156629941b55 /docs/errors 301
+/docs/also-asked/4156629941b55-* /docs/errors 301
+/docs/also-asked/cc1c6b48a18cf /docs/searches 301
+/docs/also-asked/cc1c6b48a18cf-* /docs/searches 301
+/docs/also-asked/6934661b082ae /docs/search-history 301
+/docs/also-asked/6934661b082ae-* /docs/search-history 301
+/docs/also-asked/28445a301eb8a /docs/perform-a-search 301
+/docs/also-asked/28445a301eb8a-* /docs/perform-a-search 301
+/docs/also-asked/6bfc0f1281eed /docs/search-results 301
+/docs/also-asked/6bfc0f1281eed-* /docs/search-results 301
+/docs/also-asked/16bb96dc248a1 /docs/search-results 301
+/docs/also-asked/16bb96dc248a1-* /docs/search-results 301
+/docs/also-asked/f019600cf755a /docs/search-results 301
+/docs/also-asked/f019600cf755a-* /docs/search-results 301
+
+# Anything else from the old site.
+/docs/also-asked /docs/overview 301
+/docs/also-asked/* /docs/overview 301

@@ -1,0 +1,68 @@
+{
+  "name": "also-asked-developer-docs",
+  "private": true,
+  "packageManager": "pnpm@12.23.0",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "gen-api": "node scripts/generate-api-docs.mts",
+    "start": "pnpm run gen-api && docusaurus start",
+    "build": "pnpm run gen-api && docusaurus build",
+    "build:release": "pnpm run release-gate && pnpm run build",
+    "release-gate": "cd .. && npm run lint && npm run check:release",
+    "serve": "docusaurus serve --no-open",
+    "preview": "wrangler dev --local",
+    "deploy": "wrangler deploy",
+    "clear": "docusaurus clear",
+    "lint": "pnpm run lint:biome && pnpm run lint:tsc",
+    "lint:biome": "biome check .",
+    "lint:tsc": "pnpm run gen-api && tsc --noEmit",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "check:deps": "knip",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@docusaurus/core": "3.10.2",
+    "@docusaurus/faster": "3.10.2",
+    "@docusaurus/plugin-content-docs": "3.10.2",
+    "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/theme-common": "3.10.2",
+    "@easyops-cn/docusaurus-search-local": "0.55.3",
+    "@mdx-js/react": "3.1.1",
+    "docusaurus-plugin-openapi-docs": "5.2.0",
+    "docusaurus-plugin-sass": "0.2.7",
+    "docusaurus-theme-openapi-docs": "5.2.0",
+    "lodash": "4.18.1",
+    "prism-react-renderer": "2.4.1",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "sass": "1.108.2",
+    "unist-util-visit": "5.2.0",
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.9",
+    "@docusaurus/module-type-aliases": "3.10.2",
+    "@docusaurus/tsconfig": "3.10.2",
+    "@docusaurus/types": "3.10.2",
+    "@types/lodash": "4.17.27",
+    "@types/mdast": "4.0.4",
+    "@types/node": "22.20.7",
+    "@types/react": "19.3.3",
+    "@vitest/coverage-v8": "4.1.12",
+    "knip": "6.48.0",
+    "lint-staged": "17.6.2",
+    "mdast-util-directive": "3.2.1",
+    "mdast-util-from-markdown": "2.1.0",
+    "typescript": "5.9.3",
+    "vite": "8.4.0",
+    "vitest": "4.1.12",
+    "wrangler": "4.168.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,mts,css,json,jsonc}": "biome check --write --no-errors-on-unmatched"
+  }
+}

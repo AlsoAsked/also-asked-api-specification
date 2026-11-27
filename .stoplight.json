@@ -1,5 +1,6 @@
 {
   "exclude": [
+    "site",
     "src",
     "style",
     "tools",

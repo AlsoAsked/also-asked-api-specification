@@ -1,0 +1,18 @@
+// The developer docs site: a Worker with static assets only (no Worker script).
+// Redirects and response headers are in static/_redirects and static/_headers.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "also-asked-developer-docs",
+  "compatibility_date": "2026-11-26",
+  "assets": {
+    "directory": "./build",
+    // Docusaurus builds with trailingSlash: false, so /docs/overview is build/docs/overview.html.
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  // A route, not a custom domain. The proxied developers CNAME in the alsoasked.com zone stays, and
+  // the Worker answers before the CNAME's target. Deleting the route rolls the host back to it.
+  "routes": [{ "pattern": "developers.alsoasked.com/*", "zone_name": "alsoasked.com" }],
+  "workers_dev": false,
+  "preview_urls": false
+}

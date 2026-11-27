@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["scripts/*.mts", "src/theme/**/*.tsx"],
+  "project": [
+    "*.{ts,mts}",
+    "plugins/**/*.ts",
+    "scripts/**/*.mts",
+    "src/**/*.{ts,tsx,mdx,sass,scss}",
+    "tests/**/*.ts"
+  ],
+  "ignoreDependencies": ["lint-staged"],
+  "ignoreExportsUsedInFile": true,
+  "treatConfigHintsAsErrors": true
+}
