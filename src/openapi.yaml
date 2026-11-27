@@ -11,7 +11,7 @@ info:
 
     ## Live API and sandbox API
 
-    The AlsoAsked API has two environments with the same endpoints:
+    The AlsoAsked API has 2 environments with the same endpoints:
 
     - **Live API** (`https://alsoaskedapi.com/v1.1`): gets real results from Google and uses the credits of your plan.
       To use the live API, your account needs a Pro plan. To compare plans, go to
@@ -26,10 +26,22 @@ info:
 
     - [AlsoAsked API overview](../docs/overview.md)
     - [Quickstart](../docs/quickstart.md)
+    - [Authenticate requests](../docs/authentication.md)
+    - [Sandbox API](../docs/sandbox.md)
     - [Synchronous and asynchronous searches](../docs/searches.md)
+    - [How a search runs](../docs/how-a-search-runs.md)
     - [Perform a search](../docs/perform-a-search.md)
+    - [Search results](../docs/search-results.md)
+    - [Manage your search history](../docs/search-history.md)
+    - [Credits](../docs/credits.md)
+    - [Search many terms](../docs/bulk-searches.md)
     - [Webhooks](../docs/webhooks.md)
+    - [Verify webhook signatures](../docs/verify-webhook-signatures.md)
+    - [Account details](../docs/account.md)
     - [Errors](../docs/errors.md)
+    - [Rate limits](../docs/rate-limits.md)
+    - [Glossary](../docs/glossary.md)
+    - [Changelog](../docs/changelog.md)
 
     ## Get help with the AlsoAsked API
 

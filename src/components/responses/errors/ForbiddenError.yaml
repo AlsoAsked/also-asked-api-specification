@@ -15,8 +15,8 @@ content:
       InvalidApiKeyError:
         summary: Invalid API key error
         description: |
-          An `invalid_api_key` error. The value of the `X-Api-Key` header isn't a valid API key, the API key no longer
-          exists, or the API key is for the other API. A live API key works only on the live API, and a sandbox API
-          key works only on the sandbox API.
+          An `invalid_api_key` error. The `X-Api-Key` header is empty, its value isn't a valid API key, the API key no
+          longer exists, or the API key is for the other API. A live API key works only on the live API, and a sandbox
+          API key works only on the sandbox API.
         value:
           $ref: ../../../examples/errors/InvalidApiKeyError.yaml

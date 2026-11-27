@@ -49,10 +49,10 @@ results:
     - question: Do you get a second crop of broad beans?
       position: [1, 1, 1]
       answer_excerpt: >-
-        Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
-        broad beans in the spring and again in the fall.
-      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-      answer_page_title: Growing Broad Beans - Gardening Know How
+        Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send
+        up new shoots that give a smaller second crop later in the summer.
+      answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+      answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
       ai_overview: false
       ai_overview_hrefs: null
       ai_overview_page_titles: null
@@ -60,10 +60,10 @@ results:
     - question: What not to plant with broad beans?
       position: [1, 1, 2]
       answer_excerpt: >-
-        Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
-        broad beans in the spring and again in the fall.
-      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-      answer_page_title: Growing Broad Beans - Gardening Know How
+        Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the
+        growth of beans and other legumes.
+      answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+      answer_page_title: Broad bean companion plants - UrbanVeg Ally
       ai_overview: false
       ai_overview_hrefs: null
       ai_overview_page_titles: null
@@ -71,10 +71,10 @@ results:
     - question: How to grow broad beans in a greenhouse?
       position: [1, 1, 3]
       answer_excerpt: >-
-        Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
-        broad beans in the spring and again in the fall.
-      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-      answer_page_title: Growing Broad Beans - Gardening Know How
+        Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well
+        ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+      answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+      answer_page_title: Growing broad beans under glass - PlantPro Digest
       ai_overview: false
       ai_overview_hrefs: null
       ai_overview_page_titles: null
@@ -95,7 +95,7 @@ results:
     - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
     - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
     ai_overview_page_titles:
-    - Drying runner beans - Gardening Know How
+    - Drying Broad Beans - Gardening Know How
     - Drying fava beans - Gardenwise Institute
     - Drying borlotti beans - UrbanVeg Ally
     - Drying kidney beans - GreenThumb Academy

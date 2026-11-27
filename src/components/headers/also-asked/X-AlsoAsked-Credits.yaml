@@ -1,6 +1,6 @@
 description: |
-  The number of credits that remain in your account. On the live API, the value is your web credits plus your API
-  credits. On the sandbox API, the value is your sandbox credits.
+  The number of credits that remain in your account. On the live API, the value is your plan credits plus your
+  pay-as-you-go credits. On the sandbox API, the value is your sandbox credits.
 schema:
   type: integer
   format: int64

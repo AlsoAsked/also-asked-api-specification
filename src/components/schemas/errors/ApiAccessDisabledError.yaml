@@ -18,7 +18,7 @@ properties:
     description: |
       A description of the error for people to read. The text of the `message` field can change, so don't use the
       `message` field in your code.
-    example: |
+    example: >-
       Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
       more information.
 example:

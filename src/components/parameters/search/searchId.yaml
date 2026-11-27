@@ -8,4 +8,4 @@ schema:
   pattern: ^[a-zA-Z0-9]{32}$
   minLength: 32
   maxLength: 32
-example: 4S7HdxC3vq9M5zF1Vb8YX2tksUeQwTPn
+example: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba

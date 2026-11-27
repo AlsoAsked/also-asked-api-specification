@@ -60,7 +60,7 @@ The team chose this basis after a pilot that compared it with a Simplified Techn
 - Use a comma for thousands: `1,000`.
 - Write units in full: `90 seconds`, `5 minutes`.
 - Write ranges with `to`: `1 to 3`.
-- All times are in UTC. In examples, write a date and time in ISO 8601 format: `2026-01-31T12:00:00Z`.
+- All times are in UTC. In examples, write a date and time in ISO 8601 format with the offset that the API returns: `2026-01-31T12:00:00+00:00`.
 
 ## Sections for LLM readers
 
@@ -95,7 +95,8 @@ The docs don't depend on one platform.
 - Start each page with front matter: `title`, `description` (one sentence), and `type` (`quickstart`, `task`, `reference`, or `concept`).
 - Use GitHub alerts for notes and warnings: `> [!NOTE]`, `> [!WARNING]`. Use them only for information that the reader must not miss.
 - Don't use tabs. Write the live API example and the sandbox API example as two sections.
-- Use relative links to Markdown files: `./rate-limiting.md#rate-limit-headers`.
+- Use relative links to Markdown files: `./rate-limits.md#rate-limit-headers`.
+- Link to a page of the AlsoAsked website with a real link, not a URL in code font: `[**API keys** page](https://alsoasked.com/developer/keys)`. Use code font for a URL that the reader sends a request to, such as a base URL.
 - Use sentence case for headings: `Verify a webhook signature`.
 
 ## Enforcement

@@ -10,7 +10,9 @@ description: |
   of the deletion, and the other fields are `null`.
 
   Deleting a search doesn't stop it. If the search is still running, its terms keep running, and AlsoAsked refunds
-  the terms that fail or have no results. AlsoAsked sends no more webhook events for a deleted search.
+  the terms that fail or have no results. A term that succeeds after the deletion isn't refunded. AlsoAsked creates no
+  new webhook events for a deleted search, but a webhook event that AlsoAsked created before the deletion can still
+  arrive. In its body, the `deleted` field is `true`.
 security:
   - apiKey: []
 parameters:

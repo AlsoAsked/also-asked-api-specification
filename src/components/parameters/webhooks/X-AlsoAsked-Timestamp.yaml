@@ -3,7 +3,9 @@ in: header
 description: |
   The time when AlsoAsked sent the webhook request, in Unix time (seconds since 1970-01-01T00:00:00+00:00). AlsoAsked
   sets a new timestamp for each attempt. To prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack)
-  against your webhook endpoint, reject a webhook request with a timestamp that's older than a few minutes.
+  against your webhook endpoint, AlsoAsked recommends that you reject a webhook request with a timestamp that's more
+  than 5 minutes from the current time. The signature covers the timestamp, so nobody can change it without making the
+  signature wrong.
 required: true
 schema:
   type: integer

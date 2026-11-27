@@ -44,54 +44,58 @@ The sandbox API doesn't get results from Google. A search on the sandbox API ret
 generates from the request.
 
 The test results contain placeholder text in Latin. They aren't real questions and answers. For each term that
-succeeds, a search on the sandbox API gets 4 top-level results. Each result at a level lower than the depth of the search
-has 6 to 10 child results. About 1 in 4 results is an AI overview, with 2 to 5 sources. About 1 in 10 queries has `true` in the
-`language_fallback` field, and about 1 in 10 has `true` in the `region_fallback` field.
+succeeds, a search on the sandbox API gets 4 top-level results. Each result has 6 to 10 child results, down to the
+depth of the search. The results at the last level have no child results. About 1 in 4 results is an AI overview, with
+2 to 5 sources. About 1 in 10 queries has `true` in the `language_fallback` field, and about 1 in 10 has `true` in the
+`region_fallback` field.
 
-The test results are deterministic. If you perform two searches on the sandbox API with the same terms in the same
-order, and the same language code, region code, latitude, longitude, and depth, both searches get the same test
-results. The test results of a term depend on all the terms of the search and their order, so the same term can get
-different test results in a different search.
+The test results are deterministic. Searches on the sandbox API get the same test results if they have the same terms
+in the same order, and the same language code, region code, latitude, longitude, and depth. The test results of a term
+depend on all the terms of the search and their order, so the same term can get different test results in a different
+search.
 
-The sandbox API never uses stored results. The `cached` field is always `false`, and the `cached_at` field is always
-`null`.
+The sandbox API never uses stored results, so every term costs sandbox credits, whatever the value of the `fresh`
+field. The `cached` field is always `false`, and the `cached_at` field is always `null`.
 
 ## Sandbox credits
 
-The sandbox API has its own credits: 1,000 sandbox credits. Sandbox
-credits are separate from the credits of your plan. A search on the sandbox API uses sandbox credits only.
+Each account has 1,000 sandbox credits. Sandbox credits are separate from the credits of your plan, and a search on
+the sandbox API uses sandbox credits only. Each term costs the same number of sandbox credits as the credits that a
+term costs on the live API. See [Depth and cost](./perform-a-search.md#depth-and-cost).
 
-To see your sandbox credits, send a request to `GET https://sandbox.alsoaskedapi.com/v1.1/account`. In the response body
-from the sandbox API, the fields show the sandbox credits:
+Sandbox credits reset to the full amount 24 hours after the last reset. If you need more sandbox credits, or a faster
+reset of sandbox credits, contact [support@alsoasked.com](mailto:support@alsoasked.com).
+
+To see your sandbox credits, send a `GET` request to `https://sandbox.alsoaskedapi.com/v1.1/account`. In the response
+body from the sandbox API, the fields show the sandbox credits:
 
 - The `credits` field and the `web_credits` field contain the sandbox credits.
 - The `api_credits` field is `0`.
 - The `plan_type` field is `pro`.
+- The `credits_reset_at` field shows when the sandbox credits reset next.
 
-Responses from the sandbox API also have the `X-AlsoAsked-Credits` header, except when the request has no API key or an
-API key that AlsoAsked doesn't accept. On the sandbox API, the
-`X-AlsoAsked-Credits` header contains the sandbox credits that remain.
-
-## Reset of sandbox credits
-
-Sandbox credits reset to the full amount 24 hours after the last reset. The `credits_reset_at` field in the response
-body of `GET https://sandbox.alsoaskedapi.com/v1.1/account` shows when the next reset of the sandbox credits happens.
+Responses from the sandbox API also have the `X-AlsoAsked-Credits` header, which contains the sandbox credits that
+remain. As on the live API, some error responses don't have the `X-AlsoAsked-Credits` header, for example the response
+to a request with no API key. See [Check your credits](./credits.md#check-your-credits).
 
 ## Test terms
 
-A test term changes how a search on the sandbox API behaves. To use a test term, add the test term as one of the terms in
-the `terms` field of the `POST https://sandbox.alsoaskedapi.com/v1.1/search` request body. Test terms are lowercase,
-and must match exactly.
+A test term changes how a search on the sandbox API behaves. To use a test term, add the test term as one of the terms
+in the `terms` field of the request body when you send a `POST` request to
+`https://sandbox.alsoaskedapi.com/v1.1/search`. Test terms are lowercase, and must match exactly.
 
-These test terms set the result of their own term, the same as a term on the live API:
+Each term of a search on the sandbox API has its own result, as on the live API. These test terms set the result of
+their own term only:
 
 | Term | Result of the term |
 | --- | --- |
 | `[error]` | The term fails with the status `error` and no results. |
 | `[no_results]` | The term finishes with the status `no_results` and no results. |
-| Any other term | The term succeeds with the status `success` and test results. |
 
-These test terms change the timing of the search. Their own term gets the same status as the search:
+Any other term that isn't a test term succeeds with the status `success` and test results.
+
+These test terms change the timing of the search. In the `queries` field, the query of a timing test term has the
+status of the search:
 
 | Term | Effect |
 | --- | --- |
@@ -104,20 +108,20 @@ the search, doesn't charge sandbox credits, and doesn't send webhook events:
 | Term | Response |
 | --- | --- |
 | `[server_error]` | `500 Internal Server Error` with the error type `internal_server`. |
-| `[rate_limit]` | `429 Too Many Requests` with the error type `rate_limit_exceeded`, and a `Retry-After` header 10 seconds after the request. |
+| `[rate_limit]` | `429 Too Many Requests` with the error type `rate_limit_exceeded`, and a `Retry-After` header with a time 10 seconds after the request. |
 
-The `[rate_limit]` response comes from the sandbox API, not from the rate limiter, so its `X-RateLimit-Remaining`
-header shows your real number of remaining requests, not `0`. For details about the real rate limit, see
+The `[rate_limit]` response doesn't come from the real rate limit, so its `X-RateLimit-Remaining` header shows your
+real number of remaining requests, not `0`. For details about the real rate limit, see
 [Rate limits](./rate-limits.md).
 
 ## Status changes and timing
 
 A search on the sandbox API starts with the status `pending`, then goes through `running`, `fetching`, and then the
-final status. AlsoAsked waits before each of the three status changes:
+final status. AlsoAsked waits before each of the 3 status changes:
 
 - In a synchronous search, each wait is a new random value from 1 to 3 seconds, so the response comes after 3 to 9
   seconds.
-- In an asynchronous search, AlsoAsked chooses one random value from 1 to 3 seconds and uses it for all three waits.
+- In an asynchronous search, AlsoAsked chooses one random value from 1 to 3 seconds and uses it for all 3 waits.
 - With a `[delay N]` test term, each wait is N seconds. If the search has more than one `[delay N]` test term, the first
   one counts.
 
@@ -126,11 +130,11 @@ The status of the search comes from the results of its terms, the same as on the
 - If at least one term succeeds, the status of the search is `success`.
 - If no term succeeds, and at least one term has no results, the status of the search is `no_results`.
 - If every term fails, the status of the search is `error`.
-- If the search has only `[delay N]` and `[timeout]` terms, the status of the search is `success`.
+- If the search has only `[delay N]` and `[timeout]` test terms, the status of the search is `success`.
 
 The order of the terms doesn't change the status. When the search is complete, the `queries` field has one query for
-each term, and each query has its own `status` field. A query with the status `error` or `no_results` has `null` in its
-`results`, `language_fallback`, and `region_fallback` fields.
+each unique term, and each query has its own `status` field. A query with the status `error` or `no_results` has `null`
+in its `results`, `language_fallback`, and `region_fallback` fields.
 
 ## Sandbox credits for test terms
 
@@ -145,11 +149,13 @@ On the live API, a synchronous search returns after 90 seconds even if the searc
 running, and your integration has to get the results later. To test this, add the `[timeout]` test term:
 
 - In a synchronous search, the sandbox API returns immediately with the status `fetching` and `null` in the `queries`
-  field, the same response that the live API gives after 90 seconds. The sandbox API doesn't wait the 90 seconds.
+  field. The sandbox API doesn't wait the 90 seconds. On the live API, the same search returns after 90 seconds with a
+  status that isn't complete, for example `running`.
 - In an asynchronous search, the search goes through `running` and `fetching` as usual.
 
 In both modes, the search is complete 2 minutes after you perform it: the 90 seconds of the timeout plus 30 seconds.
-Get the results with `GET https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}` or from the webhook events.
+Get the results with a `GET` request to `https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}`, or from the webhook
+events.
 
 ## Example
 
@@ -170,34 +176,36 @@ curl --request POST 'https://sandbox.alsoaskedapi.com/v1.1/search' \
 Replace `YOUR_SANDBOX_API_KEY` with your sandbox API key, which starts with `aa-sandbox-`. For more information about
 the `async` field, see [Synchronous and asynchronous searches](./searches.md).
 
-When the search is complete, the `how to brew coffee` query has the status `success`, the `[error]` query has the
-status `error`, and the `[delay 1]` query has the status `success`, the status of the search. AlsoAsked refunds the
-sandbox credits of the `[error]` term.
+The response has the status `pending` and `null` in the `queries` field. About 3 seconds later, the search is
+complete, and a `GET` request for the search returns 3 queries: the `how to brew coffee` query has the status
+`success`, the `[error]` query has the status `error`, and the `[delay 1]` query has the status `success`, because a
+timing test term takes the status of the search. AlsoAsked refunds the sandbox credits of the `[error]` term.
 
 ## What the sandbox API can't test
 
-The sandbox API doesn't have these behaviors of the live API, so test them another way:
+The sandbox API doesn't have these behaviors of the live API:
 
 - **Stored results:** the sandbox API always gets new test results, so every term costs sandbox credits.
 - **The plan error:** the sandbox API doesn't need a Pro plan, so it never returns `insufficient_plan`.
-- **The real rate limit:** use the `[rate_limit]` test term to test your handling of a `429` response.
-- **Long searches:** sandbox searches finish within seconds, or 2 minutes with `[timeout]`. On the live API, a search
-  with many terms can take up to an hour. See [Synchronous and asynchronous searches](./searches.md).
+- **The real rate limit:** use the `[rate_limit]` test term to test how your code handles a `429 Too Many Requests`
+  response.
+- **Long searches:** a search on the sandbox API finishes within seconds, or 2 minutes with the `[timeout]` test term.
+  On the live API, a search can take about 15 minutes in the worst case. See
+  [How long a search can take](./how-a-search-runs.md#how-long-a-search-can-take).
 
 ## Webhook events from the sandbox API
 
-For a search on the sandbox API, AlsoAsked sends webhook events to your sandbox webhook endpoints. AlsoAsked sends these
-webhook events only if the `notify_webhooks` field in the `POST https://sandbox.alsoaskedapi.com/v1.1/search` request body is
-`true`. For details about webhook events, see [Webhooks](./webhooks.md).
-
-## Get more sandbox credits
-
-If you need more sandbox credits, or a faster reset of sandbox credits, contact
-[support@alsoasked.com](mailto:support@alsoasked.com).
+For a search on the sandbox API, AlsoAsked sends webhook events to your webhook endpoints with the `sandbox`
+environment. The `notify_webhooks` field in the request body controls this, as on the live API: its default value is
+`true`, and AlsoAsked sends no webhook events for the search if you set it to `false`. The sandbox API doesn't need a
+Pro plan for webhook events. For details about webhook events, see [Webhooks](./webhooks.md).
 
 ## Related
 
 - [Authenticate requests](./authentication.md)
 - [Synchronous and asynchronous searches](./searches.md)
+- [Credits](./credits.md)
+- [Rate limits](./rate-limits.md)
 - [Webhooks](./webhooks.md)
+- [Search many terms](./bulk-searches.md)
 - [OpenAPI specification](../openapi/openapi.yaml)

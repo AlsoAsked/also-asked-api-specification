@@ -11,7 +11,7 @@ include an API key in the `X-Api-Key` header. This page explains how to create a
 
 ## Before you start
 
-- You need an AlsoAsked account.
+- You need an AlsoAsked account with a verified email address.
 - To use the live API, your account needs a Pro plan. The sandbox API doesn't need a Pro plan.
 
 ## Types of API key
@@ -30,7 +30,7 @@ key to the wrong API, the API rejects it as an invalid API key.
 
 To create an API key on the AlsoAsked website, do the following steps:
 
-1. Sign in to AlsoAsked, and go to the **API keys** page at `https://alsoasked.com/developer/keys`.
+1. Sign in to AlsoAsked, and go to the [**API keys** page](https://alsoasked.com/developer/keys).
 2. Select **Create API key**.
 3. In the **Name** field, enter a name for the API key. The name is for your reference only.
 4. In the **Environment** field, choose **Live** or **Sandbox**.
@@ -38,8 +38,18 @@ To create an API key on the AlsoAsked website, do the following steps:
 6. Copy the API key, and store it in a safe place. AlsoAsked shows the API key only once.
 
 Each account can have a maximum of 10 API keys. Live API keys and sandbox API keys count together. Deleted API keys
-don't count. An API key doesn't expire, and you can't rename it. After an API key is first used, the **API keys** page
+don't count. An API key doesn't expire, and you can't rename it. After you first use an API key, the **API keys** page
 shows when it was last accessed. You can create and delete API keys only on the AlsoAsked website, not through the API.
+
+## Keep your API key secret
+
+An API key identifies your account, so anyone with your API key can send requests as your account. Keep each API key
+secret:
+
+- Don't put an API key in code that runs in a web browser or in a mobile app. Anyone who uses the web page or the app
+  can read the API key from its code, so send requests from your server.
+- Don't commit an API key to a code repository.
+- If someone else gets your API key, delete the API key and create a new one.
 
 ## Send an API key to the live API
 
@@ -69,8 +79,9 @@ curl --request GET 'https://sandbox.alsoaskedapi.com/v1.1/account' \
 
 ## Result
 
-If the API accepts the API key in the `X-Api-Key` header, the response to `GET /v1.1/account` contains the account
-that owns the API key. For the fields in the response body, see [Account details](./account.md).
+If the API accepts the API key in the `X-Api-Key` header, the API returns the status code `200 OK`, and the response
+body of the `GET /v1.1/account` endpoint contains the account that owns the API key. For the fields in the response
+body, see [Account details](./account.md).
 
 ## If there is a problem
 
@@ -90,19 +101,10 @@ The following table shows the authentication errors:
 | Status code `403 Forbidden`, error type `invalid_api_key` | The `X-Api-Key` header is empty. | Put your API key in the `X-Api-Key` header. Check that the variable that holds the API key in your code isn't empty. |
 | Status code `403 Forbidden`, error type `invalid_api_key` | The value in the `X-Api-Key` header isn't a valid API key, or someone deleted the API key. | Check that you copied the full API key, or create a new API key. |
 | Status code `403 Forbidden`, error type `invalid_api_key` | You sent a live API key to the sandbox API, or a sandbox API key to the live API. | Send a live API key, which starts with `aa-live-`, to the live API, and a sandbox API key, which starts with `aa-sandbox-`, to the sandbox API. |
-| Status code `401 Unauthorized`, error type `api_access_disabled` | AlsoAsked turned off API access for your account. AlsoAsked checks this before it checks the plan. | Contact AlsoAsked support at `support@alsoasked.com`. |
+| Status code `401 Unauthorized`, error type `api_access_disabled` | AlsoAsked turned off API access for your account. AlsoAsked checks API access before it checks the plan, so you can get this error without a Pro plan. | Contact AlsoAsked support at `support@alsoasked.com`. |
+| Status code `402 Payment Required`, error type `insufficient_plan` | You sent a live API key to the live API, and your account doesn't have a Pro plan. | Change your plan to Pro, or use the sandbox API, which doesn't need a Pro plan. See [Sandbox API](./sandbox.md) and [If your plan changes](./account.md#if-your-plan-changes). |
 
 For all error types, see [Errors](./errors.md).
-
-## Keep your API key secret
-
-An API key identifies your account, so anyone with your API key can send requests as your account. Keep each API key
-secret:
-
-- Don't put an API key in code that runs in a web browser or in a mobile app. The AlsoAsked API doesn't accept requests
-  from web pages on other websites, so send requests from your server.
-- Don't commit an API key to a code repository.
-- If someone else gets your API key, delete the API key and create a new one.
 
 ## Related
 

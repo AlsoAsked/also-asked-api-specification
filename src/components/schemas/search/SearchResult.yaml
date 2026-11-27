@@ -24,7 +24,7 @@ properties:
     type: [string, 'null']
     description: |
       An excerpt of the answer. The value can be `null` or an empty string if Google showed no answer text.
-    example: |
+    example: >-
       Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
       plant them out from mid-March.
   answer_href:
@@ -77,103 +77,82 @@ properties:
     items:
       $ref: ./SearchResult.yaml
     example:
-    - question: When to plant out broad beans?
-      position: [1]
+    - question: When can I transplant broad beans?
+      position: [1, 1]
       answer_excerpt: >-
-        Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
-        plant them out from mid-March.
-      answer_href: https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
-      answer_page_title: When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine
+        Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
+        pots during the autumn and transplanted in to the ground in the spring.
+      answer_href: >-
+        https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
+      answer_page_title: Grow broad beans with children / RHS Gardening
       ai_overview: true
       ai_overview_hrefs:
-      - https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
-      - https://www.gardenwiseinstitute.org/resources/beans/when-to-plant-fava-beans
-      - https://www.urbanvegally.com/articles/beans/when-to-plant-borlotti-beans
-      - https://www.greenthumbacademy.net/bean-care/when-to-plant-kidney-beans
-      - https://www.plantprodigest.com/edibles/beans/when-to-plant-lima-beans
+      - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/runner-beans
+      - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/carrots
+      - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/peas
+      - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/courgettes
+      - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/sunflower-seedling
       ai_overview_page_titles:
-      - When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine
-      - When to plant out fava beans - Gardenwise Institute
-      - When to plant out borlotti beans - UrbanVeg Ally
-      - When to plant out kidney beans - GreenThumb Academy
-      - When to plant out lima beans - PlantPro Digest
+      - Grow runner beans with children / RHS Gardening
+      - Sow and tend carrots with kids / RHS Gardening
+      - Plant and cultivate peas with children / RHS Gardening
+      - Harvest courgettes together with kids / RHS Gardening
+      - Raise sunflower seedlings with children / RHS Gardening
       results:
-      - question: When can I transplant broad beans?
-        position: [1, 1]
+      - question: Do you get a second crop of broad beans?
+        position: [1, 1, 1]
         answer_excerpt: >-
-          Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual
-          pots during the autumn and transplanted in to the ground in the spring.
-        answer_href: >-
-          https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
-        answer_page_title: Grow broad beans with children / RHS Gardening
-        ai_overview: true
-        ai_overview_hrefs:
-        - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/runner-beans
-        - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/carrots
-        - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/peas
-        - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/courgettes
-        - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/sunflower-seedling
-        ai_overview_page_titles:
-        - Grow runner beans with children / RHS Gardening
-        - Sow and tend carrots with kids / RHS Gardening
-        - Plant and cultivate peas with children / RHS Gardening
-        - Harvest courgettes together with kids / RHS Gardening
-        - Raise sunflower seedlings with children / RHS Gardening
-        results:
-        - question: Do you get a second crop of broad beans?
-          position: [1, 1, 1]
-          answer_excerpt: >-
-            Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
-            broad beans in the spring and again in the fall.
-          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-          answer_page_title: Growing Broad Beans - Gardening Know How
-          ai_overview: false
-          ai_overview_hrefs: null
-          ai_overview_page_titles: null
-          results: []
-        - question: What not to plant with broad beans?
-          position: [1, 1, 2]
-          answer_excerpt: >-
-            Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
-            broad beans in the spring and again in the fall.
-          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-          answer_page_title: Growing Broad Beans - Gardening Know How
-          ai_overview: false
-          ai_overview_hrefs: null
-          ai_overview_page_titles: null
-          results: []
-        - question: How to grow broad beans in a greenhouse?
-          position: [1, 1, 3]
-          answer_excerpt: >-
-            Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant
-            broad beans in the spring and again in the fall.
-          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-          answer_page_title: Growing Broad Beans - Gardening Know How
-          ai_overview: false
-          ai_overview_hrefs: null
-          ai_overview_page_titles: null
-          results: []
-      - question: Do broad beans need to be dried before planting?
-        position: [1, 2]
-        answer_excerpt: >-
-          Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are
-          simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the
-          plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.
-        answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
-        answer_page_title: Drying Broad Beans - Gardening Know How
-        ai_overview: true
-        ai_overview_hrefs:
-        - https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
-        - https://www.gardenwiseinstitute.org/resources/beans/drying-fava-beans
-        - https://www.urbanvegally.com/articles/beans/drying-borlotti-beans
-        - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
-        - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
-        ai_overview_page_titles:
-        - Drying runner beans - Gardening Know How
-        - Drying fava beans - Gardenwise Institute
-        - Drying borlotti beans - UrbanVeg Ally
-        - Drying kidney beans - GreenThumb Academy
-        - Drying lima beans - PlantPro Digest
+          Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send
+          up new shoots that give a smaller second crop later in the summer.
+        answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+        answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
+        ai_overview: false
+        ai_overview_hrefs: null
+        ai_overview_page_titles: null
         results: []
+      - question: What not to plant with broad beans?
+        position: [1, 1, 2]
+        answer_excerpt: >-
+          Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the
+          growth of beans and other legumes.
+        answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+        answer_page_title: Broad bean companion plants - UrbanVeg Ally
+        ai_overview: false
+        ai_overview_hrefs: null
+        ai_overview_page_titles: null
+        results: []
+      - question: How to grow broad beans in a greenhouse?
+        position: [1, 1, 3]
+        answer_excerpt: >-
+          Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well
+          ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+        answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+        answer_page_title: Growing broad beans under glass - PlantPro Digest
+        ai_overview: false
+        ai_overview_hrefs: null
+        ai_overview_page_titles: null
+        results: []
+    - question: Do broad beans need to be dried before planting?
+      position: [1, 2]
+      answer_excerpt: >-
+        Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are
+        simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the
+        plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.
+      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
+      answer_page_title: Drying Broad Beans - Gardening Know How
+      ai_overview: true
+      ai_overview_hrefs:
+      - https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
+      - https://www.gardenwiseinstitute.org/resources/beans/drying-fava-beans
+      - https://www.urbanvegally.com/articles/beans/drying-borlotti-beans
+      - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
+      - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
+      ai_overview_page_titles:
+      - Drying Broad Beans - Gardening Know How
+      - Drying fava beans - Gardenwise Institute
+      - Drying borlotti beans - UrbanVeg Ally
+      - Drying kidney beans - GreenThumb Academy
+      - Drying lima beans - PlantPro Digest
+      results: []
 example:
   $ref: ../../../examples/search/SearchResult.yaml

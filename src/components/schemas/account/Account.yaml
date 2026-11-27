@@ -43,23 +43,26 @@ properties:
     format: int64
     minimum: 0
     description: |
-      The web credits that remain in the account: the credits that come with the plan. AlsoAsked uses web credits
-      before API credits. On the sandbox API, the value of the `web_credits` field is the sandbox credits.
+      The plan credits that remain in the account: the credits that come with the plan. The field keeps its earlier name
+      for backward compatibility. AlsoAsked uses plan credits before pay-as-you-go credits. On the sandbox API, the
+      value of the `web_credits` field is the sandbox credits.
     example: 100
   api_credits:
     type: integer
     format: int64
     minimum: 0
     description: |
-      The API credits that remain in the account: the credits that you bought. API credits don't expire. On the sandbox
-      API, the value of the `api_credits` field is `0`.
+      The pay-as-you-go credits that remain in the account: the credits that you bought. The field keeps its earlier
+      name for backward compatibility: pay-as-you-go credits once paid only for searches on the API, and now also pay
+      for searches on the AlsoAsked website. Pay-as-you-go credits don't expire. On the sandbox API, the value of the
+      `api_credits` field is `0`.
     example: 10
   credits_reset_at:
     type: string
     format: date-time
     description: |
-      The date and time when the web credits of the account renew next, in ISO 8601 format. On the sandbox API, the date
-      and time when the sandbox credits reset next.
+      The date and time when the plan credits of the account renew next, in ISO 8601 format. On the sandbox API, the
+      date and time when the sandbox credits reset next.
     example: '2023-02-01T00:00:00+00:00'
   registered_at:
     type: string

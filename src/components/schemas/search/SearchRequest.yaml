@@ -29,7 +29,7 @@ properties:
     description: |
       The region code of the search: a two-letter International Organization for Standardization (ISO) 3166-1 code, for
       example `gb`. The value of the `region` field is `null` if the search is deleted.
-    example: us
+    example: gb
   latitude:
     type: [number, 'null']
     format: double
@@ -43,7 +43,7 @@ properties:
     description: |
       The longitude of the search. The value of the `longitude` field is `null` if the search has no location, or if
       the search is deleted.
-    example: 0.1276
+    example: -0.1276
   status:
     anyOf:
       - type: string
@@ -68,7 +68,7 @@ properties:
       - type: 'null'
     description: |
       The depth of the search: `1`, `2`, or `3`. The value of the `depth` field is `null` if the search is deleted.
-    example: 2
+    example: 3
   cached:
     type: [boolean, 'null']
     description: |

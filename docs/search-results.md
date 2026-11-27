@@ -15,7 +15,7 @@ the fields of the search object, of each query, and of each result. It also expl
 The search object that the `POST /v1.1/search` endpoint and the `GET /v1.1/search/{searchId}` endpoint return has 4
 levels:
 
-1. **Search**: the search object has an ID, a status, the options of the search, and the `queries` field.
+1. **Search**: the search object has an ID, a status, the fields that you sent, and the `queries` field.
 2. **Queries**: the `queries` field has one query for each term in the search. The `term` field of each query has the
    term.
 3. **Results**: the `results` field of each query has the top-level results for the term.
@@ -44,7 +44,7 @@ with these fields:
 | `created_at` | string | The date and time when AlsoAsked created the search, in ISO 8601 format. |
 | `updated_at` | string | The date and time when the search last changed, in ISO 8601 format. |
 | `cached_at` | string or `null` | The date and time when AlsoAsked stored the oldest of the earlier results that the search used, in ISO 8601 format. The value is `null` if no term used stored results, or on the sandbox API. |
-| `queries` | array or `null` | One query for each term in the search, in the order of the terms in the request. The value is `null` until the search is complete, and for a deleted search. For the fields, see [Query fields](#query-fields). |
+| `queries` | array or `null` | One query for each unique term in the search, in the order of the terms in the request. The value is `null` until the search is complete, and for a deleted search. For the fields, see [Query fields](#query-fields). |
 
 A search that gets new results from Google has `cached` set to `false` and `cached_at` set to `null`, even after
 AlsoAsked stores its results for later searches. To get new results instead of stored results, set the `fresh` field to
@@ -52,13 +52,28 @@ AlsoAsked stores its results for later searches. To get new results instead of s
 
 ## Search status
 
-The `status` field of the search object has one of these values: `queueing`, `pending`, `running`, `fetching`, `error`,
-`no_results`, or `success`. For a deleted search, the `status` field is `null`. A search is complete when its status is `success`, `no_results`, or `error`.
+The `status` field of the search object has one of these values. A term that gets new results from Google usually
+goes through the first 4 statuses in this order, and every term ends with one of the last 3. A term with stored results
+has the status `success` immediately:
+
+| Status | Meaning |
+| --- | --- |
+| `queueing` | AlsoAsked recorded the search, and the term waits for AlsoAsked to start it. |
+| `pending` | AlsoAsked started the term, and the term waits for its turn to get results from Google. |
+| `running` | AlsoAsked is getting the results for the term from Google. |
+| `fetching` | The results from Google are ready, and AlsoAsked is storing them. |
+| `success` | The term has results. |
+| `no_results` | Google has no results for the term. AlsoAsked refunds the credits of the term. |
+| `error` | The term failed. AlsoAsked refunds the credits of the term. |
+
+A search is complete when its status is `success`, `no_results`, or `error`. For a deleted search, the `status` field
+is `null`. For how the status of a search with more than 1 term comes from its terms, see
+[Status of a search with more than one term](./how-a-search-runs.md#status-of-a-search-with-more-than-one-term).
 
 The `queries` field of the search object is `null` until the search is complete. When the search is complete, the
-`queries` field has one query for each term in the search, and each query has its own `status` field. A search with the
-status `success` has at least one term with results, and can also have terms with the status `no_results` or `error`.
-For details, see [Synchronous and asynchronous searches](./searches.md).
+`queries` field has one query for each unique term in the search, and each query has its own `status` field. A search
+with the status `success` has at least one term with results, and can also have terms with the status `no_results` or
+`error`. For details, see [How a search runs](./how-a-search-runs.md).
 
 The status of a complete search doesn't change. To know when a search is complete, check the `status` field, not the
 `queries` field.
@@ -79,7 +94,7 @@ If a search is deleted, the `deleted` field of the search object is `true`. Thes
 - `queries`
 
 The `id` field and the `created_at` field of a deleted search object keep their values, and the `updated_at` field has
-the time when you deleted the search. For details, see [Search history](./search-history.md).
+the time when you deleted the search. For details, see [Manage your search history](./search-history.md).
 
 ## Query fields
 
@@ -105,9 +120,9 @@ fields.
 | --- | --- | --- |
 | `question` | string | The question that Google shows for the term. |
 | `position` | array of integers | The place of the result in the results for the term. For details, see [Position of a result](#position-of-a-result). |
-| `answer_excerpt` | string or `null` | An excerpt of the answer. Can be `null` or an empty string if Google showed no answer text. |
-| `answer_href` | string or `null` | The URL of the page with the answer. Can be `null` or an empty string. |
-| `answer_page_title` | string or `null` | The title of the page with the answer. Can be `null` or an empty string. |
+| `answer_excerpt` | string or `null` | An excerpt of the answer. The value can be `null` or an empty string if Google showed no answer text. |
+| `answer_href` | string or `null` | The URL of the page with the answer. The value can be `null` or an empty string. |
+| `answer_page_title` | string or `null` | The title of the page with the answer. The value can be `null` or an empty string. |
 | `ai_overview` | boolean | `true` if the answer is an AI overview, otherwise `false`. |
 | `ai_overview_hrefs` | array of strings or `null` | The URLs of the sources of the AI overview. The value is `null` or an empty list if the answer isn't an AI overview. |
 | `ai_overview_page_titles` | array of strings or `null` | The page titles of the sources of the AI overview. The value is `null` or an empty list if the answer isn't an AI overview. |
@@ -150,11 +165,12 @@ The following request gets a search in the `flat` results format:
 
 ```bash
 curl --request GET 'https://alsoaskedapi.com/v1.1/search/9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba?results_format=flat' \
-  --header 'X-Api-Key: YOUR_API_KEY'
+  --header 'X-Api-Key: YOUR_LIVE_API_KEY'
 ```
 
-The following JSON shows the `queries` field of the response body in the `flat` results format. The example is
-shortened from the example in the OpenAPI specification: it has fewer results and fewer AI overview sources.
+The following JSON shows the first query in the `queries` field of the response body in the `flat` results format. The
+example is shortened to 1 top-level result and 1 child result, each with 1 AI overview source. The child result follows
+its parent result in the same list, and no result has a `results` field:
 
 ```json
 {
@@ -173,12 +189,10 @@ shortened from the example in the OpenAPI specification: it has fewer results an
           "answer_page_title": "When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine",
           "ai_overview": true,
           "ai_overview_hrefs": [
-            "https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/",
-            "https://www.gardenwiseinstitute.org/resources/beans/when-to-plant-fava-beans"
+            "https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/"
           ],
           "ai_overview_page_titles": [
-            "When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine",
-            "When to plant out fava beans - Gardenwise Institute"
+            "When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine"
           ]
         },
         {
@@ -189,28 +203,10 @@ shortened from the example in the OpenAPI specification: it has fewer results an
           "answer_page_title": "Grow broad beans with children / RHS Gardening",
           "ai_overview": true,
           "ai_overview_hrefs": [
-            "https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/runner-beans",
-            "https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/carrots"
+            "https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/runner-beans"
           ],
           "ai_overview_page_titles": [
-            "Grow runner beans with children / RHS Gardening",
-            "Sow and tend carrots with kids / RHS Gardening"
-          ]
-        },
-        {
-          "question": "Do broad beans need to be dried before planting?",
-          "position": [1, 2],
-          "answer_excerpt": "Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.",
-          "answer_href": "https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm",
-          "answer_page_title": "Drying Broad Beans - Gardening Know How",
-          "ai_overview": true,
-          "ai_overview_hrefs": [
-            "https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm",
-            "https://www.gardenwiseinstitute.org/resources/beans/drying-fava-beans"
-          ],
-          "ai_overview_page_titles": [
-            "Drying runner beans - Gardening Know How",
-            "Drying fava beans - Gardenwise Institute"
+            "Grow runner beans with children / RHS Gardening"
           ]
         }
       ]
@@ -225,23 +221,23 @@ The following request gets a search in the default `tree` results format:
 
 ```bash
 curl --request GET 'https://alsoaskedapi.com/v1.1/search/9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba' \
-  --header 'X-Api-Key: YOUR_API_KEY'
+  --header 'X-Api-Key: YOUR_LIVE_API_KEY'
 ```
 
-The following JSON is an example response body from the `GET /v1.1/search/{searchId}` endpoint. The search has 1 term
-and a depth of 2. The example is shortened from the example in the OpenAPI specification: it has fewer results and
+The following JSON is an example response body from the `GET /v1.1/search/{searchId}` endpoint. The search has 3 terms
+and a depth of 3. The example is shortened from the example in the OpenAPI specification: it has fewer results and
 fewer AI overview sources.
 
 ```json
 {
   "id": "9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba",
   "language": "en",
-  "region": "us",
+  "region": "gb",
   "latitude": 51.5072,
-  "longitude": 0.1276,
+  "longitude": -0.1276,
   "status": "success",
   "deleted": false,
-  "depth": 2,
+  "depth": 3,
   "cached": true,
   "created_at": "2023-01-01T00:00:00+00:00",
   "updated_at": "2023-01-01T00:00:10+00:00",
@@ -298,7 +294,7 @@ fewer AI overview sources.
                 "https://www.gardenwiseinstitute.org/resources/beans/drying-fava-beans"
               ],
               "ai_overview_page_titles": [
-                "Drying runner beans - Gardening Know How",
+                "Drying Broad Beans - Gardening Know How",
                 "Drying fava beans - Gardenwise Institute"
               ],
               "results": []
@@ -306,6 +302,20 @@ fewer AI overview sources.
           ]
         }
       ]
+    },
+    {
+      "term": "How to grow broad beans?",
+      "status": "no_results",
+      "language_fallback": null,
+      "region_fallback": null,
+      "results": null
+    },
+    {
+      "term": "When to harvest broad beans?",
+      "status": "error",
+      "language_fallback": null,
+      "region_fallback": null,
+      "results": null
     }
   ]
 }
@@ -315,6 +325,7 @@ fewer AI overview sources.
 
 - [Perform a search](./perform-a-search.md)
 - [Synchronous and asynchronous searches](./searches.md)
-- [Search history](./search-history.md)
+- [How a search runs](./how-a-search-runs.md)
+- [Manage your search history](./search-history.md)
 - [Glossary](./glossary.md)
 - [OpenAPI specification](../openapi/openapi.yaml)

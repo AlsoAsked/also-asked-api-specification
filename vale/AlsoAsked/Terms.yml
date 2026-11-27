@@ -29,6 +29,8 @@ swap:
   'production (?:API|environment)': 'live API'
   '(?:test|staging) (?:API|environment)': 'sandbox API'
   'tiers?': 'plan'
+  'web credits?': 'plan credits'
+  'API credits?': 'pay-as-you-go credits'
   'throttl(?:e|ed|es|ing)': 'rate limit'
   'callbacks?(?: URLs?)?': 'webhook endpoint'
   'webhook URLs?': 'webhook endpoint'

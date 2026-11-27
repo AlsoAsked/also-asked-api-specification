@@ -17,6 +17,6 @@ content:
       default:
         summary: Get account response
         description: |
-          An account with a Pro plan, 100 web credits, and 10 API credits.
+          An account with a Pro plan, 100 plan credits, and 10 pay-as-you-go credits.
         value:
           $ref: ../../../examples/account/Account.yaml

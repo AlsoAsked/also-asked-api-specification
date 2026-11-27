@@ -1,7 +1,8 @@
 description: |
-  An error happened in AlsoAsked. The error type is `internal_server`. If a search fails with the `internal_server`
-  error type, AlsoAsked refunds the credits of the search. Check your search history before you perform the search
-  again. If the rate limiter fails, the response has no rate limit headers and no `X-AlsoAsked-Credits` header.
+  An error happened in AlsoAsked. The error type is `internal_server`. If the `POST /v1.1/search` endpoint returns
+  this error, AlsoAsked refunds the credits of every term that isn't complete, so you can send the request again. If
+  AlsoAsked already recorded the search, those terms get the status `error`. If the check of the rate limit itself
+  fails, the response has no rate limit headers and no `X-AlsoAsked-Credits` header.
 headers:
   X-AlsoAsked-Credits:
     $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml

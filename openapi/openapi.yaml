@@ -13,7 +13,7 @@ info:
 
     ## Live API and sandbox API
 
-    The AlsoAsked API has two environments with the same endpoints:
+    The AlsoAsked API has 2 environments with the same endpoints:
 
     - **Live API** (`https://alsoaskedapi.com/v1.1`): gets real results from Google and uses the credits of your plan.
       To use the live API, your account needs a Pro plan. To compare plans, go to
@@ -28,10 +28,22 @@ info:
 
     - [AlsoAsked API overview](../docs/overview.md)
     - [Quickstart](../docs/quickstart.md)
+    - [Authenticate requests](../docs/authentication.md)
+    - [Sandbox API](../docs/sandbox.md)
     - [Synchronous and asynchronous searches](../docs/searches.md)
+    - [How a search runs](../docs/how-a-search-runs.md)
     - [Perform a search](../docs/perform-a-search.md)
+    - [Search results](../docs/search-results.md)
+    - [Manage your search history](../docs/search-history.md)
+    - [Credits](../docs/credits.md)
+    - [Search many terms](../docs/bulk-searches.md)
     - [Webhooks](../docs/webhooks.md)
+    - [Verify webhook signatures](../docs/verify-webhook-signatures.md)
+    - [Account details](../docs/account.md)
     - [Errors](../docs/errors.md)
+    - [Rate limits](../docs/rate-limits.md)
+    - [Glossary](../docs/glossary.md)
+    - [Changelog](../docs/changelog.md)
 
     ## Get help with the AlsoAsked API
 
@@ -172,8 +184,8 @@ paths:
         Get a search by its ID. The response includes the status and the results of the search.
 
         The `queries` field is `null` until the search is complete: when its `status` field is `success`, `no_results`, or
-        `error`. Then the `queries` field contains one query for each term. Each query has the status and the results of
-        its term.
+        `error`. Then the `queries` field contains one query for each unique term. Each query has the status and the
+        results of its term.
 
         The `results_format` query parameter sets how the API returns the results: `tree` (default) puts child results inside
         their parent result, and `flat` returns all results in one list.
@@ -215,7 +227,9 @@ paths:
         of the deletion, and the other fields are `null`.
 
         Deleting a search doesn't stop it. If the search is still running, its terms keep running, and AlsoAsked refunds
-        the terms that fail or have no results. AlsoAsked sends no more webhook events for a deleted search.
+        the terms that fail or have no results. A term that succeeds after the deletion isn't refunded. AlsoAsked creates no
+        new webhook events for a deleted search, but a webhook event that AlsoAsked created before the deletion can still
+        arrive. In its body, the `deleted` field is `true`.
       security:
         - apiKey: []
       parameters:
@@ -250,8 +264,8 @@ webhooks:
 
         AlsoAsked sends a `POST` request with a JSON body to the URL of your webhook endpoint. The body has the ID of the
         webhook event in the `event_id` field, followed by the fields of the `GET /v1.1/search/{searchId}` response for the
-        search, at the time when AlsoAsked sends the request. The headers contain the webhook event type, the environment,
-        and a signature that you use to verify the request.
+        search, at the time when AlsoAsked sends the request. The results are in the `tree` results format. The headers
+        contain the webhook event type, the environment, and a signature that you use to verify the request.
 
         For details, see [Webhooks](../docs/webhooks.md) and
         [Verify webhook signatures](../docs/verify-webhook-signatures.md).
@@ -267,7 +281,10 @@ webhooks:
       responses:
         2XX:
           description: |
-            Your webhook endpoint received the webhook event. AlsoAsked doesn't send the webhook event again.
+            Your webhook endpoint received the webhook event. AlsoAsked doesn't try again to send the webhook event. Keep
+            the response body smaller than 1 MB: with a larger response body, AlsoAsked counts the attempt as failed. In rare
+            cases, your webhook endpoint can still receive the same webhook event twice, so ignore a webhook event whose
+            `event_id` field you already processed.
         3XX:
           description: |
             AlsoAsked doesn't follow redirects, so AlsoAsked counts the attempt as failed and sends the webhook event again
@@ -282,8 +299,8 @@ components:
   headers:
     X-AlsoAsked-Credits:
       description: |
-        The number of credits that remain in your account. On the live API, the value is your web credits plus your API
-        credits. On the sandbox API, the value is your sandbox credits.
+        The number of credits that remain in your account. On the live API, the value is your plan credits plus your
+        pay-as-you-go credits. On the sandbox API, the value is your sandbox credits.
       schema:
         type: integer
         format: int64
@@ -373,23 +390,26 @@ components:
           format: int64
           minimum: 0
           description: |
-            The web credits that remain in the account: the credits that come with the plan. AlsoAsked uses web credits
-            before API credits. On the sandbox API, the value of the `web_credits` field is the sandbox credits.
+            The plan credits that remain in the account: the credits that come with the plan. The field keeps its earlier name
+            for backward compatibility. AlsoAsked uses plan credits before pay-as-you-go credits. On the sandbox API, the
+            value of the `web_credits` field is the sandbox credits.
           example: 100
         api_credits:
           type: integer
           format: int64
           minimum: 0
           description: |
-            The API credits that remain in the account: the credits that you bought. API credits don't expire. On the sandbox
-            API, the value of the `api_credits` field is `0`.
+            The pay-as-you-go credits that remain in the account: the credits that you bought. The field keeps its earlier
+            name for backward compatibility: pay-as-you-go credits once paid only for searches on the API, and now also pay
+            for searches on the AlsoAsked website. Pay-as-you-go credits don't expire. On the sandbox API, the value of the
+            `api_credits` field is `0`.
           example: 10
         credits_reset_at:
           type: string
           format: date-time
           description: |
-            The date and time when the web credits of the account renew next, in ISO 8601 format. On the sandbox API, the date
-            and time when the sandbox credits reset next.
+            The date and time when the plan credits of the account renew next, in ISO 8601 format. On the sandbox API, the
+            date and time when the sandbox credits reset next.
           example: '2023-02-01T00:00:00+00:00'
         registered_at:
           type: string
@@ -470,9 +490,7 @@ components:
           description: |
             A description of the error for people to read. The text of the `message` field can change, so don't use the
             `message` field in your code.
-          example: |
-            Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for
-            more information.
+          example: Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for more information.
       example:
         status: api_access_disabled
         message: Your API access has been disabled. Please contact us through live chat or email support@alsoasked.com for more information.
@@ -878,7 +896,7 @@ components:
           description: |
             The region code of the search: a two-letter International Organization for Standardization (ISO) 3166-1 code, for
             example `gb`. The value of the `region` field is `null` if the search is deleted.
-          example: us
+          example: gb
         latitude:
           type:
             - number
@@ -896,7 +914,7 @@ components:
           description: |
             The longitude of the search. The value of the `longitude` field is `null` if the search has no location, or if
             the search is deleted.
-          example: 0.1276
+          example: -0.1276
         status:
           anyOf:
             - type: string
@@ -927,7 +945,7 @@ components:
             - type: 'null'
           description: |
             The depth of the search: `1`, `2`, or `3`. The value of the `depth` field is `null` if the search is deleted.
-          example: 2
+          example: 3
         cached:
           type:
             - boolean
@@ -974,12 +992,12 @@ components:
       example:
         id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
         language: en
-        region: us
+        region: gb
         latitude: 51.5072
-        longitude: 0.1276
+        longitude: -0.1276
         status: success
         deleted: false
-        depth: 2
+        depth: 3
         cached: true
         created_at: '2023-01-01T00:00:00+00:00'
         updated_at: '2023-01-01T00:00:10+00:00'
@@ -1003,22 +1021,6 @@ components:
           items:
             $ref: '#/components/schemas/SearchRequest'
           example:
-            - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
-              language: de
-              region: de
-              latitude: 51.5072
-              longitude: 0.1276
-              status: success
-              deleted: false
-              depth: 3
-              cached: false
-              created_at: '2023-01-15T18:45:00+00:00'
-              updated_at: '2023-01-15T18:50:00+00:00'
-              cached_at: null
-              terms:
-                - Wie kann man Energie sparen?
-                - Was sind die besten Tipps zum Energiesparen?
-                - Wie senke ich meinen Energieverbrauch?
             - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
               language: null
               region: null
@@ -1046,18 +1048,34 @@ components:
               cached_at: '2023-01-04T03:48:00+00:00'
               terms:
                 - What are the best pasta recipes?
-            - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-              language: en
-              region: us
-              latitude: 51.5072
-              longitude: 0.1276
+            - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
+              language: de
+              region: de
+              latitude: 52.52
+              longitude: 13.405
               status: success
               deleted: false
               depth: 3
               cached: false
+              created_at: '2023-01-03T18:45:00+00:00'
+              updated_at: '2023-01-03T18:50:00+00:00'
+              cached_at: null
+              terms:
+                - Wie kann man Energie sparen?
+                - Was sind die besten Tipps zum Energiesparen?
+                - Wie senke ich meinen Energieverbrauch?
+            - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
+              language: en
+              region: gb
+              latitude: 51.5072
+              longitude: -0.1276
+              status: success
+              deleted: false
+              depth: 3
+              cached: true
               created_at: '2023-01-01T00:00:00+00:00'
               updated_at: '2023-01-01T00:00:10+00:00'
-              cached_at: null
+              cached_at: '2022-12-31T00:00:00+00:00'
               terms:
                 - When to plant out broad beans?
                 - How to grow broad beans?
@@ -1066,7 +1084,7 @@ components:
           type: integer
           format: int64
           description: |
-            The total number of searches in your search history.
+            The total number of searches in your search history, including deleted searches.
           example: 32
         page:
           type: integer
@@ -1076,22 +1094,6 @@ components:
           example: 1
       example:
         results:
-          - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
-            language: de
-            region: de
-            latitude: 51.5072
-            longitude: 0.1276
-            status: success
-            deleted: false
-            depth: 3
-            cached: false
-            created_at: '2023-01-15T18:45:00+00:00'
-            updated_at: '2023-01-15T18:50:00+00:00'
-            cached_at: null
-            terms:
-              - Wie kann man Energie sparen?
-              - Was sind die besten Tipps zum Energiesparen?
-              - Wie senke ich meinen Energieverbrauch?
           - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
             language: null
             region: null
@@ -1119,18 +1121,34 @@ components:
             cached_at: '2023-01-04T03:48:00+00:00'
             terms:
               - What are the best pasta recipes?
-          - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-            language: en
-            region: us
-            latitude: 51.5072
-            longitude: 0.1276
+          - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
+            language: de
+            region: de
+            latitude: 52.52
+            longitude: 13.405
             status: success
             deleted: false
             depth: 3
             cached: false
+            created_at: '2023-01-03T18:45:00+00:00'
+            updated_at: '2023-01-03T18:50:00+00:00'
+            cached_at: null
+            terms:
+              - Wie kann man Energie sparen?
+              - Was sind die besten Tipps zum Energiesparen?
+              - Wie senke ich meinen Energieverbrauch?
+          - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
+            language: en
+            region: gb
+            latitude: 51.5072
+            longitude: -0.1276
+            status: success
+            deleted: false
+            depth: 3
+            cached: true
             created_at: '2023-01-01T00:00:00+00:00'
             updated_at: '2023-01-01T00:00:10+00:00'
-            cached_at: null
+            cached_at: '2022-12-31T00:00:00+00:00'
             terms:
               - When to plant out broad beans?
               - How to grow broad beans?
@@ -1142,7 +1160,7 @@ components:
       type: object
       description: |
         The error body for the `validation` error type. The AlsoAsked API returns the `validation` error type with the status
-        code `422 Unprocessable Entity` when a field, parameter, or header of the request isn't valid. AlsoAsked doesn't
+        code `422 Unprocessable Content` when a field, parameter, or header of the request isn't valid. AlsoAsked doesn't
         charge credits for the request. The `errors` field names the field, parameter, or header, so your code can find the
         problem without reading the `message` field.
       properties:
@@ -1207,13 +1225,14 @@ components:
         terms:
           type: array
           description: |
-            The terms to search for: 1 to 1,000 terms. Each term must be unique. AlsoAsked removes spaces at the start and end
-            of each term. If 2 terms are the same after that, AlsoAsked searches the term once and charges credits for the
-            term once.
+            The terms to search for: 1 to 1,000 terms. Each term must be unique. AlsoAsked removes whitespace and invisible
+            characters at the start and end of each term. If 2 terms are the same after that, AlsoAsked searches the term
+            once and charges credits for the term once.
           items:
             type: string
             description: |
-              A term: 1 to 4,127 characters. A term must contain text other than spaces and quotes.
+              A term: 1 to 4,127 characters. A term must contain text other than whitespace, double quotes (`"`), and
+              invisible characters.
             minLength: 1
             maxLength: 4127
           minItems: 1
@@ -1518,7 +1537,7 @@ components:
             - ye
             - zm
             - zw
-          example: us
+          example: gb
           default: us
         depth:
           type: integer
@@ -1527,7 +1546,7 @@ components:
             The number of levels of results to get: `1`, `2`, or `3`. The default is `2`. A depth of `1` gets only top-level
             results. The cost for each term depends on the depth: 1 credit for a depth of `1` or `2`, and 4 credits for a
             depth of `3`.
-          example: 2
+          example: 3
           default: 2
           minimum: 1
           maximum: 3
@@ -1536,8 +1555,9 @@ components:
           description: |
             Set the `fresh` field to `true` to get new results from Google instead of stored results. The default is `false`:
             AlsoAsked can use the results that any account stored for an earlier search with the same term, language, region,
-            depth, and location, however old they are. On the live API, a term with stored results costs nothing when `fresh`
-            is `false`. When `fresh` is `true`, every term costs credits.
+            depth, and location, however old they are. AlsoAsked doesn't use stored results if a top-level result has a blank
+            answer excerpt. On the live API, a term with stored results costs nothing when `fresh` is `false`. When `fresh`
+            is `true`, every term costs credits. The sandbox API has no stored results.
           example: false
           default: false
         async:
@@ -1565,7 +1585,7 @@ components:
           maximum: 90
           description: |
             The latitude of the location for the search, from -90 to 90. Send the `latitude` field and the `longitude` field
-            together. If the request body has only one of the two fields, the API returns the status code
+            together. If the request body has only one of the 2 fields, the API returns the status code
             `422 Unprocessable Content`. A value of `0` is a real coordinate. AlsoAsked rounds the value to 7 decimal places.
           example: 51.5072
         longitude:
@@ -1575,9 +1595,9 @@ components:
           maximum: 180
           description: |
             The longitude of the location for the search, from -180 to 180. Send the `latitude` field and the `longitude`
-            field together. If the request body has only one of the two fields, the API returns the status code
+            field together. If the request body has only one of the 2 fields, the API returns the status code
             `422 Unprocessable Content`. A value of `0` is a real coordinate. AlsoAsked rounds the value to 7 decimal places.
-          example: 0.1276
+          example: -0.1276
       required:
         - terms
       example:
@@ -1586,13 +1606,13 @@ components:
           - How to grow broad beans?
           - When to harvest broad beans?
         language: en
-        region: us
+        region: gb
         latitude: 51.5072
-        longitude: 0.1276
-        depth: 2
+        longitude: -0.1276
+        depth: 3
         fresh: false
         async: false
-        notify_webhooks: false
+        notify_webhooks: true
     SearchResult:
       title: Result
       type: object
@@ -1624,9 +1644,7 @@ components:
             - 'null'
           description: |
             An excerpt of the answer. The value can be `null` or an empty string if Google showed no answer text.
-          example: |
-            Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can
-            plant them out from mid-March.
+          example: Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can plant them out from mid-March.
         answer_href:
           type:
             - string
@@ -1685,104 +1703,84 @@ components:
           items:
             $ref: '#/components/schemas/SearchResult'
           example:
-            - question: When to plant out broad beans?
+            - question: When can I transplant broad beans?
               position:
                 - 1
-              answer_excerpt: Broad beans can be planted out from mid-April to mid-May. If you are growing them in a greenhouse, you can plant them out from mid-March.
-              answer_href: https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
-              answer_page_title: When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine
+                - 1
+              answer_excerpt: Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual pots during the autumn and transplanted in to the ground in the spring.
+              answer_href: https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
+              answer_page_title: Grow broad beans with children / RHS Gardening
               ai_overview: true
               ai_overview_hrefs:
-                - https://www.gardenersworld.com/how-to/grow/broad-beans/when-to-plant-out-broad-beans/
-                - https://www.gardenwiseinstitute.org/resources/beans/when-to-plant-fava-beans
-                - https://www.urbanvegally.com/articles/beans/when-to-plant-borlotti-beans
-                - https://www.greenthumbacademy.net/bean-care/when-to-plant-kidney-beans
-                - https://www.plantprodigest.com/edibles/beans/when-to-plant-lima-beans
+                - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/runner-beans
+                - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/carrots
+                - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/peas
+                - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/courgettes
+                - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/sunflower-seedling
               ai_overview_page_titles:
-                - When to plant out broad beans? | Broad beans | Grow | Gardeners' World Magazine
-                - When to plant out fava beans - Gardenwise Institute
-                - When to plant out borlotti beans - UrbanVeg Ally
-                - When to plant out kidney beans - GreenThumb Academy
-                - When to plant out lima beans - PlantPro Digest
+                - Grow runner beans with children / RHS Gardening
+                - Sow and tend carrots with kids / RHS Gardening
+                - Plant and cultivate peas with children / RHS Gardening
+                - Harvest courgettes together with kids / RHS Gardening
+                - Raise sunflower seedlings with children / RHS Gardening
               results:
-                - question: When can I transplant broad beans?
+                - question: Do you get a second crop of broad beans?
                   position:
                     - 1
                     - 1
-                  answer_excerpt: Broad beans prefer to be planted in the position where they are to grow, but can be planted in individual pots during the autumn and transplanted in to the ground in the spring.
-                  answer_href: https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/broad-beans
-                  answer_page_title: Grow broad beans with children / RHS Gardening
-                  ai_overview: true
-                  ai_overview_hrefs:
-                    - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/runner-beans
-                    - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/carrots
-                    - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/peas
-                    - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/courgettes
-                    - https://www.rhs.org.uk/education-learning/gardening-children-schools/family-activities/grow-it/grow/sunflower-seedling
-                  ai_overview_page_titles:
-                    - Grow runner beans with children / RHS Gardening
-                    - Sow and tend carrots with kids / RHS Gardening
-                    - Plant and cultivate peas with children / RHS Gardening
-                    - Harvest courgettes together with kids / RHS Gardening
-                    - Raise sunflower seedlings with children / RHS Gardening
-                  results:
-                    - question: Do you get a second crop of broad beans?
-                      position:
-                        - 1
-                        - 1
-                        - 1
-                      answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                      answer_page_title: Growing Broad Beans - Gardening Know How
-                      ai_overview: false
-                      ai_overview_hrefs: null
-                      ai_overview_page_titles: null
-                      results: []
-                    - question: What not to plant with broad beans?
-                      position:
-                        - 1
-                        - 1
-                        - 2
-                      answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                      answer_page_title: Growing Broad Beans - Gardening Know How
-                      ai_overview: false
-                      ai_overview_hrefs: null
-                      ai_overview_page_titles: null
-                      results: []
-                    - question: How to grow broad beans in a greenhouse?
-                      position:
-                        - 1
-                        - 1
-                        - 3
-                      answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                      answer_page_title: Growing Broad Beans - Gardening Know How
-                      ai_overview: false
-                      ai_overview_hrefs: null
-                      ai_overview_page_titles: null
-                      results: []
-                - question: Do broad beans need to be dried before planting?
+                    - 1
+                  answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                  answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                  answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
+                  ai_overview: false
+                  ai_overview_hrefs: null
+                  ai_overview_page_titles: null
+                  results: []
+                - question: What not to plant with broad beans?
                   position:
+                    - 1
                     - 1
                     - 2
-                  answer_excerpt: Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.
-                  answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
-                  answer_page_title: Drying Broad Beans - Gardening Know How
-                  ai_overview: true
-                  ai_overview_hrefs:
-                    - https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
-                    - https://www.gardenwiseinstitute.org/resources/beans/drying-fava-beans
-                    - https://www.urbanvegally.com/articles/beans/drying-borlotti-beans
-                    - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
-                    - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
-                  ai_overview_page_titles:
-                    - Drying runner beans - Gardening Know How
-                    - Drying fava beans - Gardenwise Institute
-                    - Drying borlotti beans - UrbanVeg Ally
-                    - Drying kidney beans - GreenThumb Academy
-                    - Drying lima beans - PlantPro Digest
+                  answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                  answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                  answer_page_title: Broad bean companion plants - UrbanVeg Ally
+                  ai_overview: false
+                  ai_overview_hrefs: null
+                  ai_overview_page_titles: null
                   results: []
+                - question: How to grow broad beans in a greenhouse?
+                  position:
+                    - 1
+                    - 1
+                    - 3
+                  answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                  answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                  answer_page_title: Growing broad beans under glass - PlantPro Digest
+                  ai_overview: false
+                  ai_overview_hrefs: null
+                  ai_overview_page_titles: null
+                  results: []
+            - question: Do broad beans need to be dried before planting?
+              position:
+                - 1
+                - 2
+              answer_excerpt: Next to potatoes, broad beans are one of the easiest staples to grow. Dried broad beans, or fava beans, are simply beans left in the pod until they rattle. When you've had your fill of fresh, leave the rest on the plant to dry. If it's wet, haul the pods indoors, to shell and dry somewhere warm.
+              answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
+              answer_page_title: Drying Broad Beans - Gardening Know How
+              ai_overview: true
+              ai_overview_hrefs:
+                - https://www.gardeningknowhow.com/edible/vegetables/broad-bean/drying-broad-beans.htm
+                - https://www.gardenwiseinstitute.org/resources/beans/drying-fava-beans
+                - https://www.urbanvegally.com/articles/beans/drying-borlotti-beans
+                - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
+                - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
+              ai_overview_page_titles:
+                - Drying Broad Beans - Gardening Know How
+                - Drying fava beans - Gardenwise Institute
+                - Drying borlotti beans - UrbanVeg Ally
+                - Drying kidney beans - GreenThumb Academy
+                - Drying lima beans - PlantPro Digest
+              results: []
       example:
         question: When to plant out broad beans?
         position:
@@ -1830,9 +1828,9 @@ components:
                   - 1
                   - 1
                   - 1
-                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                answer_page_title: Growing Broad Beans - Gardening Know How
+                answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                 ai_overview: false
                 ai_overview_hrefs: null
                 ai_overview_page_titles: null
@@ -1842,9 +1840,9 @@ components:
                   - 1
                   - 1
                   - 2
-                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                answer_page_title: Growing Broad Beans - Gardening Know How
+                answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                answer_page_title: Broad bean companion plants - UrbanVeg Ally
                 ai_overview: false
                 ai_overview_hrefs: null
                 ai_overview_page_titles: null
@@ -1854,9 +1852,9 @@ components:
                   - 1
                   - 1
                   - 3
-                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                answer_page_title: Growing Broad Beans - Gardening Know How
+                answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                answer_page_title: Growing broad beans under glass - PlantPro Digest
                 ai_overview: false
                 ai_overview_hrefs: null
                 ai_overview_page_titles: null
@@ -1876,7 +1874,7 @@ components:
               - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
               - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
             ai_overview_page_titles:
-              - Drying runner beans - Gardening Know How
+              - Drying Broad Beans - Gardening Know How
               - Drying fava beans - Gardenwise Institute
               - Drying borlotti beans - UrbanVeg Ally
               - Drying kidney beans - GreenThumb Academy
@@ -1982,9 +1980,9 @@ components:
                         - 1
                         - 1
                         - 1
-                      answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                      answer_page_title: Growing Broad Beans - Gardening Know How
+                      answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                      answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                      answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                       ai_overview: false
                       ai_overview_hrefs: null
                       ai_overview_page_titles: null
@@ -1994,9 +1992,9 @@ components:
                         - 1
                         - 1
                         - 2
-                      answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                      answer_page_title: Growing Broad Beans - Gardening Know How
+                      answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                      answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                      answer_page_title: Broad bean companion plants - UrbanVeg Ally
                       ai_overview: false
                       ai_overview_hrefs: null
                       ai_overview_page_titles: null
@@ -2006,9 +2004,9 @@ components:
                         - 1
                         - 1
                         - 3
-                      answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                      answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                      answer_page_title: Growing Broad Beans - Gardening Know How
+                      answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                      answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                      answer_page_title: Growing broad beans under glass - PlantPro Digest
                       ai_overview: false
                       ai_overview_hrefs: null
                       ai_overview_page_titles: null
@@ -2028,7 +2026,7 @@ components:
                     - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
                     - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
                   ai_overview_page_titles:
-                    - Drying runner beans - Gardening Know How
+                    - Drying Broad Beans - Gardening Know How
                     - Drying fava beans - Gardenwise Institute
                     - Drying borlotti beans - UrbanVeg Ally
                     - Drying kidney beans - GreenThumb Academy
@@ -2086,9 +2084,9 @@ components:
                       - 1
                       - 1
                       - 1
-                    answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                    answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                    answer_page_title: Growing Broad Beans - Gardening Know How
+                    answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                    answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                    answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                     ai_overview: false
                     ai_overview_hrefs: null
                     ai_overview_page_titles: null
@@ -2098,9 +2096,9 @@ components:
                       - 1
                       - 1
                       - 2
-                    answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                    answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                    answer_page_title: Growing Broad Beans - Gardening Know How
+                    answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                    answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                    answer_page_title: Broad bean companion plants - UrbanVeg Ally
                     ai_overview: false
                     ai_overview_hrefs: null
                     ai_overview_page_titles: null
@@ -2110,9 +2108,9 @@ components:
                       - 1
                       - 1
                       - 3
-                    answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                    answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                    answer_page_title: Growing Broad Beans - Gardening Know How
+                    answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                    answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                    answer_page_title: Growing broad beans under glass - PlantPro Digest
                     ai_overview: false
                     ai_overview_hrefs: null
                     ai_overview_page_titles: null
@@ -2132,7 +2130,7 @@ components:
                   - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
                   - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
                 ai_overview_page_titles:
-                  - Drying runner beans - Gardening Know How
+                  - Drying Broad Beans - Gardening Know How
                   - Drying fava beans - Gardenwise Institute
                   - Drying borlotti beans - UrbanVeg Ally
                   - Drying kidney beans - GreenThumb Academy
@@ -2451,7 +2449,7 @@ components:
           description: |
             The region code of the search: a two-letter International Organization for Standardization (ISO) 3166-1 code, for
             example `gb`. The value of the `region` field is `null` if the search is deleted.
-          example: us
+          example: gb
         latitude:
           type:
             - number
@@ -2469,7 +2467,7 @@ components:
           description: |
             The longitude of the search. The value of the `longitude` field is `null` if the search has no location, or if
             the search is deleted.
-          example: 0.1276
+          example: -0.1276
         status:
           anyOf:
             - type: string
@@ -2537,7 +2535,7 @@ components:
             - array
             - 'null'
           description: |
-            One query for each term in the search, in the order of the `terms` field of the request. The value of the
+            One query for each unique term in the search, in the order of the `terms` field of the request. The value of the
             `queries` field is `null` until the search is complete, and if the search is deleted. A search is complete when
             its `status` field is `success`, `no_results`, or `error`. Each query has its own `status` field, so you can see
             which terms have results and which terms failed.
@@ -2595,9 +2593,9 @@ components:
                             - 1
                             - 1
                             - 1
-                          answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                          answer_page_title: Growing Broad Beans - Gardening Know How
+                          answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                          answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                          answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                           ai_overview: false
                           ai_overview_hrefs: null
                           ai_overview_page_titles: null
@@ -2607,9 +2605,9 @@ components:
                             - 1
                             - 1
                             - 2
-                          answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                          answer_page_title: Growing Broad Beans - Gardening Know How
+                          answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                          answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                          answer_page_title: Broad bean companion plants - UrbanVeg Ally
                           ai_overview: false
                           ai_overview_hrefs: null
                           ai_overview_page_titles: null
@@ -2619,9 +2617,9 @@ components:
                             - 1
                             - 1
                             - 3
-                          answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                          answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                          answer_page_title: Growing Broad Beans - Gardening Know How
+                          answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                          answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                          answer_page_title: Growing broad beans under glass - PlantPro Digest
                           ai_overview: false
                           ai_overview_hrefs: null
                           ai_overview_page_titles: null
@@ -2641,18 +2639,28 @@ components:
                         - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
                         - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
                       ai_overview_page_titles:
-                        - Drying runner beans - Gardening Know How
+                        - Drying Broad Beans - Gardening Know How
                         - Drying fava beans - Gardenwise Institute
                         - Drying borlotti beans - UrbanVeg Ally
                         - Drying kidney beans - GreenThumb Academy
                         - Drying lima beans - PlantPro Digest
                       results: []
+            - term: How to grow broad beans?
+              status: no_results
+              language_fallback: null
+              region_fallback: null
+              results: null
+            - term: When to harvest broad beans?
+              status: error
+              language_fallback: null
+              region_fallback: null
+              results: null
       example:
         id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
         language: en
-        region: us
+        region: gb
         latitude: 51.5072
-        longitude: 0.1276
+        longitude: -0.1276
         status: success
         deleted: false
         depth: 3
@@ -2712,9 +2720,9 @@ components:
                           - 1
                           - 1
                           - 1
-                        answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                        answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                        answer_page_title: Growing Broad Beans - Gardening Know How
+                        answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                        answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                        answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                         ai_overview: false
                         ai_overview_hrefs: null
                         ai_overview_page_titles: null
@@ -2724,9 +2732,9 @@ components:
                           - 1
                           - 1
                           - 2
-                        answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                        answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                        answer_page_title: Growing Broad Beans - Gardening Know How
+                        answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                        answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                        answer_page_title: Broad bean companion plants - UrbanVeg Ally
                         ai_overview: false
                         ai_overview_hrefs: null
                         ai_overview_page_titles: null
@@ -2736,9 +2744,9 @@ components:
                           - 1
                           - 1
                           - 3
-                        answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                        answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                        answer_page_title: Growing Broad Beans - Gardening Know How
+                        answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                        answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                        answer_page_title: Growing broad beans under glass - PlantPro Digest
                         ai_overview: false
                         ai_overview_hrefs: null
                         ai_overview_page_titles: null
@@ -2758,12 +2766,22 @@ components:
                       - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
                       - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
                     ai_overview_page_titles:
-                      - Drying runner beans - Gardening Know How
+                      - Drying Broad Beans - Gardening Know How
                       - Drying fava beans - Gardenwise Institute
                       - Drying borlotti beans - UrbanVeg Ally
                       - Drying kidney beans - GreenThumb Academy
                       - Drying lima beans - PlantPro Digest
                     results: []
+          - term: How to grow broad beans?
+            status: no_results
+            language_fallback: null
+            region_fallback: null
+            results: null
+          - term: When to harvest broad beans?
+            status: error
+            language_fallback: null
+            region_fallback: null
+            results: null
     InsufficientPlanError:
       title: Insufficient plan error
       type: object
@@ -2886,7 +2904,7 @@ components:
             default:
               summary: Get account response
               description: |
-                An account with a Pro plan, 100 web credits, and 10 API credits.
+                An account with a Pro plan, 100 plan credits, and 10 pay-as-you-go credits.
               value:
                 id: 6G8QgoK9ar0E1pB7Rl0LN5mxljdAvBWb
                 name: Mantis Toboggan
@@ -2970,9 +2988,9 @@ components:
             InvalidApiKeyError:
               summary: Invalid API key error
               description: |
-                An `invalid_api_key` error. The value of the `X-Api-Key` header isn't a valid API key, the API key no longer
-                exists, or the API key is for the other API. A live API key works only on the live API, and a sandbox API
-                key works only on the sandbox API.
+                An `invalid_api_key` error. The `X-Api-Key` header is empty, its value isn't a valid API key, the API key no
+                longer exists, or the API key is for the other API. A live API key works only on the live API, and a sandbox
+                API key works only on the sandbox API.
               value:
                 status: invalid_api_key
                 message: The API key provided is invalid.
@@ -3005,9 +3023,10 @@ components:
                 message: The rate limit has been exceeded. Wait until the time in the Retry-After header, then send the request again.
     InternalServerError:
       description: |
-        An error happened in AlsoAsked. The error type is `internal_server`. If a search fails with the `internal_server`
-        error type, AlsoAsked refunds the credits of the search. Check your search history before you perform the search
-        again. If the rate limiter fails, the response has no rate limit headers and no `X-AlsoAsked-Credits` header.
+        An error happened in AlsoAsked. The error type is `internal_server`. If the `POST /v1.1/search` endpoint returns
+        this error, AlsoAsked refunds the credits of every term that isn't complete, so you can send the request again. If
+        AlsoAsked already recorded the search, those terms get the status `error`. If the check of the rate limit itself
+        fails, the response has no rate limit headers and no `X-AlsoAsked-Credits` header.
       headers:
         X-AlsoAsked-Credits:
           $ref: '#/components/headers/X-AlsoAsked-Credits'
@@ -3054,22 +3073,6 @@ components:
                 The first page of a search history.
               value:
                 results:
-                  - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
-                    language: de
-                    region: de
-                    latitude: 51.5072
-                    longitude: 0.1276
-                    status: success
-                    deleted: false
-                    depth: 3
-                    cached: false
-                    created_at: '2023-01-15T18:45:00+00:00'
-                    updated_at: '2023-01-15T18:50:00+00:00'
-                    cached_at: null
-                    terms:
-                      - Wie kann man Energie sparen?
-                      - Was sind die besten Tipps zum Energiesparen?
-                      - Wie senke ich meinen Energieverbrauch?
                   - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
                     language: null
                     region: null
@@ -3097,18 +3100,34 @@ components:
                     cached_at: '2023-01-04T03:48:00+00:00'
                     terms:
                       - What are the best pasta recipes?
-                  - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-                    language: en
-                    region: us
-                    latitude: 51.5072
-                    longitude: 0.1276
+                  - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
+                    language: de
+                    region: de
+                    latitude: 52.52
+                    longitude: 13.405
                     status: success
                     deleted: false
                     depth: 3
                     cached: false
+                    created_at: '2023-01-03T18:45:00+00:00'
+                    updated_at: '2023-01-03T18:50:00+00:00'
+                    cached_at: null
+                    terms:
+                      - Wie kann man Energie sparen?
+                      - Was sind die besten Tipps zum Energiesparen?
+                      - Wie senke ich meinen Energieverbrauch?
+                  - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
+                    language: en
+                    region: gb
+                    latitude: 51.5072
+                    longitude: -0.1276
+                    status: success
+                    deleted: false
+                    depth: 3
+                    cached: true
                     created_at: '2023-01-01T00:00:00+00:00'
                     updated_at: '2023-01-01T00:00:10+00:00'
-                    cached_at: null
+                    cached_at: '2022-12-31T00:00:00+00:00'
                     terms:
                       - When to plant out broad beans?
                       - How to grow broad beans?
@@ -3148,8 +3167,9 @@ components:
       description: |
         The search that AlsoAsked created. For a synchronous search, the API returns the response when the search is
         complete or when the timeout ends. For an asynchronous search, the API returns the response immediately. The
-        `queries` field has the results of the search only when the `status` field is `success`. Otherwise, the `queries`
-        field is `null`.
+        `queries` field is `null` until the search is complete. When the `status` field is `success`, `no_results`, or
+        `error`, the `queries` field has one query for each unique term. Each query has the status and the
+        results of its term.
       headers:
         X-AlsoAsked-Credits:
           $ref: '#/components/headers/X-AlsoAsked-Credits'
@@ -3171,9 +3191,9 @@ components:
               value:
                 id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
                 language: en
-                region: us
+                region: gb
                 latitude: 51.5072
-                longitude: 0.1276
+                longitude: -0.1276
                 status: success
                 deleted: false
                 depth: 3
@@ -3233,9 +3253,9 @@ components:
                                   - 1
                                   - 1
                                   - 1
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                                answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                                answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3245,9 +3265,9 @@ components:
                                   - 1
                                   - 1
                                   - 2
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                                answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                                answer_page_title: Broad bean companion plants - UrbanVeg Ally
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3257,9 +3277,9 @@ components:
                                   - 1
                                   - 1
                                   - 3
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                                answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                                answer_page_title: Growing broad beans under glass - PlantPro Digest
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3279,12 +3299,22 @@ components:
                               - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
                               - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
                             ai_overview_page_titles:
-                              - Drying runner beans - Gardening Know How
+                              - Drying Broad Beans - Gardening Know How
                               - Drying fava beans - Gardenwise Institute
                               - Drying borlotti beans - UrbanVeg Ally
                               - Drying kidney beans - GreenThumb Academy
                               - Drying lima beans - PlantPro Digest
                             results: []
+                  - term: How to grow broad beans?
+                    status: no_results
+                    language_fallback: null
+                    region_fallback: null
+                    results: null
+                  - term: When to harvest broad beans?
+                    status: error
+                    language_fallback: null
+                    region_fallback: null
+                    results: null
     InvalidBodyError:
       description: |
         The request body isn't valid JSON. The error type is `invalid_body`.
@@ -3345,8 +3375,9 @@ components:
                 message: You don't have enough credits to perform this request.
     GetSearch:
       description: |
-        The search. It includes the status and the options of the search. The `queries` field has the results of the search
-        only when the `status` field is `success`. Otherwise, the `queries` field is `null`.
+        The search, with its status, the fields that you sent, and its results. The `queries` field is `null` until the
+        search is complete. When the `status` field is `success`, `no_results`, or `error`, the `queries` field has one
+        query for each unique term. Each query has the status and the results of its term.
       headers:
         X-AlsoAsked-Credits:
           $ref: '#/components/headers/X-AlsoAsked-Credits'
@@ -3368,9 +3399,9 @@ components:
               value:
                 id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
                 language: en
-                region: us
+                region: gb
                 latitude: 51.5072
-                longitude: 0.1276
+                longitude: -0.1276
                 status: success
                 deleted: false
                 depth: 3
@@ -3430,9 +3461,9 @@ components:
                                   - 1
                                   - 1
                                   - 1
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                                answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                                answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3442,9 +3473,9 @@ components:
                                   - 1
                                   - 1
                                   - 2
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                                answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                                answer_page_title: Broad bean companion plants - UrbanVeg Ally
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3454,9 +3485,9 @@ components:
                                   - 1
                                   - 1
                                   - 3
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                                answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                                answer_page_title: Growing broad beans under glass - PlantPro Digest
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3476,12 +3507,22 @@ components:
                               - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
                               - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
                             ai_overview_page_titles:
-                              - Drying runner beans - Gardening Know How
+                              - Drying Broad Beans - Gardening Know How
                               - Drying fava beans - Gardenwise Institute
                               - Drying borlotti beans - UrbanVeg Ally
                               - Drying kidney beans - GreenThumb Academy
                               - Drying lima beans - PlantPro Digest
                             results: []
+                  - term: How to grow broad beans?
+                    status: no_results
+                    language_fallback: null
+                    region_fallback: null
+                    results: null
+                  - term: When to harvest broad beans?
+                    status: error
+                    language_fallback: null
+                    region_fallback: null
+                    results: null
     NotFoundError:
       description: |
         The search doesn't exist, or the search isn't in your search history, for example because the search belongs to
@@ -3556,7 +3597,7 @@ components:
         pattern: ^[a-zA-Z0-9]{32}$
         minLength: 32
         maxLength: 32
-      example: 4S7HdxC3vq9M5zF1Vb8YX2tksUeQwTPn
+      example: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
     resultsFormat:
       name: results_format
       in: query
@@ -3578,8 +3619,8 @@ components:
       name: X-AlsoAsked-Credits
       in: header
       description: |
-        The number of credits that remain in your account when AlsoAsked sends the webhook request. For a sandbox webhook
-        endpoint, the value is your sandbox credits.
+        The number of credits that remain in your account when AlsoAsked sends the webhook request: your plan credits plus
+        your pay-as-you-go credits. For a sandbox webhook endpoint, the value is your sandbox credits.
       required: true
       schema:
         type: integer
@@ -3622,7 +3663,9 @@ components:
       description: |
         The time when AlsoAsked sent the webhook request, in Unix time (seconds since 1970-01-01T00:00:00+00:00). AlsoAsked
         sets a new timestamp for each attempt. To prevent [replay attacks](https://en.wikipedia.org/wiki/Replay_attack)
-        against your webhook endpoint, reject a webhook request with a timestamp that's older than a few minutes.
+        against your webhook endpoint, AlsoAsked recommends that you reject a webhook request with a timestamp that's more
+        than 5 minutes from the current time. The signature covers the timestamp, so nobody can change it without making the
+        signature wrong.
       required: true
       schema:
         type: integer
@@ -3658,8 +3701,8 @@ components:
   requestBodies:
     PerformSearch:
       description: |
-        The body of a `POST /v1.1/search` request. The body has the terms to search for and the options of the search,
-        for example the language code, the region code, and the depth.
+        The body of a `POST /v1.1/search` request. The body has the terms to search for and the fields that describe the
+        search, for example the language code, the region code, and the depth.
       required: true
       content:
         application/json:
@@ -3669,20 +3712,20 @@ components:
             default:
               summary: Perform a search
               description: |
-                A request body that performs a synchronous search with 3 terms and a depth of 2.
+                A request body that performs a synchronous search with 3 terms and a depth of 3.
               value:
                 terms:
                   - When to plant out broad beans?
                   - How to grow broad beans?
                   - When to harvest broad beans?
                 language: en
-                region: us
+                region: gb
                 latitude: 51.5072
-                longitude: 0.1276
-                depth: 2
+                longitude: -0.1276
+                depth: 3
                 fresh: false
                 async: false
-                notify_webhooks: false
+                notify_webhooks: true
     StatusChangedWebhook:
       description: |
         The body of a webhook request. AlsoAsked sends webhook events when the status of a search changes. The body has the
@@ -3703,9 +3746,9 @@ components:
                 event_id: 4Jk2mQ9xVb7NzR1cT8yHp3LdWs6FgE0a
                 id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
                 language: en
-                region: us
+                region: gb
                 latitude: 51.5072
-                longitude: 0.1276
+                longitude: -0.1276
                 status: success
                 deleted: false
                 depth: 3
@@ -3765,9 +3808,9 @@ components:
                                   - 1
                                   - 1
                                   - 1
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Cut the plants down to about 5 cm above the ground after the first harvest. The stumps often send up new shoots that give a smaller second crop later in the summer.
+                                answer_href: https://www.greenthumbacademy.net/bean-care/broad-bean-second-crop
+                                answer_page_title: Getting a second crop from broad beans - GreenThumb Academy
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3777,9 +3820,9 @@ components:
                                   - 1
                                   - 1
                                   - 2
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Don't plant broad beans next to onions, garlic, leeks or other alliums. Alliums can slow the growth of beans and other legumes.
+                                answer_href: https://www.urbanvegally.com/articles/beans/broad-bean-companion-plants
+                                answer_page_title: Broad bean companion plants - UrbanVeg Ally
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3789,9 +3832,9 @@ components:
                                   - 1
                                   - 1
                                   - 3
-                                answer_excerpt: Broad beans are a cool season crop, so they will not produce a second crop. However, you can plant broad beans in the spring and again in the fall.
-                                answer_href: https://www.gardeningknowhow.com/edible/vegetables/broad-bean/growing-broad-beans.htm
-                                answer_page_title: Growing Broad Beans - Gardening Know How
+                                answer_excerpt: Sow broad beans in deep pots in a cool greenhouse from late winter. Keep the greenhouse well ventilated, as broad beans don't like heat, and plant them out when the weather warms up in spring.
+                                answer_href: https://www.plantprodigest.com/edibles/beans/growing-broad-beans-under-glass
+                                answer_page_title: Growing broad beans under glass - PlantPro Digest
                                 ai_overview: false
                                 ai_overview_hrefs: null
                                 ai_overview_page_titles: null
@@ -3811,20 +3854,30 @@ components:
                               - https://www.greenthumbacademy.net/bean-care/drying-kidney-beans
                               - https://www.plantprodigest.com/edibles/beans/drying-lima-beans
                             ai_overview_page_titles:
-                              - Drying runner beans - Gardening Know How
+                              - Drying Broad Beans - Gardening Know How
                               - Drying fava beans - Gardenwise Institute
                               - Drying borlotti beans - UrbanVeg Ally
                               - Drying kidney beans - GreenThumb Academy
                               - Drying lima beans - PlantPro Digest
                             results: []
+                  - term: How to grow broad beans?
+                    status: no_results
+                    language_fallback: null
+                    region_fallback: null
+                    results: null
+                  - term: When to harvest broad beans?
+                    status: error
+                    language_fallback: null
+                    region_fallback: null
+                    results: null
   securitySchemes:
     apiKey:
       type: apiKey
       in: header
       name: X-Api-Key
       description: |
-        Your API key. Send the API key in the `X-Api-Key` header of every request. A live API key starts with `aa-live-`
-        and works only on the live API. A sandbox API key starts with `aa-sandbox-` and works only on the sandbox API. You
-        create API keys in your AlsoAsked account. A request without the `X-Api-Key` header gets the status code
-        `401 Unauthorized` with the error type `missing_api_key`. A request with an API key that isn't valid gets the status
-        code `403 Forbidden` with the error type `invalid_api_key`.
+        Your API key. Send the API key in the `X-Api-Key` header of every request. A live API key starts with `aa-live-` and
+        works only on the live API. A sandbox API key starts with `aa-sandbox-` and works only on the sandbox API. You
+        create API keys in your AlsoAsked account. A request without the `X-Api-Key` header gets the status code `401
+        Unauthorized` with the error type `missing_api_key`. A request with an empty `X-Api-Key` header, or with an API key
+        that isn't valid, gets the status code `403 Forbidden` with the error type `invalid_api_key`.

@@ -22,7 +22,7 @@ terms:
   - term: search
     pos: noun
     definition: >-
-      A set of one or more terms that you send to the AlsoAsked API in one request. Each search has an ID, a status,
+      A set of 1 or more terms that you send to the AlsoAsked API in one request. Each search has an ID, a status,
       and a depth.
     matches:
       - "endpoint: POST /v1.1/search, GET /v1.1/search/{searchId}"
@@ -129,7 +129,7 @@ terms:
   - term: status
     pos: noun
     definition: >-
-      The stage of a search or of one of its terms: `queueing`, `pending`, `running`, `fetching`, `error`, `no_results`
+      The stage of a search or of one of its terms: `queueing`, `pending`, `running`, `fetching`, `error`, `no_results`,
       or `success`.
     matches:
       - "field: status"
@@ -144,8 +144,8 @@ terms:
   - term: synchronous search
     pos: noun
     definition: >-
-      A search where the API sends the response only when the search is complete, or after 90 seconds. Set `async` to
-      `false`.
+      A search where the API sends the response only when the search is complete, or after 90 seconds. The `async`
+      field is `false`.
     matches:
       - "field: async = false"
     reject:
@@ -158,7 +158,8 @@ terms:
   - term: asynchronous search
     pos: noun
     definition: >-
-      A search where the API sends the response immediately, before the search is complete. Set `async` to `true`.
+      A search where the API sends the response immediately, before the search is complete. The `async` field is
+      `true`.
     matches:
       - "field: async = true"
     reject:
@@ -178,7 +179,8 @@ terms:
     pos: noun
     definition: >-
       A result that AlsoAsked stored for an earlier search by any account, and uses again instead of getting new results
-      from Google. A term with stored results costs no credits. Set `fresh` to `true` to get new results.
+      from Google. On the live API, a term with stored results costs no credits. Set `fresh` to `true` to get new
+      results.
     matches:
       - "fields: cached, cached_at, fresh"
     reject:
@@ -187,6 +189,17 @@ terms:
         use: stored result
     example: Set `fresh` to `true` if you don't want stored results.
     status: approved
+
+  - term: search history
+    pos: noun
+    definition: >-
+      The searches that you can list, get, and delete with the AlsoAsked API. On the live API, the history limit of
+      your plan sets how old a search in it can be.
+    matches:
+      - "endpoints: GET /v1.1/search, GET /v1.1/search/{searchId}, DELETE /v1.1/search/{searchId}"
+    reject: []
+    example: A deleted search stays in your search history.
+    status: draft
 
   - term: AI overview
     pos: noun
@@ -226,11 +239,39 @@ terms:
     example: The default region code is `us`.
     status: approved
 
+  - term: search object
+    pos: noun
+    definition: >-
+      The JSON object that describes one search in a response body or in the body of a webhook event, with fields
+      such as `id`, `status`, and `queries`.
+    matches:
+      - "schema: SearchRequest, SearchRequestResults"
+    reject: []
+    example: The response body of the `GET /v1.1/search/{searchId}` endpoint is the search object.
+    status: draft
+
+  - term: history limit
+    pos: noun
+    definition: How old a search in your search history can be. Your plan sets the history limit.
+    matches: []
+    reject: []
+    example: For a Pro plan, the history limit is 1 year.
+    status: draft
+
   # --- HTTP and the API -------------------------------------------------------
+
+  - term: error type
+    pos: noun
+    definition: The value of the `status` field in an error response body, for example `insufficient_credits`.
+    matches:
+      - "schema: ErrorType"
+    reject: []
+    example: The API returns the status code `404 Not Found` with the error type `not_found`.
+    status: draft
 
   - term: AlsoAsked API
     pos: noun
-    definition: The HTTP API that you use to create searches and get results.
+    definition: The HTTP API that you use to perform searches and get results.
     matches:
       - "hosts: alsoaskedapi.com, sandbox.alsoaskedapi.com"
     reject:
@@ -256,7 +297,7 @@ terms:
 
   - term: request
     pos: noun
-    definition: An HTTP message that you send to an endpoint. Use it only in this sense.
+    definition: An HTTP message that you send to an endpoint.
     matches: []
     reject: []
     example: Each request must include the `X-Api-Key` header.
@@ -339,7 +380,7 @@ terms:
     definition: >-
       The secret value that identifies your account in each request. It starts with `aa-live-` or `aa-sandbox-`.
     matches:
-      - "UI: API Keys"
+      - "UI: API keys page"
       - "header: X-Api-Key"
     reject:
       - phrase: '(?:access|API|auth|bearer) tokens?'
@@ -375,6 +416,16 @@ terms:
     example: Use the sandbox API while you develop your integration.
     status: approved
 
+  - term: test term
+    pos: noun
+    definition: >-
+      A term that makes the sandbox API behave in a known way, for example `[error]` or `[delay 2]`.
+    matches:
+      - "sandbox terms: [error], [no_results], [timeout], [server_error], [rate_limit], [delay N]"
+    reject: []
+    example: Add the test term `[error]` to test a term that fails.
+    status: draft
+
   - term: account
     pos: noun
     definition: Your AlsoAsked account. The API keys, credits, and plan belong to it.
@@ -406,6 +457,16 @@ terms:
     example: You need a Pro plan to use the live API.
     status: approved
 
+  - term: team owner
+    pos: noun
+    definition: >-
+      The account that owns a team. The team members use the plan and the credits of the team owner.
+    matches:
+      - "UI: Team"
+    reject: []
+    example: The team owner sees all the searches of the team.
+    status: draft
+
   - term: credit
     pos: noun
     definition: >-
@@ -417,6 +478,47 @@ terms:
     reject: []
     example: The cost of a search depends on the number of terms and the depth.
     status: approved
+
+  - term: plan credits
+    pos: noun
+    definition: >-
+      The credits that come with your plan. They renew on the date in the `credits_reset_at` field. The `web_credits`
+      field has them.
+    matches:
+      - "field: web_credits"
+      - "UI: account credits"
+    reject:
+      - phrase: 'web credits?'
+        level: error
+        use: plan credits
+    example: AlsoAsked uses your plan credits before your pay-as-you-go credits.
+    status: draft
+
+  - term: pay-as-you-go credits
+    pos: noun
+    definition: >-
+      The credits that you buy in addition to your plan. They don't renew, and only a Pro plan can use them. The
+      `api_credits` field has them.
+    matches:
+      - "field: api_credits"
+      - "UI: Pay-as-you-go credits page"
+    reject:
+      - phrase: 'API credits?'
+        level: error
+        use: pay-as-you-go credits
+    example: Automatic top-up buys pay-as-you-go credits when your credits fall below 100.
+    status: draft
+
+  - term: sandbox credits
+    pos: noun
+    definition: >-
+      The credits that the sandbox API uses. Each account has 1,000 sandbox credits, which reset 24 hours after the last
+      reset.
+    matches:
+      - "header on the sandbox API: X-AlsoAsked-Credits"
+    reject: []
+    example: A sandbox search costs sandbox credits, not the credits of your plan.
+    status: draft
 
   - term: rate limit
     pos: noun
@@ -430,13 +532,33 @@ terms:
     example: If you send more requests than the rate limit allows, the API returns the status code `429`.
     status: approved
 
+  - term: webhook request
+    pos: noun
+    definition: The HTTP `POST` request that carries one webhook event to a webhook endpoint.
+    matches:
+      - "webhook: searchStatusChanged"
+    reject: []
+    example: Each webhook request has a signature in the `X-AlsoAsked-Signature` header.
+    status: draft
+
+  - term: team administrator
+    pos: noun
+    definition: >-
+      A team member that the team owner gave the administrator role. A team administrator sees the searches of the
+      team members, but not the searches of the team owner.
+    matches:
+      - "UI: Team"
+    reject: []
+    example: A team administrator sees the searches of the team members.
+    status: draft
+
   # --- Webhooks ---------------------------------------------------------------
 
   - term: webhook endpoint
     pos: noun
-    definition: A URL on your server that receives webhook events from AlsoAsked. Always write both words.
+    definition: A URL on your server that receives webhook events from AlsoAsked.
     matches:
-      - "UI: Webhook Endpoints"
+      - "UI: Webhooks page, Webhook endpoints section"
     reject:
       - phrase: 'callbacks?(?: URLs?)?'
         level: error
@@ -444,7 +566,7 @@ terms:
       - phrase: 'webhook URLs?'
         level: error
         use: webhook endpoint
-    example: Add a webhook endpoint on the Webhook Endpoints page.
+    example: Add a webhook endpoint on the Webhooks page.
     status: approved
 
   - term: webhook event
@@ -487,7 +609,7 @@ terms:
 
   - term: perform
     pos: verb
-    definition: To start a new search with the `POST /v1.1/search` endpoint. Use it only with `search`.
+    definition: To start a new search with the `POST /v1.1/search` endpoint.
     matches:
       - "operation: performSearch"
       - "PHP client: performSearch()"
@@ -517,7 +639,7 @@ terms:
 
   - term: send
     pos: verb
-    definition: To transmit a request (you) or a webhook event (AlsoAsked).
+    definition: To transmit a request to the AlsoAsked API, or a webhook event to a webhook endpoint.
     matches: []
     reject:
       - phrase: 'make (?:a |an )?(?:API )?requests?'
@@ -531,7 +653,7 @@ terms:
 
   - term: return
     pos: verb
-    definition: What the AlsoAsked API does with a response.
+    definition: To give a response to a request. The AlsoAsked API returns a response.
     matches: []
     reject:
       - phrase: '(?:respond|reply|replies|replied) with'

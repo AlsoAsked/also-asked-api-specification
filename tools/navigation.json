@@ -1,0 +1,9 @@
+[
+  { "section": "Start here", "pages": ["overview", "quickstart", "authentication", "sandbox"] },
+  {
+    "section": "Searches",
+    "pages": ["searches", "how-a-search-runs", "perform-a-search", "search-results", "search-history", "credits", "bulk-searches"]
+  },
+  { "section": "Webhooks", "pages": ["webhooks", "verify-webhook-signatures"] },
+  { "section": "Reference", "pages": ["account", "errors", "rate-limits", "glossary", "changelog"] }
+]

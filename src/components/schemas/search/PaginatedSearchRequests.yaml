@@ -12,22 +12,6 @@ properties:
     items:
       $ref: ./SearchRequest.yaml
     example:
-    - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
-      language: de
-      region: de
-      latitude: 51.5072
-      longitude: 0.1276
-      status: success
-      deleted: false
-      depth: 3
-      cached: false
-      created_at: '2023-01-15T18:45:00+00:00'
-      updated_at: '2023-01-15T18:50:00+00:00'
-      cached_at: null
-      terms:
-      - Wie kann man Energie sparen?
-      - Was sind die besten Tipps zum Energiesparen?
-      - Wie senke ich meinen Energieverbrauch?
     - id: 5S8YdxC3vq9M5zF1Vb4Xh3zylpfZgIba
       language: null
       region: null
@@ -55,18 +39,34 @@ properties:
       cached_at: '2023-01-04T03:48:00+00:00'
       terms:
       - What are the best pasta recipes?
-    - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
-      language: en
-      region: us
-      latitude: 51.5072
-      longitude: 0.1276
+    - id: 8A6Wp1vHt3E4q0F7c9Xs5n8oZu2Bm1dL
+      language: de
+      region: de
+      latitude: 52.52
+      longitude: 13.405
       status: success
       deleted: false
       depth: 3
       cached: false
+      created_at: '2023-01-03T18:45:00+00:00'
+      updated_at: '2023-01-03T18:50:00+00:00'
+      cached_at: null
+      terms:
+      - Wie kann man Energie sparen?
+      - Was sind die besten Tipps zum Energiesparen?
+      - Wie senke ich meinen Energieverbrauch?
+    - id: 9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba
+      language: en
+      region: gb
+      latitude: 51.5072
+      longitude: -0.1276
+      status: success
+      deleted: false
+      depth: 3
+      cached: true
       created_at: '2023-01-01T00:00:00+00:00'
       updated_at: '2023-01-01T00:00:10+00:00'
-      cached_at: null
+      cached_at: '2022-12-31T00:00:00+00:00'
       terms:
       - When to plant out broad beans?
       - How to grow broad beans?
@@ -75,7 +75,7 @@ properties:
     type: integer
     format: int64
     description: |
-      The total number of searches in your search history.
+      The total number of searches in your search history, including deleted searches.
     example: 32
   page:
     type: integer

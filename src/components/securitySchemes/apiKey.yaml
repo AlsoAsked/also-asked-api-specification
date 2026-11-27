@@ -2,8 +2,8 @@ type: apiKey
 in: header
 name: X-Api-Key
 description: |
-  Your API key. Send the API key in the `X-Api-Key` header of every request. A live API key starts with `aa-live-`
-  and works only on the live API. A sandbox API key starts with `aa-sandbox-` and works only on the sandbox API. You
-  create API keys in your AlsoAsked account. A request without the `X-Api-Key` header gets the status code
-  `401 Unauthorized` with the error type `missing_api_key`. A request with an API key that isn't valid gets the status
-  code `403 Forbidden` with the error type `invalid_api_key`.
+  Your API key. Send the API key in the `X-Api-Key` header of every request. A live API key starts with `aa-live-` and
+  works only on the live API. A sandbox API key starts with `aa-sandbox-` and works only on the sandbox API. You
+  create API keys in your AlsoAsked account. A request without the `X-Api-Key` header gets the status code `401
+  Unauthorized` with the error type `missing_api_key`. A request with an empty `X-Api-Key` header, or with an API key
+  that isn't valid, gets the status code `403 Forbidden` with the error type `invalid_api_key`.

@@ -5,13 +5,11 @@
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { parse } from 'yaml';
 
-// Navigation order. Each page must exist and have title, description and type in its front matter.
-const SECTIONS = [
-  ['Start here', ['overview', 'quickstart', 'authentication', 'sandbox']],
-  ['Searches', ['searches', 'perform-a-search', 'search-results', 'search-history', 'credits', 'bulk-searches']],
-  ['Webhooks', ['webhooks', 'verify-webhook-signatures']],
-  ['Reference', ['account', 'errors', 'rate-limits', 'glossary', 'changelog']],
-];
+// Navigation order, shared with the docs site (site/sidebars.ts). Each page must exist and have title, description and
+// type in its front matter.
+const SECTIONS = JSON.parse(readFileSync(new URL('./navigation.json', import.meta.url), 'utf8')).map(
+  ({ section, pages }) => [section, pages],
+);
 
 function page(name) {
   const path = `docs/${name}.md`;
@@ -45,7 +43,7 @@ const lines = [
   ]),
   '## OpenAPI',
   '',
-  '- [OpenAPI specification](openapi/openapi.yaml): every endpoint, field, and response of the AlsoAsked API, version v1.1.',
+  '- [OpenAPI specification](openapi/openapi.yaml): Every endpoint, field, and response of the AlsoAsked API, version v1.1.',
   '',
 ];
 writeFileSync('llms.txt', lines.join('\n'));

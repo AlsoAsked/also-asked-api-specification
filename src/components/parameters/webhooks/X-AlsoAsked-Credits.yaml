@@ -1,8 +1,8 @@
 name: X-AlsoAsked-Credits
 in: header
 description: |
-  The number of credits that remain in your account when AlsoAsked sends the webhook request. For a sandbox webhook
-  endpoint, the value is your sandbox credits.
+  The number of credits that remain in your account when AlsoAsked sends the webhook request: your plan credits plus
+  your pay-as-you-go credits. For a sandbox webhook endpoint, the value is your sandbox credits.
 required: true
 schema:
   type: integer

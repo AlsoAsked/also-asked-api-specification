@@ -8,8 +8,8 @@ description: |
 
   AlsoAsked sends a `POST` request with a JSON body to the URL of your webhook endpoint. The body has the ID of the
   webhook event in the `event_id` field, followed by the fields of the `GET /v1.1/search/{searchId}` response for the
-  search, at the time when AlsoAsked sends the request. The headers contain the webhook event type, the environment,
-  and a signature that you use to verify the request.
+  search, at the time when AlsoAsked sends the request. The results are in the `tree` results format. The headers
+  contain the webhook event type, the environment, and a signature that you use to verify the request.
 
   For details, see [Webhooks](../docs/webhooks.md) and
   [Verify webhook signatures](../docs/verify-webhook-signatures.md).
@@ -25,7 +25,10 @@ requestBody:
 responses:
   '2XX':
     description: |
-      Your webhook endpoint received the webhook event. AlsoAsked doesn't send the webhook event again.
+      Your webhook endpoint received the webhook event. AlsoAsked doesn't try again to send the webhook event. Keep
+      the response body smaller than 1 MB: with a larger response body, AlsoAsked counts the attempt as failed. In rare
+      cases, your webhook endpoint can still receive the same webhook event twice, so ignore a webhook event whose
+      `event_id` field you already processed.
   '3XX':
     description: |
       AlsoAsked doesn't follow redirects, so AlsoAsked counts the attempt as failed and sends the webhook event again

@@ -1,6 +1,6 @@
 description: |
-  The body of a `POST /v1.1/search` request. The body has the terms to search for and the options of the search,
-  for example the language code, the region code, and the depth.
+  The body of a `POST /v1.1/search` request. The body has the terms to search for and the fields that describe the
+  search, for example the language code, the region code, and the depth.
 required: true
 content:
   application/json:
@@ -10,6 +10,6 @@ content:
       default:
         summary: Perform a search
         description: |
-          A request body that performs a synchronous search with 3 terms and a depth of 2.
+          A request body that performs a synchronous search with 3 terms and a depth of 3.
         value:
           $ref: ../../../examples/search/SearchRequestOptions.yaml

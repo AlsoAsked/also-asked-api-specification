@@ -3,10 +3,10 @@ terms:
   - How to grow broad beans?
   - When to harvest broad beans?
 language: en
-region: us
+region: gb
 latitude: 51.5072
-longitude: 0.1276
-depth: 2
+longitude: -0.1276
+depth: 3
 fresh: false
 async: false
-notify_webhooks: false
+notify_webhooks: true

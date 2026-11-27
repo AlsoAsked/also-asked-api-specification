@@ -13,15 +13,15 @@ immediately. This page explains how each mode works, so you can pick the one tha
 ## How to set the mode
 
 The `async` field in the request body sets the mode. The default value is `false`, so if you don't include the field,
-you get a synchronous search. Set `async` to `true` to perform an asynchronous search. In both modes, AlsoAsked charges
-the credits before the search starts.
+you get a synchronous search. To perform an asynchronous search, set the `async` field to `true`. In both modes,
+AlsoAsked charges the credits before the search starts.
 
 The following request performs a synchronous search:
 
 ```bash
 curl --request POST 'https://alsoaskedapi.com/v1.1/search' \
   --header 'Content-Type: application/json' \
-  --header 'X-Api-Key: YOUR_API_KEY' \
+  --header 'X-Api-Key: YOUR_LIVE_API_KEY' \
   --data '{
     "terms": ["how to brew coffee"],
     "language": "en",
@@ -33,12 +33,12 @@ curl --request POST 'https://alsoaskedapi.com/v1.1/search' \
   }'
 ```
 
-The following request performs an asynchronous search:
+The following request performs an asynchronous search with 2 terms:
 
 ```bash
 curl --request POST 'https://alsoaskedapi.com/v1.1/search' \
   --header 'Content-Type: application/json' \
-  --header 'X-Api-Key: YOUR_API_KEY' \
+  --header 'X-Api-Key: YOUR_LIVE_API_KEY' \
   --data '{
     "terms": ["how to brew coffee", "how to brew tea"],
     "language": "en",
@@ -52,8 +52,8 @@ curl --request POST 'https://alsoaskedapi.com/v1.1/search' \
 
 ## What a synchronous search returns
 
-In a synchronous search, the API checks the search every second and waits until the search is complete. A search is
-complete when its status is `success`, `no_results`, or `error`. If the search isn't complete after 90 seconds, the API
+In a synchronous search, the API waits until the search is complete. A search is complete when its status is
+`success`, `no_results`, or `error`. If the search isn't complete after 90 seconds, the API
 stops waiting and returns the response anyway.
 
 The timeout isn't an error. The response has the status code `200 OK` and the search as it is at that moment, for
@@ -71,57 +71,49 @@ In an asynchronous search, the API returns the response immediately, without wai
 modes return the status code `200 OK` and the same search object that `GET /v1.1/search/{searchId}` returns. The
 `queries` field is `null` until the search is complete.
 
-To get the results later, send a request to `GET /v1.1/search/{searchId}` with the `id` field from the response. Check
-the `status` field until the search is complete. You can also wait for webhook events instead.
+The following JSON is an example response body of an asynchronous search that isn't complete yet:
 
-## Searches with stored results
+```json
+{
+  "id": "3K9dPq2LmX7vB4nT8wY1zR6cH5jF0sGa",
+  "language": "en",
+  "region": "us",
+  "latitude": null,
+  "longitude": null,
+  "status": "queueing",
+  "deleted": false,
+  "depth": 2,
+  "cached": false,
+  "created_at": "2023-01-05T10:30:00+00:00",
+  "updated_at": "2023-01-05T10:30:00+00:00",
+  "cached_at": null,
+  "queries": null
+}
+```
 
-AlsoAsked stores the results of every search. If any account searched for the same term before, with the same language
-code, region code, depth, and location, AlsoAsked can use the stored results instead of getting new results from
-Google. A term that uses stored results costs no credits, however old the stored results are. The term must match
-exactly, including uppercase and lowercase letters. AlsoAsked doesn't use stored results whose top-level answer is
-blank.
+To get the results later, send a request to the `GET /v1.1/search/{searchId}` endpoint with the `id` field from the
+response. Check the `status` field until the search is complete, for example every 60 seconds. You can also wait for
+webhook events instead.
 
-To always get new results from Google, set the `fresh` field to `true`. Then every term costs credits.
+## Stored results, statuses, and deadlines
 
-If every term in your search has stored results, the search is complete as soon as you perform it. The API returns the
-results immediately in both modes, and the `async` field makes no difference. The `cached` field of the search is
-`true` if at least one term used stored results.
+Both modes follow the same rules for how a search runs:
 
-## Status of a search with more than one term
+- If every term in your search has stored results, the search is complete as soon as you perform it. The API returns
+  the results immediately in both modes, and the `async` field makes no difference.
+- The status of a search comes from the statuses of its terms, and a search is complete only when every term is
+  complete.
+- A search typically completes in 15 to 30 seconds. In the worst case, every term is complete, or fails with the status
+  `error`, within about 15 minutes of when you perform the search.
 
-Each term in a search has its own status, and the status of the search comes from the statuses of its terms. AlsoAsked
-checks the statuses in this order: `running`, `fetching`, `pending`, `queueing`, `success`, `no_results`, `error`. The
-first status that at least one term has becomes the status of the search.
-
-So the search is complete only when every term is complete. A search with the status `success` doesn't always mean that
-every term succeeded: if one term has the status `success` and another term has the status `error`, the status of the
-search is `success`. When the search is complete, each query in the `queries` field has its own `status` field:
-`success`, `no_results`, or `error`. AlsoAsked refunds the credits of each term with the status `no_results` or `error`.
-
-The status of a term doesn't change after it's `success`, `no_results`, or `error`.
-
-## How long a search can take
-
-A term that isn't complete by its deadline fails with the status `error`, and
-AlsoAsked refunds its credits. The deadline starts when you perform the search, and depends on the number of terms in
-the search:
-
-| Search | Deadline of each term |
-| --- | --- |
-| 1 term | 15 minutes |
-| More than 1 term | 60 minutes |
-
-AlsoAsked checks for terms past their deadline every minute, so a term can fail up to about 2 minutes after its
-deadline. Because every term finishes by its deadline, every search is complete within about an hour of when you
-perform it.
+For details, see [How a search runs](./how-a-search-runs.md).
 
 ## Webhook events
 
 AlsoAsked sends webhook events when the status of a search changes. This happens in both modes, including synchronous
 searches. The `notify_webhooks` field controls this, and its default value is `true`. If you don't want webhook events
-for a search, set `notify_webhooks` to `false`. On the live API, AlsoAsked sends webhook events only if your account has
-a Pro plan. For details, see [Webhooks](./webhooks.md).
+for a search, set the `notify_webhooks` field to `false`. On the live API, AlsoAsked sends webhook events only if your
+account has a Pro plan. For details, see [Webhooks](./webhooks.md).
 
 ## When to use a synchronous or an asynchronous search
 
@@ -133,15 +125,16 @@ a Pro plan. For details, see [Webhooks](./webhooks.md).
 | `queries` field in the response | The queries if the search is complete, otherwise `null` | The queries if the search is complete (for example, when every term has stored results), otherwise `null` |
 | How to get results that aren't ready yet | `GET /v1.1/search/{searchId}`, or webhook events | `GET /v1.1/search/{searchId}`, or webhook events |
 
-Use a synchronous search when you want the results in the same response and your search has 1 term. A search with 1
-term gets priority in the queue over a search with more than 1 term.
+Use a synchronous search when you want the results in the same response and your search has 1 term. AlsoAsked starts
+a search with 1 term before the waiting terms of searches with more than 1 term.
 
 Use an asynchronous search when your search has many terms, or when your code shouldn't wait for the response. Then get
-the results with `GET /v1.1/search/{searchId}` or from your webhook events. For a large number of terms, see
-[Search many terms](./bulk-searches.md).
+the results with the `GET /v1.1/search/{searchId}` endpoint or from your webhook events. For a large number of terms,
+see [Search many terms](./bulk-searches.md).
 
 ## Related
 
+- [How a search runs](./how-a-search-runs.md)
 - [Perform a search](./perform-a-search.md)
 - [Search results](./search-results.md)
 - [Webhooks](./webhooks.md)

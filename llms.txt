@@ -14,9 +14,10 @@ Each page is Markdown. Each section of a page is written to be correct on its ow
 ## Searches
 
 - [Synchronous and asynchronous searches](docs/searches.md): Learn how synchronous and asynchronous searches work, and how to choose the right mode for your integration.
+- [How a search runs](docs/how-a-search-runs.md): Learn how AlsoAsked runs the terms of a search, when it uses stored results, how the status of a search comes from its terms, and how long a search can take.
 - [Perform a search](docs/perform-a-search.md): Perform a search with the POST /v1.1/search endpoint, and choose the terms, location, depth, and mode of the search.
 - [Search results](docs/search-results.md): Find the fields of the search object, its queries, and its results, and learn how to get the results as a tree or as a flat list.
-- [Search history](docs/search-history.md): List the searches in your search history, get one search with its results, and delete a search with the AlsoAsked API.
+- [Manage your search history](docs/search-history.md): List the searches in your search history, get one search with its results, and delete a search with the AlsoAsked API.
 - [Credits](docs/credits.md): Learn how AlsoAsked charges credits for searches, how to calculate the cost of a search, and how to check the credits in your account.
 - [Search many terms](docs/bulk-searches.md): Perform searches for hundreds or thousands of terms reliably, and collect the result of every term.
 
@@ -35,4 +36,4 @@ Each page is Markdown. Each section of a page is written to be correct on its ow
 
 ## OpenAPI
 
-- [OpenAPI specification](openapi/openapi.yaml): every endpoint, field, and response of the AlsoAsked API, version v1.1.
+- [OpenAPI specification](openapi/openapi.yaml): Every endpoint, field, and response of the AlsoAsked API, version v1.1.

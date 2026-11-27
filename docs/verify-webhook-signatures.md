@@ -15,25 +15,28 @@ shows that AlsoAsked sent the webhook event and that nobody changed the body.
 - You need a webhook endpoint that receives webhook events from AlsoAsked. For how to add a webhook endpoint, see
   [Webhooks](./webhooks.md).
 - You need your webhook signing key. The webhook signing key belongs to your account, and one webhook signing key signs
-  the webhook events for all webhook endpoints of your account.
+  the webhook events for all webhook endpoints of your account. The same key signs the webhook events of the live API
+  and the sandbox API.
 - You need a way to read the raw request body in your server code, as bytes, before your web framework parses the JSON.
 
-To get a webhook signing key, sign in to AlsoAsked, go to the **Webhooks** page at
-`https://alsoasked.com/developer/webhooks`, and select **Generate signing key** in the **Webhook signing key** section.
-AlsoAsked shows the webhook signing key only once, so store it in a safe place. The webhook signing key is 96
-hexadecimal characters. Use these characters as the key exactly as they are, as text: don't decode them from
-hexadecimal into bytes.
+## Get or regenerate your webhook signing key
+
+To get a webhook signing key, sign in to AlsoAsked, go to the [**Webhooks**
+page](https://alsoasked.com/developer/webhooks), and select **Generate signing key** in the **Webhook signing key**
+section. AlsoAsked shows the webhook signing key only once, so store it in a safe place. The webhook signing key is 96
+hexadecimal characters. Use these characters as the key exactly as they are, as text: don't decode them from hexadecimal
+into bytes.
 
 To create a new webhook signing key, select **Regenerate signing key** in the **Webhook signing key** section. The new
 webhook signing key replaces the old one immediately, and AlsoAsked signs every later attempt with it, including the
 retries of webhook events that it first sent before the change. There's no period when both webhook signing keys are
-in use, so update your server with the new webhook signing key at the same time. A webhook event that your server
-rejects during the change is retried, and the retry has a signature made with the new webhook signing key.
+in use, so update your server with the new webhook signing key at the same time. If your server rejects a webhook
+event during the change, AlsoAsked sends it again, with a signature made with the new webhook signing key.
 
 ## How AlsoAsked makes the signature
 
-The value of the `X-AlsoAsked-Signature` header is a Hash-based Message Authentication Code (HMAC) with the Secure Hash
-Algorithm 384 (SHA-384) hash function. AlsoAsked makes the signature in the following way:
+The value of the `X-AlsoAsked-Signature` header is a hash-based message authentication code (HMAC) that uses the Secure
+Hash Algorithm 384 (SHA-384) hash function. AlsoAsked makes the signature in the following way:
 
 1. AlsoAsked joins the raw request body, a period (`.`), and the value of the `X-AlsoAsked-Timestamp` header, in that
    order. The body comes first.
@@ -65,12 +68,13 @@ To verify the signature of a webhook event, do the following steps in the code o
 5. Compare the expected signature with the value of the `X-AlsoAsked-Signature` header in constant time. Use a
    comparison function for secrets, such as `hmac.compare_digest` in Python, `crypto.timingSafeEqual` in Node.js, or
    `hash_equals` in PHP.
-6. If the two signatures aren't equal, reject the webhook event and don't use the request body.
+6. If the 2 signatures aren't equal, reject the webhook event and don't use the request body.
 
 ## Verify a signature in Python
 
-The following `verify` function in Python uses only the standard library. The function returns `True` if the
-signature is correct and the timestamp is recent. Otherwise, the function returns `False`.
+The following `verify` function in Python uses only the standard library and needs Python 3.10 or later. The function
+returns `True` if the signature is correct and the timestamp is recent. Otherwise, the function returns `False`, also
+when a header is missing.
 
 ```python
 import hashlib
@@ -80,37 +84,82 @@ import time
 MAX_AGE_SECONDS = 300  # 5 minutes
 
 
-def verify(signing_key: str, raw_body: bytes, timestamp: str, signature: str) -> bool:
-    """Return True if AlsoAsked signed this webhook event and the timestamp is recent."""
-    if not (timestamp.isascii() and timestamp.isdigit()):
+def verify(signing_key: str, raw_body: bytes, timestamp: str | None, signature: str | None) -> bool:
+    """Return True if AlsoAsked signed this webhook event and the timestamp is recent.
+
+    Args:
+        signing_key: Your webhook signing key, as the 96 hexadecimal characters that AlsoAsked showed.
+        raw_body: The request body as bytes, exactly as your server received it.
+        timestamp: The value of the X-AlsoAsked-Timestamp header, or None if the header is missing.
+        signature: The value of the X-AlsoAsked-Signature header, or None if the header is missing.
+    """
+    if timestamp is None or signature is None:
+        return False
+    # A Unix time in seconds has about 10 digits. The length check also keeps int() from failing on a huge value.
+    if not (timestamp.isascii() and timestamp.isdigit() and len(timestamp) <= 12):
         return False
     if abs(time.time() - int(timestamp)) > MAX_AGE_SECONDS:
         return False
 
     message = raw_body + b"." + timestamp.encode("ascii")
     expected = hmac.new(signing_key.encode("utf-8"), message, hashlib.sha384).hexdigest()
+    # compare_digest takes the same time whether or not the signatures match.
     return hmac.compare_digest(expected.encode("ascii"), signature.encode("utf-8"))
 ```
 
-Give the `raw_body` argument of the Python `verify` function the request body as bytes. For example, in Flask, use
-`request.get_data()`, and read the headers from `request.headers`. Don't use `request.get_json()` for the `raw_body`
-argument.
+Give the `raw_body` argument of the Python `verify` function the request body as bytes. Don't give it parsed JSON.
+The following example uses the `verify` function in a Flask webhook endpoint. The webhook signing key comes from an
+environment variable:
+
+```python
+import os
+
+from flask import Flask, request
+
+app = Flask(__name__)
+SIGNING_KEY = os.environ["ALSOASKED_WEBHOOK_SIGNING_KEY"]
+
+
+@app.post("/alsoasked-webhooks")
+def alsoasked_webhook():
+    is_valid = verify(
+        SIGNING_KEY,
+        request.get_data(),
+        request.headers.get("X-AlsoAsked-Timestamp"),
+        request.headers.get("X-AlsoAsked-Signature"),
+    )
+    if not is_valid:
+        return "", 401
+
+    event = request.get_json()
+    # Process the webhook event here, or save it and process it after you respond.
+    return "", 204
+```
 
 ## Verify a signature in Node.js
 
 The following `verify` function in Node.js uses the `crypto` module. The function returns `true` if the signature is
-correct and the timestamp is recent. Otherwise, the function returns `false`.
+correct and the timestamp is recent. Otherwise, the function returns `false`, also when a header is missing.
 
 ```javascript
 const crypto = require('node:crypto');
 
 const MAX_AGE_SECONDS = 300; // 5 minutes
 
+/**
+ * Check that AlsoAsked signed a webhook event and that its timestamp is recent.
+ *
+ * @param {string} signingKey Your webhook signing key, as the 96 hexadecimal characters that AlsoAsked showed.
+ * @param {Buffer} rawBody The request body, exactly as your server received it.
+ * @param {string | undefined} timestamp The value of the X-AlsoAsked-Timestamp header.
+ * @param {string | undefined} signature The value of the X-AlsoAsked-Signature header.
+ * @returns {boolean} true if the signature is correct and the timestamp is recent.
+ */
 function verify(signingKey, rawBody, timestamp, signature) {
-  if (typeof timestamp !== 'string' || !/^\d+$/.test(timestamp)) {
+  if (typeof timestamp !== 'string' || typeof signature !== 'string') {
     return false;
   }
-  if (typeof signature !== 'string') {
+  if (!/^\d+$/.test(timestamp)) {
     return false;
   }
   const nowSeconds = Math.floor(Date.now() / 1000);
@@ -120,8 +169,11 @@ function verify(signingKey, rawBody, timestamp, signature) {
 
   const expected = crypto
     .createHmac('sha384', signingKey)
-    .update(Buffer.concat([rawBody, Buffer.from('.' + timestamp, 'ascii')]))
+    .update(rawBody)
+    .update('.' + timestamp)
     .digest('hex');
+
+  // timingSafeEqual takes the same time whether or not the signatures match. It needs buffers of equal length.
   const expectedBuffer = Buffer.from(expected, 'utf8');
   const signatureBuffer = Buffer.from(signature, 'utf8');
   return expectedBuffer.length === signatureBuffer.length
@@ -131,15 +183,44 @@ function verify(signingKey, rawBody, timestamp, signature) {
 module.exports = { verify };
 ```
 
-Give the `rawBody` argument of the Node.js `verify` function the request body as a `Buffer`. For example, in Express,
-use the `express.raw({ type: 'application/json' })` middleware on the route of your webhook endpoint, and use
-`req.body`. Read the headers with `req.get('X-AlsoAsked-Timestamp')` and `req.get('X-AlsoAsked-Signature')`. Don't use
-the `express.json()` middleware on the route of your webhook endpoint.
+Give the `rawBody` argument of the Node.js `verify` function the request body as a `Buffer`. The following example
+uses the `verify` function in an Express webhook endpoint. The webhook signing key comes from an environment variable:
+
+```javascript
+const express = require('express');
+
+const app = express();
+const SIGNING_KEY = process.env.ALSOASKED_WEBHOOK_SIGNING_KEY;
+
+// express.raw gives the body as a Buffer. Don't use express.json on this route.
+const rawJson = express.raw({ type: 'application/json', limit: '50mb' });
+
+app.post('/alsoasked-webhooks', rawJson, (req, res) => {
+  const isValid = Buffer.isBuffer(req.body) && verify(
+    SIGNING_KEY,
+    req.body,
+    req.get('X-AlsoAsked-Timestamp'),
+    req.get('X-AlsoAsked-Signature'),
+  );
+  if (!isValid) {
+    res.sendStatus(401);
+    return;
+  }
+
+  const event = JSON.parse(req.body.toString('utf8'));
+  // Process the webhook event here, or save it and process it after you respond.
+  res.sendStatus(204);
+});
+```
+
+The `limit` option matters: by default, Express rejects a body larger than 100 KB, and the body of a webhook event for
+a search with 1,000 terms can be about 45 MB. See [Webhook request](./webhooks.md#webhook-request).
 
 ## Verify a signature in PHP
 
 The following `verify` function in PHP uses the `hash_hmac` function and the `hash_equals` function. The function
-returns `true` if the signature is correct and the timestamp is recent. Otherwise, the function returns `false`.
+returns `true` if the signature is correct and the timestamp is recent. Otherwise, the function returns `false`, also
+when a header is missing.
 
 ```php
 <?php
@@ -148,8 +229,21 @@ declare(strict_types=1);
 
 const MAX_AGE_SECONDS = 300; // 5 minutes
 
-function verify(string $signingKey, string $rawBody, string $timestamp, string $signature): bool
+/**
+ * Check that AlsoAsked signed a webhook event and that its timestamp is recent.
+ *
+ * @param string $signingKey Your webhook signing key, as the 96 hexadecimal characters that AlsoAsked showed.
+ * @param string $rawBody The request body, exactly as your server received it.
+ * @param string|null $timestamp The value of the X-AlsoAsked-Timestamp header, or null if the header is missing.
+ * @param string|null $signature The value of the X-AlsoAsked-Signature header, or null if the header is missing.
+ *
+ * @return bool true if the signature is correct and the timestamp is recent.
+ */
+function verify(string $signingKey, string $rawBody, ?string $timestamp, ?string $signature): bool
 {
+    if ($timestamp === null || $signature === null) {
+        return false;
+    }
     if (!ctype_digit($timestamp)) {
         return false;
     }
@@ -159,21 +253,43 @@ function verify(string $signingKey, string $rawBody, string $timestamp, string $
 
     $expected = hash_hmac('sha384', $rawBody . '.' . $timestamp, $signingKey);
 
+    // hash_equals takes the same time whether or not the signatures match.
     return hash_equals($expected, $signature);
 }
 ```
 
-Give the `$rawBody` argument of the PHP `verify` function the request body as a string. For example, use
-`file_get_contents('php://input')`, and read the headers from `$_SERVER['HTTP_X_ALSOASKED_TIMESTAMP']` and
-`$_SERVER['HTTP_X_ALSOASKED_SIGNATURE']`. Don't use the result of `json_decode` for the `$rawBody` argument.
+Give the `$rawBody` argument of the PHP `verify` function the request body as a string. Don't give it the result of
+`json_decode`. The following example uses the `verify` function in a PHP script that's the webhook endpoint. The
+webhook signing key comes from an environment variable:
+
+```php
+$signingKey = (string) getenv('ALSOASKED_WEBHOOK_SIGNING_KEY');
+$rawBody = (string) file_get_contents('php://input');
+
+$isValid = verify(
+    $signingKey,
+    $rawBody,
+    $_SERVER['HTTP_X_ALSOASKED_TIMESTAMP'] ?? null,
+    $_SERVER['HTTP_X_ALSOASKED_SIGNATURE'] ?? null,
+);
+
+if (!$isValid) {
+    http_response_code(401);
+    exit;
+}
+
+$event = json_decode($rawBody, true, flags: JSON_THROW_ON_ERROR);
+// Process the webhook event here, or save it and process it after you respond.
+http_response_code(204);
+```
 
 ## Result
 
 If the signature is correct and the timestamp is recent, the `verify` function returns `true` (`True` in Python).
 Your webhook endpoint can then parse the JSON in the request body and use the webhook event.
 
-If the `verify` function returns `false` (`False` in Python), reject the request,
-for example with the status code `401 Unauthorized`, and don't use the request body.
+If the `verify` function returns `false` (`False` in Python), reject the request, for example with the status code
+`401 Unauthorized`, and don't use the request body.
 
 ## Common mistakes
 
@@ -193,7 +309,8 @@ A signature can fail to match even when AlsoAsked sent the webhook event. The fo
   comparison function, such as `hmac.compare_digest` in Python, `crypto.timingSafeEqual` in Node.js, or `hash_equals`
   in PHP.
 - **Using an old webhook signing key.** After you select **Regenerate signing key**, the old webhook signing key
-  doesn't match the signature of new webhook events. Update the webhook signing key on your server.
+  doesn't match the signature of new webhook events. Update the webhook signing key on your server, exactly as
+  AlsoAsked showed it, with no extra spaces from the copy.
 
 ## IP addresses of webhook events
 
@@ -206,12 +323,10 @@ address doesn't show that AlsoAsked sent a webhook event, so verify the signatur
 
 | Problem | Cause | What to do |
 | --- | --- | --- |
-| The signature never matches. | Your code parses the JSON in the request body and serializes the JSON again before it calculates the signature. | Calculate the signature from the raw request body, before you parse the JSON. |
-| The signature never matches. | Your code joins the value of the `X-AlsoAsked-Timestamp` header before the request body. | Join the raw request body, a period (`.`), and the value of the `X-AlsoAsked-Timestamp` header, in that order. |
-| The signature never matches. | You use an old webhook signing key, or the webhook signing key has extra spaces from a copy. | Use the current webhook signing key, exactly as AlsoAsked showed it. If you lost the webhook signing key, select **Regenerate signing key**. |
+| The signature never matches. | Your code makes the signature from different bytes or with a different key. The usual causes are JSON that your code parsed and serialized again, values joined in the wrong order, and an old webhook signing key. | Check each item in [Common mistakes](#common-mistakes). If you lost the webhook signing key, select **Regenerate signing key**. |
 | The signature matches only for some webhook events. | Your server, your proxy, or your web framework changes the request body, for example it trims the request body or changes the character encoding. | Read the raw request body before any middleware changes the request body. |
 | The `verify` function returns `false` for every webhook event, but the signature is correct. | The clock on your server is wrong, so the timestamp looks older than 5 minutes. | Synchronize the clock on your server, for example with the Network Time Protocol (NTP). |
-| Node.js throws `RangeError` from `crypto.timingSafeEqual`. | The two buffers have different lengths. | Compare the lengths of the two buffers before you call `crypto.timingSafeEqual`, as the Node.js `verify` function does. |
+| Node.js throws `RangeError` from `crypto.timingSafeEqual`. | The 2 buffers have different lengths. | Compare the lengths of the 2 buffers before you call `crypto.timingSafeEqual`, as the Node.js `verify` function does. |
 
 ## Related
 

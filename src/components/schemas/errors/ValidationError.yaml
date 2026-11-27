@@ -2,7 +2,7 @@ title: Validation error
 type: object
 description: |
   The error body for the `validation` error type. The AlsoAsked API returns the `validation` error type with the status
-  code `422 Unprocessable Entity` when a field, parameter, or header of the request isn't valid. AlsoAsked doesn't
+  code `422 Unprocessable Content` when a field, parameter, or header of the request isn't valid. AlsoAsked doesn't
   charge credits for the request. The `errors` field names the field, parameter, or header, so your code can find the
   problem without reading the `message` field.
 properties:

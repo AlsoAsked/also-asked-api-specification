@@ -7,8 +7,8 @@ type: quickstart
 # Quickstart
 
 In this quickstart, you perform your first search on the AlsoAsked sandbox API, read the results, and get the search
-again by its ID. Any AlsoAsked account can use the sandbox API, so you don't need a Pro plan, and the search doesn't use
-the credits of your plan.
+again by its ID. The quickstart takes about 5 minutes. Any AlsoAsked account can use the sandbox API, so you don't need
+a Pro plan, and the search doesn't use the credits of your plan.
 
 ## Before you start
 
@@ -23,7 +23,7 @@ which are separate from the credits of your plan. For details, see [Sandbox API]
 The sandbox API accepts only a sandbox API key. A sandbox API key starts with `aa-sandbox-`. To create a sandbox API key
 on the AlsoAsked website, do the following steps:
 
-1. Sign in to AlsoAsked, and go to the **API keys** page at `https://alsoasked.com/developer/keys`.
+1. Sign in to AlsoAsked, and go to the [**API keys** page](https://alsoasked.com/developer/keys).
 2. Select **Create API key**.
 3. In the **Name** field, enter a name for the API key. The name is for your reference only.
 4. In the **Environment** field, choose **Sandbox**.
@@ -35,7 +35,7 @@ commit an API key to a code repository. For details, see [Authenticate requests]
 
 ## 2. Perform a synchronous search on the sandbox API
 
-To perform a search, send a request to the `POST https://sandbox.alsoaskedapi.com/v1.1/search` endpoint. Put your
+To perform a search, send a `POST` request to `https://sandbox.alsoaskedapi.com/v1.1/search`. Put your
 sandbox API key in the `X-Api-Key` header, and put the terms in the `terms` field of the JSON request body.
 
 1. Copy the following request. The request performs a synchronous search on the sandbox API for 1 term,
@@ -68,7 +68,8 @@ synchronous search. In a synchronous search, the API waits until the search is c
 response. On the sandbox API, a synchronous search is complete after 3 to 9 seconds. On the live API, the API waits a
 maximum of 90 seconds.
 
-This search has 1 term and a depth of `2`, so the search costs 1 sandbox credit. For details, see [Credits](./credits.md).
+This search has 1 term and a depth of `2`, so the search costs 1 sandbox credit. For details, see
+[Credits](./credits.md).
 
 ## 3. Read the results of the search
 
@@ -78,8 +79,8 @@ search. These are the important fields of the search in the `POST /v1.1/search` 
 - The `id` field contains the ID of the search: 32 letters and digits. Use the ID to get the search again.
 - The `status` field contains the status of the search. A search is complete when its status is `success`,
   `no_results`, or `error`.
-- The `queries` field contains one query for each term in the search. The `queries` field is `null` until the search
-  is complete.
+- The `queries` field contains one query for each unique term in the search. The `queries` field is `null` until the
+  search is complete.
 
 Each query in the `queries` field has these fields:
 
@@ -97,14 +98,15 @@ Each result in the `results` field of a query has these fields:
 - The `results` field contains the child results of the result. A child result has the same fields as a top-level
   result.
 
-The following JSON is an example response body for a search with 1 term and a depth of `2`. The example has fewer
-results than a real response. The sandbox API returns test results with placeholder text, so the questions and the
-answers in your response are different from the example. On the live API, the results are the questions and the answers
-that Google shows.
+The following JSON is an example response body for a search with 1 term and a depth of `2`. The example is
+shortened to 1 top-level result and 1 child result, and its questions and answers are example text in English. Your
+response from the sandbox API has the same fields, but it has 4 top-level results, each with 6 to 10 child results, and
+the questions and the answers are placeholder text in Latin. On the live API, the results are the questions and the
+answers that Google shows.
 
 ```json
 {
-  "id": "9J1VrsN0ku2E6xW8M5Xh3zylpfZgIcba",
+  "id": "gzu106FjVblnPu99fbVOgUgCoBO6Pesm",
   "language": "en",
   "region": "us",
   "latitude": null,
@@ -152,15 +154,15 @@ that Google shows.
 }
 ```
 
-If the search isn't complete, the `queries` field is `null`. To get the results later, send a request to
-`GET https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}` with the `id` field. See
+If the search isn't complete, the `queries` field is `null`. To get the results later, send a `GET` request to
+`https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}` with the `id` field. See
 [Get the search again](#4-get-the-search-again).
 
 For all the fields of the search, the query, and the result, see [Search results](./search-results.md).
 
 ## 4. Get the search again
 
-To get the search again, send a request to the `GET https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}` endpoint.
+To get the search again, send a `GET` request to `https://sandbox.alsoaskedapi.com/v1.1/search/{searchId}`.
 Use the `id` field from the `POST /v1.1/search` response body as the `searchId` path parameter.
 
 1. Copy the following request:

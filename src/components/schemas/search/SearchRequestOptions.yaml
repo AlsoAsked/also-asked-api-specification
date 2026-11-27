@@ -6,13 +6,14 @@ properties:
   terms:
     type: array
     description: |
-      The terms to search for: 1 to 1,000 terms. Each term must be unique. AlsoAsked removes spaces at the start and end
-      of each term. If 2 terms are the same after that, AlsoAsked searches the term once and charges credits for the
-      term once.
+      The terms to search for: 1 to 1,000 terms. Each term must be unique. AlsoAsked removes whitespace and invisible
+      characters at the start and end of each term. If 2 terms are the same after that, AlsoAsked searches the term
+      once and charges credits for the term once.
     items:
       type: string
       description: |
-        A term: 1 to 4,127 characters. A term must contain text other than spaces and quotes.
+        A term: 1 to 4,127 characters. A term must contain text other than whitespace, double quotes (`"`), and
+        invisible characters.
       minLength: 1
       maxLength: 4127
     minItems: 1
@@ -37,7 +38,7 @@ properties:
       example `gb`. The default is `us`.
     enum:
       $ref: ../../../enums/Region.yaml
-    example: us
+    example: gb
     default: us
   depth:
     type: integer
@@ -46,7 +47,7 @@ properties:
       The number of levels of results to get: `1`, `2`, or `3`. The default is `2`. A depth of `1` gets only top-level
       results. The cost for each term depends on the depth: 1 credit for a depth of `1` or `2`, and 4 credits for a
       depth of `3`.
-    example: 2
+    example: 3
     default: 2
     minimum: 1
     maximum: 3
@@ -55,8 +56,9 @@ properties:
     description: |
       Set the `fresh` field to `true` to get new results from Google instead of stored results. The default is `false`:
       AlsoAsked can use the results that any account stored for an earlier search with the same term, language, region,
-      depth, and location, however old they are. On the live API, a term with stored results costs nothing when `fresh`
-      is `false`. When `fresh` is `true`, every term costs credits.
+      depth, and location, however old they are. AlsoAsked doesn't use stored results if a top-level result has a blank
+      answer excerpt. On the live API, a term with stored results costs nothing when `fresh` is `false`. When `fresh`
+      is `true`, every term costs credits. The sandbox API has no stored results.
     example: false
     default: false
   async:
@@ -84,7 +86,7 @@ properties:
     maximum: 90
     description: |
       The latitude of the location for the search, from -90 to 90. Send the `latitude` field and the `longitude` field
-      together. If the request body has only one of the two fields, the API returns the status code
+      together. If the request body has only one of the 2 fields, the API returns the status code
       `422 Unprocessable Content`. A value of `0` is a real coordinate. AlsoAsked rounds the value to 7 decimal places.
     example: 51.5072
   longitude:
@@ -94,9 +96,9 @@ properties:
     maximum: 180
     description: |
       The longitude of the location for the search, from -180 to 180. Send the `latitude` field and the `longitude`
-      field together. If the request body has only one of the two fields, the API returns the status code
+      field together. If the request body has only one of the 2 fields, the API returns the status code
       `422 Unprocessable Content`. A value of `0` is a real coordinate. AlsoAsked rounds the value to 7 decimal places.
-    example: 0.1276
+    example: -0.1276
 required:
   - terms
 example:

@@ -1,8 +1,9 @@
 description: |
   The search that AlsoAsked created. For a synchronous search, the API returns the response when the search is
   complete or when the timeout ends. For an asynchronous search, the API returns the response immediately. The
-  `queries` field has the results of the search only when the `status` field is `success`. Otherwise, the `queries`
-  field is `null`.
+  `queries` field is `null` until the search is complete. When the `status` field is `success`, `no_results`, or
+  `error`, the `queries` field has one query for each unique term. Each query has the status and the
+  results of its term.
 headers:
   X-AlsoAsked-Credits:
     $ref: ../../headers/also-asked/X-AlsoAsked-Credits.yaml
