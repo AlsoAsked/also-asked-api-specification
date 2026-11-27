@@ -4,6 +4,10 @@ stoplight-id: u8gsgcbodk4lx
 
 # Changelog
 
+## 2026-11-27
+
+* A term of a deleted search that succeeds after the deletion now ends with the status `success` and isn't refunded, and its results are stored and can be used by later searches. Previously its results weren't stored, so the term ended with the status `error` and was refunded. Terms of a deleted search that fail or have no results are still refunded
+
 ## 2026-11-26
 
 * The `search_succeeded` and `search_failed` webhook events are now sent once, when every term of a search has finished, and `search_failed` is only sent when every term failed. Previously the event was sent when the first term finished, so a search with mixed results could send both

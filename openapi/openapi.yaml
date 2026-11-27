@@ -216,8 +216,11 @@ paths:
         - Search
       summary: Delete search
       description: |
-        Delete a search request. The search results will be deleted from the cache and the search result's term masked in the
-        search history.
+        Delete a search request. The search request's terms are masked in the search history.
+
+        Deleting a search doesn't stop it. Terms that are still running keep running, and the terms that fail or have no
+        results are refunded. A term that succeeds after the deletion isn't refunded, and AlsoAsked stores its results like
+        any other search's, so later searches can use them.
       security:
         - apiKey: []
       parameters:
