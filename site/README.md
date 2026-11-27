@@ -89,7 +89,9 @@ the API, which allows cross-origin requests. If the reader enters no key, the th
 
 `.github/workflows/developer-docs.yml` builds pull requests and pushes to `main` on RunsOn runners, as in
 `also-asked-web` and `also-asked-frontend`, and deploys the head of `main` with `wrangler deploy`. The deploy job needs
-the `developer-docs` environment with the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets.
+the `developer-docs` environment with the `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` secrets. The token is an
+account API token with the Editor role on the `also-asked-developer-docs` Worker only, and Workers Routes Write on the
+`alsoasked.com` zone, which a deploy needs only when it adds or changes the route.
 
 This repository is public, so only collaborators can open pull requests, and a run for anyone else's pull request waits
 for approval. Keep it that way while the workflow runs on RunsOn: a pull request's code runs on the runner.

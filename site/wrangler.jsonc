@@ -12,7 +12,10 @@
   },
   // A route, not a custom domain. The proxied developers CNAME in the alsoasked.com zone stays, and
   // the Worker answers before the CNAME's target. Deleting the route rolls the host back to it.
-  "routes": [{ "pattern": "developers.alsoasked.com/*", "zone_name": "alsoasked.com" }],
+  // The zone is alsoasked.com, given by ID so that the deploy token doesn't need Zone Read.
+  "routes": [
+    { "pattern": "developers.alsoasked.com/*", "zone_id": "8eaf37f2cf0aa5828da6d349c93282ba" }
+  ],
   "workers_dev": false,
   "preview_urls": false
 }
