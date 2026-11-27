@@ -110,4 +110,3 @@ The IDs are the 31 pages in the Stoplight sidebar on 2026-11-26.
   `also-asked-frontend`, and the README of the PHP SDK.
 - Check Search Console for old URLs that get traffic and aren't in `static/_redirects`.
 - Remove the custom domain in Stoplight. The route keeps serving the site.
-- Remove the `announcementBar` from `docusaurus.config.ts` a few months after the move.

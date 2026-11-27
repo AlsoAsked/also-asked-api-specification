@@ -120,14 +120,6 @@ const config: Config = {
   ],
   themeConfig: {
     image: 'img/social-card.png',
-    // Readers who follow an old Stoplight link land on the new page. Remove the bar a few months
-    // after the move.
-    announcementBar: {
-      id: 'docs-moved-2026-11',
-      content:
-        'The AlsoAsked API docs have a new home. Links to the old pages take you to the new ones.',
-      isCloseable: true,
-    },
     navbar: {
       // The logo is the AlsoAsked wordmark.
       title: 'API',
