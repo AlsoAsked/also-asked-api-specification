@@ -219,8 +219,7 @@ paths:
         Delete a search request. The search request's terms are masked in the search history.
 
         Deleting a search doesn't stop it. Terms that are still running keep running, and the terms that fail or have no
-        results are refunded. A term that succeeds after the deletion isn't refunded, and AlsoAsked stores its results like
-        any other search's, so later searches can use them.
+        results are refunded. A term that succeeds after the deletion isn't refunded.
       security:
         - apiKey: []
       parameters:

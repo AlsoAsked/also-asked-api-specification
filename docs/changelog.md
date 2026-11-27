@@ -21,7 +21,7 @@ stoplight-id: u8gsgcbodk4lx
 * A webhook event that fails because the account has no webhook signing key is no longer retried, and its error says to generate a webhook signing key
 * Added the sandbox terms `[server_error]`, which returns a `500` error, `[rate_limit]`, which returns a `429` error with a `Retry-After` header, and `[timeout]`, which simulates a search that runs past the 90 second limit of a synchronous search. Searches with `[server_error]` or `[rate_limit]` cost no sandbox credits
 * Sandbox credits are now refunded if a sandbox search fails before it's recorded
-* A search that you delete while it's running now finishes like any other search. A term that succeeds isn't refunded, and its results are stored and can be used by later searches. Terms that fail, have no results or stall past their deadline are refunded. Previously deleting a running search kept its credits and didn't store its results. A deleted search no longer sends webhook events
+* A search that you delete while it's running now finishes like any other search. A term that succeeds isn't refunded, and terms that fail, have no results or stall past their deadline are refunded. Previously deleting a running search kept its credits. A deleted search no longer sends webhook events
 * Stored results whose top-level answer is blank are no longer reused, so the search gets new results for that term
 * A request body that is valid JSON but isn't an object, such as a list, now gets a `422` validation error. Previously it got a `500` error
 
